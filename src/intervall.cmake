@@ -9,4 +9,7 @@ target_include_directories(intervalltimer PUBLIC
 
 target_sources(intervalltimer PRIVATE
     intervall/intervall.cpp
+    intervall/intervall.h
+    intervall/plan.cpp
+    intervall/plan.h
 )
