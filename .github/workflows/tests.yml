@@ -1,0 +1,97 @@
+name: Test Runner
+
+on: push
+
+jobs:
+  Run-Test-Clang:
+    name: "Run-Tests-Clang"
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2
+        with:
+          version: '6.2.1'
+
+      - name: Install clang 12
+        run: |
+          sudo apt-get update 
+          sudo apt-get install clang-12 llvm-12
+          
+      - name: Test
+        run: |
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_CXX_COMPILER=clang++-12
+          cmake --build . --target all
+          ctest --no-tests=error .
+  
+  Run-Test-MSCV:
+    name: "Run-Tests-MSCV"
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2
+        with:
+          version: '6.2.1'
+
+      - name: Install Tools Ninja and mvsc
+        uses: ilammy/msvc-dev-cmd@v1
+      - uses: seanmiddleditch/gha-setup-ninja@master
+      
+      - name: Test
+        run: |
+          mkdir build
+          cd build
+          cmake .. -GNinja
+          cmake --build . --target all
+          $env:Path += ";${{ github.workspace }}/build/third_party/glog;${{ github.workspace }}/build/bin;"
+          ctest --rerun-failed --output-on-failure --no-tests=error .
+          
+  # Static-Analyse-Clang:
+  #   name: "Static-Analyse-Clang"
+  #   runs-on: ubuntu-latest
+    
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+  #       with:
+  #         submodules: recursive
+
+  #     - name: Install clang 12
+  #       run: |
+  #         sudo apt-get update 
+  #         sudo apt-get install clang-12 llvm-12
+      
+  #     - name: Test
+  #       run: |
+  #         mkdir build
+  #         cd build
+  #         cmake .. -DCMAKE_CXX_FLAGS="-fsized-deallocation --analyze"  -DCMAKE_CXX_COMPILER=clang++-12
+  #         cmake --build . --target all
+
+#  cpp-check:
+#    name: cppcheck-test
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@v2
+#          
+#    - name: cppcheck
+#      uses: deep5050/cppcheck-action@main
+#    
+#    - name: Upload report
+#      uses: actions/upload-artifact@v1
+#      with:
+#        name: report
+#        path: output
