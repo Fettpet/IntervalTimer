@@ -1,22 +1,22 @@
 ## Description
 
-This app is used to create and consume an intervall timer. The major difference to other intervall timer is, that this one is freely programmable. Each intervall can have an unique length and descripton.
+This app is used to create and consume an interval timer. The major difference to other interval timer is, that this one is freely programmable. Each interval can have an unique length and descripton.
 
 ## Who are the users
 
-The users are persons which needs a programm able intervall timer. This could be persons which do an intervall pyramid training or persons which do an complex mutli task.
+The users are persons which needs a programm able interval timer. This could be persons which do an interval pyramid training or persons which do an complex mutli task.
 
 ## Functionality
 
-### Creating an intervall plan
+### Creating an interval plan
 
-### List all intervall plans
+### List all interval plans
 
-### Show an intervall plan
+### Show an interval plan
 
-### Consume an intervall plan
+### Consume an interval plan
 
-### Updating an intervall plan
+### Updating an interval plan
 
 
 ## Technical stuff
