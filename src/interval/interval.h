@@ -2,17 +2,17 @@
 #include <chrono>
 #include <string>
 
-struct Intervall {
+struct Interval {
 public:
-    Intervall();
-    Intervall(std::chrono::milliseconds const&, std::string const&);
-    Intervall(Intervall const&) = default;
-    Intervall(Intervall&&) = default;
+    Interval();
+    Interval(std::chrono::milliseconds const&, std::string const&);
+    Interval(Interval const&) = default;
+    Interval(Interval&&) = default;
 
-    Intervall& operator=(Intervall const&) = default;
-    Intervall& operator=(Intervall&&) = default;
+    Interval& operator=(Interval const&) = default;
+    Interval& operator=(Interval&&) = default;
 
-    auto operator==(Intervall const&) const -> bool = default;
+    auto operator==(Interval const&) const -> bool = default;
     void setDuration(std::chrono::milliseconds const& dur);
 
     template<typename Duration>

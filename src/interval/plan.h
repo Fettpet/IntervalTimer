@@ -1,5 +1,5 @@
 #pragma once
-#include "intervall.h"
+#include "interval.h"
 #include <vector>
 
 class Plan;
@@ -21,17 +21,17 @@ public:
     void removePlan(size_t const& index);
     size_t getNumberPlans() const;
 
-    void addIntervall(Intervall const&);
-    Intervall const& getIntervall(size_t const& index) const;
-    Intervall& getIntervallRef(size_t const& index);
-    void removeIntervall(size_t const& index);
-    size_t getNumberIntervalls() const;
+    void addInterval(Interval const&);
+    Interval const& getInterval(size_t const& index) const;
+    Interval& getIntervalRef(size_t const& index);
+    void removeInterval(size_t const& index);
+    size_t getNumberIntervals() const;
 
     uint32_t getNumberRepetitions() const;
     void setNumberRepetitions(uint32_t const&);
 
 protected:
-    std::vector<Intervall> intervalls;
+    std::vector<Interval> intervals;
     std::vector<Plan> plans;
     uint32_t numberRepetitions{1};
 };

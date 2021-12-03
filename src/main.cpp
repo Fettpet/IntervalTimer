@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
     for (const QString& locale : uiLanguages) {
-        const QString baseName = "Intervalltimer_" + QLocale(locale).name();
+        const QString baseName = "Intervaltimer_" + QLocale(locale).name();
         if (translator.load(":/i18n/" + baseName)) {
             app.installTranslator(&translator);
             break;
@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
     }
 
     QQmlApplicationEngine engine;
-    const QUrl url(u"qrc:/Intervalltimer/qml/main.qml"_qs);
+    const QUrl url(u"qrc:/Intervaltimer/qml/main.qml"_qs);
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreated,
