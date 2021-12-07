@@ -1,11 +1,13 @@
+#include "PlanModel.h"
 #include <QGuiApplication>
-#include <QQmlApplicationEngine>
-
 #include <QLocale>
+#include <QQmlApplicationEngine>
 #include <QTranslator>
 
 int main(int argc, char* argv[]) {
     QGuiApplication app(argc, argv);
+
+    qmlRegisterType<PlanModel>("interval", 1, 0, "PlanModel");
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
