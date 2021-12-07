@@ -14,6 +14,8 @@ include(interval.cmake)
 if(${BUILD_INTERVAL_APPLICATON})
     qt_add_executable(appIntervaltimer
         main.cpp
+        PlanModel.h
+        PlanModel.cpp
     )
 
     qt_add_qml_module(appIntervaltimer
