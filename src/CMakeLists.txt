@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.21)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.2 COMPONENTS Quick REQUIRED)
+find_package(Qt6 6.2 COMPONENTS Quick Core REQUIRED)
 
 OPTION(BUILD_INTERVAL_APPLICATON "Build the Application" ON)
 
