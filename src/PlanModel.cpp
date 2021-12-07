@@ -20,19 +20,23 @@ QVariant PlanModel::headerData(int section, Qt::Orientation orientation, int rol
 int PlanModel::rowCount(const QModelIndex& parent) const {
     // For list models only the root node (an invalid parent) should return the list's size. For all
     // other (valid) parents, rowCount() should return 0 so that it does not become a tree model.
-    if (parent.isValid()) return 0;
+    if (parent.isValid() || !plan) return 0;
 
-    // FIXME: Implement me!
-    return 10;
+    return plan->getItems().size();
 }
 
 QVariant PlanModel::data(const QModelIndex& index, int role) const {
-    if (!index.isValid()) return QVariant();
+    if (!index.isValid() || !plan) return QVariant();
 
-    // FIXME: Implement me!
+    auto const& item = plan->getItems().at(index.row());
+    if (item.canConvert<Plan*>()) {
+        // todo fixme
+        return QVariant();
+    }
+
     switch (role) {
-    case descriptionRole: return QVariant(QString("Hello World"));
-    case durationRole: return QVariant(index.row() + 1);
+    case descriptionRole: return QVariant::fromValue(QString::fromStdString(item.value<Interval>().getDescripton()));
+    case durationRole: return QVariant::fromValue(item.value<Interval>().getDuration<std::chrono::seconds>().count());
     }
 
     return QVariant();
@@ -72,4 +76,23 @@ QHash<int, QByteArray> PlanModel::roleNames() const {
     names[durationRole] = "duration";
     names[descriptionRole] = "description";
     return names;
+}
+
+Plan* PlanModel::getPlan() const { return plan; }
+void PlanModel::setPlan(Plan* newPlan) {
+    beginResetModel();
+    if (plan) {
+        plan->disconnect(this);
+    }
+    plan = newPlan;
+    if (plan) {
+        connect(plan, &Plan::preItemAppended, this, [=]() {
+            const int index = plan->getItems().size();
+            beginInsertRows(QModelIndex(), index, index);
+        });
+        connect(plan, &Plan::postItemAppended, this, [=]() { endInsertRows(); });
+        connect(plan, &Plan::preItemRemoved, this, [=](size_t index) { beginRemoveRows(QModelIndex(), index, index); });
+        connect(plan, &Plan::postItemRemoved, this, [=]() { endRemoveRows(); });
+    }
+    endResetModel();
 }

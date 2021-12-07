@@ -1,9 +1,11 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <interval/plan.h>
 
 class PlanModel : public QAbstractListModel {
     Q_OBJECT
+    Q_PROPERTY(Plan* plan READ getPlan WRITE setPlan);
 
 public:
     explicit PlanModel(QObject* parent = nullptr);
@@ -33,5 +35,9 @@ public:
 
     virtual QHash<int, QByteArray> roleNames() const override;
 
+    Plan* getPlan() const;
+    void setPlan(Plan*);
+
 private:
+    Plan* plan{nullptr};
 };
