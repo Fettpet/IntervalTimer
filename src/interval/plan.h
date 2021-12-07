@@ -2,8 +2,6 @@
 #include "interval.h"
 #include <vector>
 
-class Plan;
-
 class Plan {
 public:
     Plan();
