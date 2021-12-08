@@ -1,4 +1,5 @@
 #pragma once
+#include <QMetaType>
 #include <chrono>
 #include <string>
 
@@ -27,3 +28,5 @@ protected:
     std::chrono::milliseconds duration{0};
     std::string description;
 };
+
+Q_DECLARE_METATYPE(Interval);

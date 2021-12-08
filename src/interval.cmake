@@ -7,6 +7,9 @@ target_include_directories(intervaltimer PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/>
 )
 
+target_link_libraries(intervaltimer
+    Qt6::Core)
+
 target_sources(intervaltimer PRIVATE
     interval/interval.cpp
     interval/interval.h

@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.21)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.2 COMPONENTS Quick REQUIRED)
+find_package(Qt6 6.2 COMPONENTS Quick Core REQUIRED)
 
 OPTION(BUILD_INTERVAL_APPLICATON "Build the Application" ON)
 
@@ -14,6 +14,8 @@ include(interval.cmake)
 if(${BUILD_INTERVAL_APPLICATON})
     qt_add_executable(appIntervaltimer
         main.cpp
+        PlanModel.h
+        PlanModel.cpp
     )
 
     qt_add_qml_module(appIntervaltimer
