@@ -69,7 +69,6 @@ bool PlanModel::setData(const QModelIndex& index, const QVariant& value, int rol
         }
 
         plan->setItemAt(index.row(), interval);
-        emit changedPlan();
         emit dataChanged(index, index, QVector<int>() << role);
         return true;
     }

@@ -20,6 +20,8 @@ public:
 signals:
     void preItemAppended();
     void postItemAppended();
+    void preItemRemoved(size_t index);
+    void postItemRemoved();
 
 public slots:
     void setNumberRepetitions(uint32_t const&);
