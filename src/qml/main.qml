@@ -16,16 +16,24 @@ Window {
             implicitHeight: 250
             clip: true
 
-            model: PlanModel {}
+            model: PlanModel {
+                plan: rootPlan
+            }
 
             delegate: RowLayout {
                 TextField {
                     text: model.duration
-                    onEditingFinished: model.duration = text
+                    onEditingFinished: {
+                        console.error(text);
+                        model.duration = text;
+                    }
                 }
                 TextField {
                     text: model.description
-                    onEditingFinished: model.description = text
+                    onEditingFinished: {
+                        console.error(text);
+                        model.description = text;
+                    }
                     Layout.fillWidth: true
                 }
             }
