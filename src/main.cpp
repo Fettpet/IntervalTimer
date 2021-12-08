@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
     Plan plan{};
     engine.rootContext()->setContextProperty(QStringLiteral("rootPlan"), &plan);
 
-    const QUrl url(u"qrc:/Intervaltimer/qml/main.qml"_qs);
+    const QUrl url(u"qrc:/Intervaltimergui/main.qml"_qs);
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreated,

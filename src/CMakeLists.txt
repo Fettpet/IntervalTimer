@@ -18,14 +18,10 @@ if(${BUILD_INTERVAL_APPLICATON})
         PlanModel.cpp
     )
 
-    qt_add_qml_module(appIntervaltimer
-        URI Intervaltimer
-        VERSION 1.0
-        QML_FILES qml/main.qml
-    )
+    add_subdirectory(qml)
 
     target_compile_definitions(appIntervaltimer
         PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
     target_link_libraries(appIntervaltimer
-        PRIVATE Qt6::Quick intervaltimer)
+        PRIVATE Qt6::Quick intervaltimer IntervalTimerQMLplugin)
 endif()
