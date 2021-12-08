@@ -43,18 +43,44 @@ QVariant PlanModel::data(const QModelIndex& index, int role) const {
 }
 
 bool PlanModel::setData(const QModelIndex& index, const QVariant& value, int role) {
-    if (data(index, role) != value) {
-        // FIXME: Implement me!
+    if (!plan) return false;
+    if (data(index, role) == value) {
+        return false;
+    }
+    auto item = plan->getItems().at(index.row());
+    if (item.canConvert<Plan*>()) {
+        // todo fixme
+        return false;
+    }
+    if (item.canConvert<Interval>()) {
+        auto interval = item.value<Interval>();
+        switch (role) {
+        case descriptionRole: {
+            interval.setDescripton(value.toString().toStdString());
+            qDebug() << "after setDescription" << item;
+            break;
+        }
+        case durationRole: {
+            interval.setDuration(std::chrono::seconds{value.toInt()});
+            qDebug() << "after setDuration" << item;
+            break;
+        }
+        default: return false;
+        }
+
+        plan->setItemAt(index.row(), interval);
+        emit changedPlan();
         emit dataChanged(index, index, QVector<int>() << role);
         return true;
     }
+
     return false;
 }
 
 Qt::ItemFlags PlanModel::flags(const QModelIndex& index) const {
     if (!index.isValid()) return Qt::NoItemFlags;
 
-    return Qt::ItemIsEditable; // FIXME: Implement me!
+    return Qt::ItemIsEditable;
 }
 
 // bool PlanModel::insertRows(int row, int count, const QModelIndex& parent) {
