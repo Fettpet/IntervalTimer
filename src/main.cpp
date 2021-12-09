@@ -1,15 +1,13 @@
-#include "PlanModel.h"
+#include <Interval/Plan.h>
+#include <Interval/PlanModel.h>
 #include <QGuiApplication>
 #include <QLocale>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QTranslator>
-#include <interval/plan.h>
 
 int main(int argc, char* argv[]) {
     QGuiApplication app(argc, argv);
-
-    qmlRegisterType<PlanModel>("interval", 1, 0, "PlanModel");
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
@@ -25,7 +23,7 @@ int main(int argc, char* argv[]) {
     Plan plan{};
     engine.rootContext()->setContextProperty(QStringLiteral("rootPlan"), &plan);
 
-    const QUrl url(u"qrc:/Intervaltimergui/main.qml"_qs);
+    const QUrl url(u"qrc:/IntervalApplication/main.qml"_qs);
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreated,

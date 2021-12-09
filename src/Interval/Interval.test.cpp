@@ -1,6 +1,5 @@
-#pragma once
+#include <Interval.h>
 #include <gtest/gtest.h>
-#include <interval/interval.h>
 
 TEST(Interval, duration) {
     auto interval = Interval{};

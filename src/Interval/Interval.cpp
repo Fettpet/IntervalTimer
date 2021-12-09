@@ -1,4 +1,4 @@
-#include "interval.h"
+#include "Interval.h"
 
 Interval::Interval() {}
 

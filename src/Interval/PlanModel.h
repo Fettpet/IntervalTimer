@@ -1,10 +1,12 @@
 #pragma once
 
+#include "Plan.h"
 #include <QAbstractListModel>
-#include <interval/plan.h>
+#include <QtQml/qqmlregistration.h>
 
 class PlanModel : public QAbstractListModel {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(Plan* plan READ getPlan WRITE setPlan);
 
 public:

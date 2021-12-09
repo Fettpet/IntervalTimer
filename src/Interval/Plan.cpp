@@ -1,5 +1,6 @@
-#include "plan.h"
+#include "Plan.h"
 #include <exception>
+
 Plan::Plan(QObject* parent)
     : QObject(parent) {}
 

@@ -1,18 +1,28 @@
 cmake_minimum_required(VERSION 3.21)
 
-add_library(IntervaltimerLib STATIC)
 set(CMAKE_CXX_STANDARD 20)
 
+find_package(Qt6 6.2 COMPONENTS Quick  REQUIRED)
+
+qt_add_library(IntervaltimerLib STATIC)
+
 target_include_directories(IntervaltimerLib PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Interval>
 )
 
-target_link_libraries(IntervaltimerLib
-    Qt6::Core)
-
-target_sources(IntervaltimerLib PRIVATE
-    interval/interval.cpp
-    interval/interval.h
-    interval/plan.cpp
-    interval/plan.h
+qt_add_qml_module(IntervaltimerLib
+    URI Intervaltimer
+    VERSION 1.0
+    OUTPUT_DIRECTORY Intervaltimer
+    QML_FILES
+        qml/Interval.qml
+        qml/Plan.qml
+    SOURCES
+        Interval/Interval.cpp
+        Interval/Interval.h
+        Interval/Plan.cpp
+        Interval/Plan.h
+        Interval/PlanModel.cpp
+        Interval/PlanModel.h
 )
+

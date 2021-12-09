@@ -1,6 +1,6 @@
+#include <Plan.h>
 #include <QSignalSpy>
 #include <gtest/gtest.h>
-#include <interval/plan.h>
 
 struct PlanTesting : ::testing::Test {
 protected:

@@ -3,8 +3,7 @@ import QtQuick
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
 
-import interval 1.0
-import Intervaltimergui 1.0
+import Intervaltimer 1.0
 
 Window {
     width: 640
