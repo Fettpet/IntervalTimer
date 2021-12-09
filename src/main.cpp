@@ -10,7 +10,6 @@ int main(int argc, char* argv[]) {
     QGuiApplication app(argc, argv);
 
     qmlRegisterType<PlanModel>("interval", 1, 0, "PlanModel");
-    qmlRegisterType<Plan>("interval", 1, 0, "Plan");
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
