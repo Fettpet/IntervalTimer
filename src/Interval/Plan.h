@@ -1,5 +1,6 @@
 #pragma once
-#include "interval.h"
+#include "Interval.h"
+#include <QString>
 #include <QVariantList>
 
 class Plan : public QObject {
