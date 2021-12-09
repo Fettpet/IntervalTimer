@@ -8,5 +8,6 @@ qt_add_qml_module(IntervalTimerQML
     URI Intervaltimergui
     VERSION 1.0
     QML_FILES main.qml Interval.qml Plan.qml
+    OUTPUT_DIRECTORY Intervaltimergui
 )
 
