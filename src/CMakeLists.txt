@@ -23,5 +23,5 @@ if(${BUILD_INTERVAL_APPLICATON})
     target_compile_definitions(appIntervaltimer
         PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
     target_link_libraries(appIntervaltimer
-        PRIVATE Qt6::Quick intervaltimer IntervalTimerQMLplugin)
+        PRIVATE Qt6::Quick IntervaltimerLib IntervalTimerQMLplugin)
 endif()

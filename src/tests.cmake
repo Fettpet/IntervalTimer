@@ -11,6 +11,6 @@ if(${BUILD_INTERVAL_TESTS})
         interval/interval.test.cpp
         interval/plan.test.cpp
     )
-    target_link_libraries(UnitTests gtest_main intervaltimer Qt::Test)
+    target_link_libraries(UnitTests gtest_main IntervaltimerLib Qt::Test)
     add_test(UnitTests UnitTests)
 endif()
