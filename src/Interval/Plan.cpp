@@ -29,9 +29,13 @@ void Plan::appendPlan() {
     emit postItemAppended();
 }
 
+void Plan::setName(const QString& newName) { name = newName; }
+
 QVariant Plan::getItemAt(const size_t& index) { return items.at(index); }
 
 QVariantList Plan::getItems() { return items; }
 
 uint32_t Plan::getNumberRepetitions() const { return numberRepetitions; }
+
+QString Plan::getName() const { return name; }
 void Plan::setNumberRepetitions(uint32_t const& repetitions) { numberRepetitions = repetitions; }

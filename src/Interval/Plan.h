@@ -18,6 +18,8 @@ public:
 
     uint32_t getNumberRepetitions() const;
 
+    QString getName() const;
+
 signals:
     void preItemAppended();
     void postItemAppended();
@@ -28,8 +30,10 @@ public slots:
     void setNumberRepetitions(uint32_t const&);
     void appendInterval();
     void appendPlan();
+    void setName(QString const&);
 
 protected:
+    QString name;
     QVariantList items;
     uint32_t numberRepetitions{1};
 };
