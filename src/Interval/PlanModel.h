@@ -12,7 +12,7 @@ class PlanModel : public QAbstractListModel {
 public:
     explicit PlanModel(QObject* parent = nullptr);
 
-    enum { durationRole = Qt::UserRole, descriptionRole };
+    enum { durationRole = Qt::UserRole, descriptionRole, subPlanRole, nameRole, isIntervalRole, isPlanRole };
     // Header:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 

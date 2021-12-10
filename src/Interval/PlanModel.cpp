@@ -29,14 +29,31 @@ QVariant PlanModel::data(const QModelIndex& index, int role) const {
     if (!index.isValid() || !plan) return QVariant();
 
     auto const& item = plan->getItems().at(index.row());
+
+    switch (role) {
+    case isIntervalRole: return QVariant(item.canConvert<Interval>());
+    case isPlanRole: return QVariant(item.canConvert<Plan*>());
+    }
+
     if (item.canConvert<Plan*>()) {
-        // todo fixme
+        switch (role) {
+        case subPlanRole: return item;
+        case nameRole: return QVariant::fromValue(item.value<Plan*>()->getName());
+        default: {
+            auto roleName = roleNames()[role];
+            qWarning() << "Role " << roleName << " is not useable in Plan";
+        }
+        }
         return QVariant();
     }
 
     switch (role) {
     case descriptionRole: return QVariant::fromValue(QString::fromStdString(item.value<Interval>().getDescripton()));
     case durationRole: return QVariant::fromValue(item.value<Interval>().getDuration<std::chrono::seconds>().count());
+    default: {
+        auto roleName = roleNames()[role];
+        qWarning() << "Role " << roleName << " is not useable in Interval";
+    }
     }
 
     return QVariant();
@@ -47,25 +64,46 @@ bool PlanModel::setData(const QModelIndex& index, const QVariant& value, int rol
     if (data(index, role) == value) {
         return false;
     }
+
     auto item = plan->getItems().at(index.row());
     if (item.canConvert<Plan*>()) {
-        // todo fixme
-        return false;
+        auto plan = item.value<Plan*>();
+        switch (role) {
+        case nameRole: {
+            plan->setName(value.toString());
+            break;
+        }
+        case subPlanRole: {
+            break;
+        }
+        default: {
+            auto roleName = roleNames()[role];
+            qWarning() << "Role " << roleName << " is not useable in Interval";
+            return false;
+        }
+        }
+
+        plan->setItemAt(index.row(), plan);
+        emit dataChanged(index, index, QVector<int>() << role);
+        return true;
     }
+
     if (item.canConvert<Interval>()) {
         auto interval = item.value<Interval>();
         switch (role) {
         case descriptionRole: {
             interval.setDescripton(value.toString().toStdString());
-            qDebug() << "after setDescription" << item;
             break;
         }
         case durationRole: {
             interval.setDuration(std::chrono::seconds{value.toInt()});
-            qDebug() << "after setDuration" << item;
             break;
         }
-        default: return false;
+        default: {
+            auto roleName = roleNames()[role];
+            qWarning() << "Role " << roleName << " is not useable in Interval";
+            return false;
+        }
         }
 
         plan->setItemAt(index.row(), interval);
@@ -100,6 +138,11 @@ QHash<int, QByteArray> PlanModel::roleNames() const {
     QHash<int, QByteArray> names;
     names[durationRole] = "duration";
     names[descriptionRole] = "description";
+    names[subPlanRole] = "subPlan";
+    names[nameRole] = "name";
+    names[isIntervalRole] = "isInterval";
+    names[isPlanRole] = "isPlan";
+
     return names;
 }
 
