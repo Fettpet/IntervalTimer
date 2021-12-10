@@ -5,17 +5,18 @@ import QtQuick.Layouts 1.0
 
 RowLayout {
     id: root
-    required property var model
+    required property var duration
+    required property var description
 
     TextField {
-        id: duration
-        text: model.duration
-        onEditingFinished: model.duration = text;
+        id: durationEdit
+        text: root.duration
+        onEditingFinished: root.duration = text;
     }
     TextField {
-        id: description
-        text: model.description
-        onEditingFinished: model.description = text;
+        id: descriptionEdit
+        text: root.description
+        onEditingFinished: root.description = text;
         Layout.fillWidth: true
     }
 }

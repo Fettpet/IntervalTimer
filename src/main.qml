@@ -10,24 +10,8 @@ Window {
     visible: true
     title: qsTr("Hello World")
 
-    Frame {
-        ColumnLayout {
-            Button {
-                text: "Add Interval"
-                onClicked: rootPlan.appendInterval()
-            }
-        ListView {
-            implicitWidth: 250
-            implicitHeight: 250
-            clip: true
-
-            model: PlanModel {
-                plan: rootPlan
-            }
-
-            delegate: Interval {}
-        }
-
-        }
+    Plan {
+        plan: rootPlan
     }
+
 }
