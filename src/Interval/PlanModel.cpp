@@ -39,21 +39,14 @@ QVariant PlanModel::data(const QModelIndex& index, int role) const {
         switch (role) {
         case subPlanRole: return item;
         case nameRole: return QVariant::fromValue(item.value<Plan*>()->getName());
-        default: {
-            auto roleName = roleNames()[role];
-            qWarning() << "Role " << roleName << " is not useable in Plan";
+        default: return QVariant();
         }
-        }
-        return QVariant();
     }
 
     switch (role) {
     case descriptionRole: return QVariant::fromValue(QString::fromStdString(item.value<Interval>().getDescripton()));
     case durationRole: return QVariant::fromValue(item.value<Interval>().getDuration<std::chrono::seconds>().count());
-    default: {
-        auto roleName = roleNames()[role];
-        qWarning() << "Role " << roleName << " is not useable in Interval";
-    }
+    default: return QVariant();
     }
 
     return QVariant();

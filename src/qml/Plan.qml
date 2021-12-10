@@ -41,6 +41,8 @@ ColumnLayout {
 
         delegate: RowLayout {
             id: delegate
+            required property string description
+            required property var duration
             required property bool isPlan
             required property bool isInterval
             Text {
@@ -52,9 +54,9 @@ ColumnLayout {
             Frame {
                 enabled: delegate.isInterval
                 visible: enabled
-                Interval {
-                    description: "description"
-                    duration: "duration"
+                contentItem: Interval {
+                    description: delegate.description
+                    duration: delegate.duration
                 }
             }
         }
