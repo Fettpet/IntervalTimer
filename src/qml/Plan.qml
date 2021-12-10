@@ -4,61 +4,66 @@ import QtQuick.Layouts 1.0
 
 import Intervaltimer 1.0
 
-ColumnLayout {
+Frame {
     id: root
-    required property var plan
+    property QtObject plan: null
+    property Component childComponent: null
 
-    RowLayout {
-        TextField {
-            id: name
-            text: root.plan ? root.plan.getName() : ""
-            onEditingFinished: root.plan.setName(text)
-        }
-        Button {
-            text: "Interval"
-            onClicked: viewIn.appenInterval()
-        }
-        Button {
-            text: "Plan"
-            onClicked: root.plan.appendPlan()
-        }
-    }
-    ListView {
-        id: viewIn
-        implicitWidth: 250
-        implicitHeight: 250
-        clip: true
+    contentItem: ColumnLayout {
 
-        model: PlanModel {
-            id: planModel
-            plan: root.plan
-        }
-
-        function appenInterval() {
-            console.error("Append Interval");
-            root.plan.appendInterval()
-        }
-
-        delegate: RowLayout {
-            id: delegate
-            required property string description
-            required property var duration
-            required property bool isPlan
-            required property bool isInterval
-            Text {
-                enabled: delegate.isPlan;
-                visible: enabled
-                text: "Plan"
+            RowLayout {
+                id: header
+                TextField {
+                    id: name
+                    text: root.plan ? root.plan.getName() : ""
+                    onEditingFinished: root.plan.setName(text)
+                }
+                Button {
+                    text: "Interval"
+                    onClicked: root.plan.appendInterval()
+                }
+                Button {
+                    text: "Plan"
+                    onClicked: root.plan.appendPlan()
+                }
             }
+            ListView {
+                id: viewIn
+                implicitWidth: 250
+                implicitHeight: 250
+                clip: true
 
-            Frame {
-                enabled: delegate.isInterval
-                visible: enabled
-                contentItem: Interval {
-                    description: delegate.description
-                    duration: delegate.duration
+                model: PlanModel {
+                    id: planModel
+                    plan: root.plan
+                }
+
+                delegate: RowLayout {
+                    id: delegate
+                    required property string description
+                    required property var duration
+                    required property bool isPlan
+                    required property bool isInterval
+                    required property QtObject subPlan
+
+                    Loader {
+                        active: delegate.isPlan
+                        visible: active
+                        sourceComponent: childComponent
+                        onLoaded: {
+                             item.plan = delegate.subPlan
+                        }
+                    }
+                    Loader {
+                        active: delegate.isInterval
+                        visible: active
+                        sourceComponent: Interval {
+                            description: delegate.description ? delegate.description : ""
+                            duration: delegate.duration ? delegate.duration : ""
+                        }
+                    }
                 }
             }
         }
-    }
 }
+

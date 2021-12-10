@@ -10,8 +10,16 @@ Window {
     visible: true
     title: qsTr("Hello World")
 
-    Plan {
-        plan: rootPlan
+    Loader {
+        id: loader
+        sourceComponent: planComponent
+        onLoaded: item.plan = rootPlan
     }
 
+    Component {
+        id: planComponent
+        Plan {
+            childComponent: planComponent
+        }
+    }
 }
