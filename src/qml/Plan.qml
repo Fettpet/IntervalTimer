@@ -40,6 +40,7 @@ Frame {
 
                 delegate: RowLayout {
                     id: delegate
+                    required property var model
                     required property string description
                     required property var duration
                     required property bool isPlan
@@ -58,8 +59,16 @@ Frame {
                         active: delegate.isInterval
                         visible: active
                         sourceComponent: Interval {
-                            description: delegate.description ? delegate.description : ""
-                            duration: delegate.duration ? delegate.duration : ""
+                            description: delegate.description
+                            duration:  delegate.duration
+
+                            onDescriptionChanged: {
+                                model.description = description
+                            }
+
+                            onDurationChanged: {
+                                model.duration = duration
+                            }
                         }
                     }
                 }
