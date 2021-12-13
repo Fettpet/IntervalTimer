@@ -1,4 +1,5 @@
 #pragma once
+#include <QDebug>
 #include <QMetaType>
 #include <chrono>
 #include <string>
@@ -28,5 +29,7 @@ protected:
     std::chrono::milliseconds duration{0};
     std::string description;
 };
+
+QDebug operator<<(QDebug debug, const Interval& interval);
 
 Q_DECLARE_METATYPE(Interval);

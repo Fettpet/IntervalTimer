@@ -39,3 +39,17 @@ uint32_t Plan::getNumberRepetitions() const { return numberRepetitions; }
 
 QString Plan::getName() const { return name; }
 void Plan::setNumberRepetitions(uint32_t const& repetitions) { numberRepetitions = repetitions; }
+
+QDebug operator<<(QDebug debug, const Plan& plan) {
+    debug.nospace() << plan.getName() << " " << plan.getNumberRepetitions();
+    for (auto item : plan.getItems()) {
+        if (item.canConvert<Interval>()) {
+            debug.nospace() << item.value<Interval>();
+        }
+        if (item.canConvert<Plan*>()) {
+            debug.nospace() << *(item.value<Plan*>());
+        }
+    }
+
+    return debug;
+}

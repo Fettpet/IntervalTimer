@@ -37,3 +37,5 @@ protected:
     QVariantList items;
     uint32_t numberRepetitions{1};
 };
+
+QDebug operator<<(QDebug debug, const Plan& plan);
