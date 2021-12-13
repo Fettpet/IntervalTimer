@@ -18,6 +18,29 @@ void Plan::setItemAt(size_t const& index, Interval const& interval) {
     items[index] = QVariant::fromValue(interval);
 }
 
+auto Plan::operator==(Plan const& lhs) const -> bool {
+    if (name != lhs.name || numberRepetitions != lhs.numberRepetitions || items.size() != lhs.items.size())
+        return false;
+    for (auto i = 0; i < items.size(); ++i) {
+        auto& item = items.at(i);
+        auto& lhsItem = lhs.items.at(i);
+        if (item.typeId() != lhsItem.typeId()) {
+            return false;
+        }
+        if (item.canConvert<Interval>()) {
+            if (item.value<Interval>() != lhsItem.value<Interval>()) {
+                return false;
+            }
+        }
+        else if (item.canConvert<Plan*>()) {
+            if (*(item.value<Plan*>()) != *(lhsItem.value<Plan*>())) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 void Plan::appendInterval() {
     emit preItemAppended();
     items.push_back(QVariant::fromValue(Interval{}));

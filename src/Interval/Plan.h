@@ -8,7 +8,7 @@ class Plan : public QObject {
 public:
     Plan(QObject* parent = nullptr);
 
-    auto operator==(Plan const&) const -> bool = default;
+    auto operator==(Plan const&) const -> bool;
 
     void setItemAt(size_t const& index, Plan* plan);
 
