@@ -14,7 +14,7 @@ public:
 
     void setItemAt(size_t const& index, Interval const& interval);
     QVariant getItemAt(size_t const& index);
-    QVariantList getItems();
+    QVariantList getItems() const;
 
     Q_INVOKABLE uint32_t getNumberRepetitions() const;
 

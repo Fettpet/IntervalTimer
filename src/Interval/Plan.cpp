@@ -33,7 +33,7 @@ void Plan::setName(const QString& newName) { name = newName; }
 
 QVariant Plan::getItemAt(const size_t& index) { return items.at(index); }
 
-QVariantList Plan::getItems() { return items; }
+QVariantList Plan::getItems() const { return items; }
 
 uint32_t Plan::getNumberRepetitions() const { return numberRepetitions; }
 
