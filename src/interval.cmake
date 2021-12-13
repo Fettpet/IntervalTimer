@@ -20,6 +20,10 @@ qt_add_qml_module(IntervaltimerLib
     SOURCES
         Interval/Interval.cpp
         Interval/Interval.h
+        Interval/IntervalFromJson.h
+        Interval/IntervalFromJson.cpp
+        Interval/IntervallToJson.h
+        Interval/IntervallToJson.cpp
         Interval/Plan.cpp
         Interval/Plan.h
         Interval/PlanModel.cpp
