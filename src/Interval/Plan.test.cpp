@@ -1,4 +1,7 @@
 #include <Plan.h>
+#include <PlanFromJson.h>
+#include <PlanToJson.h>
+#include <QJsonArray>
 #include <QSignalSpy>
 #include <gtest/gtest.h>
 
@@ -60,7 +63,73 @@ TEST_F(PlanTesting, CheckSignalsAppendPlan) {
     EXPECT_EQ(postSpy.count(), 1);
 }
 
-TEST(Plan, numberRepetions) {
+TEST_F(PlanTesting, toJson_IntervalsOnly) {
+    auto plan = Plan{};
+    plan.appendInterval();
+    plan.appendInterval();
+    plan.setItemAt(0, Interval{std::chrono::seconds{1}, "first"});
+    plan.setItemAt(1, Interval{std::chrono::seconds{2}, "second"});
+    auto json = PlanToJson::transform(plan);
+    EXPECT_EQ(json.at(2).toObject()["description"].toString(), QString("first"));
+    EXPECT_EQ(json.at(3).toObject()["description"].toString(), QString("second"));
+}
+
+TEST_F(PlanTesting, toJson_Name) {
+    auto plan = Plan{};
+    plan.setName("42");
+    auto json = PlanToJson::transform(plan);
+    EXPECT_EQ(json.at(0).toString(), QString("42"));
+}
+
+TEST_F(PlanTesting, toJson_NumberRepetions) {
+    auto plan = Plan{};
+    plan.setNumberRepetitions(42);
+    auto json = PlanToJson::transform(plan);
+    EXPECT_EQ(json.at(1).toInt(), 42);
+}
+
+TEST_F(PlanTesting, toJson_nestedPlan) {
+    auto plan = Plan{};
+    plan.appendPlan();
+    auto nestedPlan = Plan{};
+    nestedPlan.appendInterval();
+    nestedPlan.appendInterval();
+    nestedPlan.setItemAt(0, Interval{std::chrono::seconds{3}, "third"});
+    nestedPlan.setItemAt(1, Interval{std::chrono::seconds{4}, "fourth"});
+    plan.setItemAt(0, &nestedPlan);
+    auto json = PlanToJson::transform(plan);
+    qDebug() << json;
+    EXPECT_EQ(json.at(2).toArray().at(2).toObject()["description"].toString(), QString("third"));
+    EXPECT_EQ(json.at(2).toArray().at(3).toObject()["description"].toString(), QString("fourth"));
+}
+
+TEST_F(PlanTesting, fromJson_nestedPlan) {
+    auto plan = Plan{};
+    plan.setName("Outer");
+    plan.setNumberRepetitions(10);
+    plan.appendInterval();
+    plan.appendInterval();
+    plan.appendPlan();
+    auto outerFirst = Interval{std::chrono::seconds{1}, "first"};
+    auto outerSecond = Interval{std::chrono::seconds{2}, "second"};
+    plan.setItemAt(0, outerFirst);
+    plan.setItemAt(1, outerSecond);
+    auto nestedPlan = Plan{};
+    nestedPlan.setName("Inner");
+    nestedPlan.setNumberRepetitions(12);
+    nestedPlan.appendInterval();
+    nestedPlan.appendInterval();
+    nestedPlan.setItemAt(0, Interval{std::chrono::seconds{3}, "third"});
+    nestedPlan.setItemAt(1, Interval{std::chrono::seconds{4}, "fourth"});
+    plan.setItemAt(2, &nestedPlan);
+    auto json = PlanToJson::transform(plan);
+
+    auto transformedPlan = PlanFromJson::transform(json);
+
+    EXPECT_EQ(*transformedPlan, plan);
+}
+
+TEST_F(PlanTesting, numberRepetions) {
     auto plan = Plan{};
     EXPECT_EQ(plan.getNumberRepetitions(), 1);
 
