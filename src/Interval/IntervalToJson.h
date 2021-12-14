@@ -2,7 +2,7 @@
 #include "Interval.h"
 #include <QJsonObject>
 
-struct IntervallToJson {
+struct IntervalToJson {
 
     static QJsonObject transform(Interval const&);
 };

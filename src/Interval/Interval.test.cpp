@@ -1,6 +1,6 @@
 #include <Interval.h>
 #include <IntervalFromJson.h>
-#include <IntervallToJson.h>
+#include <IntervalToJson.h>
 #include <gtest/gtest.h>
 
 TEST(Interval, duration) {
@@ -19,14 +19,14 @@ TEST(Interval, description) {
 
 TEST(Interval, toJson) {
     auto interval = Interval{std::chrono::seconds{10}, "Hello World"};
-    auto json = IntervallToJson::transform(interval);
+    auto json = IntervalToJson::transform(interval);
     EXPECT_EQ(json["description"], "Hello World");
     EXPECT_EQ(json["durationMilliseconds"], 10000);
 }
 
 TEST(Interval, fromJson) {
     auto interval = Interval{std::chrono::seconds{10}, "Hello World"};
-    auto json = IntervallToJson::transform(interval);
+    auto json = IntervalToJson::transform(interval);
     auto transformedInterval = IntervalFromJson::transform(json);
 
     EXPECT_EQ(interval.getDescripton(), transformedInterval.getDescripton());

@@ -1,6 +1,6 @@
-#include "IntervallToJson.h"
+#include "IntervalToJson.h"
 
-QJsonObject IntervallToJson::transform(Interval const& interval) {
+QJsonObject IntervalToJson::transform(Interval const& interval) {
     QJsonObject result{
         qMakePair(
             QString("durationMilliseconds"),

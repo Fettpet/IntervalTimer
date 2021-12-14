@@ -1,6 +1,6 @@
 #include "PlanToJson.h"
 #include "Interval.h"
-#include "IntervallToJson.h"
+#include "IntervalToJson.h"
 #include "Plan.h"
 #include <QJsonArray>
 
@@ -12,7 +12,7 @@ QJsonArray PlanToJson::transform(const Plan& plan) {
     auto itemList = plan.getItems();
     for (auto item : itemList) {
         if (item.canConvert<Interval>()) {
-            result.insert(counter, IntervallToJson::transform(item.value<Interval>()));
+            result.insert(counter, IntervalToJson::transform(item.value<Interval>()));
         }
         else if (item.canConvert<Plan*>()) {
             result.insert(counter, PlanToJson::transform(*(item.value<Plan*>())));
