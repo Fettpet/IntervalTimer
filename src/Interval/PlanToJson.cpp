@@ -8,7 +8,7 @@ QJsonArray PlanToJson::transform(const Plan& plan) {
     uint32_t counter{2};
     QJsonArray result;
     result.insert(0, plan.getName());
-    result.insert(1, QJsonValue(static_cast<int>(plan.getNumberRepetitions())));
+    result.insert(1, QJsonValue(static_cast<qint64>(plan.getNumberRepetitions())));
     auto itemList = plan.getItems();
     for (auto item : itemList) {
         if (item.canConvert<Interval>()) {
