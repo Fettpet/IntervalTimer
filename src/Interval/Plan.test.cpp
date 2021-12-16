@@ -17,7 +17,6 @@ protected:
         auto outerSecond = Interval{std::chrono::seconds{2}, "second"};
         plan->setItemAt(0, outerFirst);
         plan->setItemAt(1, outerSecond);
-        auto nestedPlan = new Plan{};
         nestedPlan->setName("Inner");
         nestedPlan->setNumberRepetitions(12);
         nestedPlan->appendInterval();
@@ -28,6 +27,7 @@ protected:
     }
 
 public:
+    Plan* nestedPlan = new Plan{};
     Plan* plan = new Plan{};
 };
 
@@ -48,6 +48,12 @@ TEST_F(PlanTesting, setInterval) {
     plan->setItemAt(1, interval);
 
     EXPECT_EQ(plan->getItemAt(1).value<Interval>(), interval);
+}
+
+TEST_F(PlanTesting, checkParent) {
+    auto nestedPlan = plan->getItemAt(2).value<Plan*>();
+
+    EXPECT_EQ(nestedPlan->getParent(), plan);
 }
 
 TEST_F(PlanTesting, setPlan) {
