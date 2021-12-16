@@ -1,6 +1,10 @@
 #include "Plan.h"
 #include <exception>
 
+Plan::Plan(Plan* parent)
+    : QObject(parent)
+    , parentItem(parent) {}
+
 Plan::Plan(QObject* parent)
     : QObject(parent) {}
 
@@ -8,6 +12,7 @@ void Plan::setItemAt(size_t const& index, Plan* plan) {
     if (index >= items.size()) {
         throw std::range_error{"index out of range"};
     }
+    plan->setParent(this);
     items[index] = QVariant::fromValue<Plan*>(plan);
 }
 
@@ -61,6 +66,9 @@ QVariantList Plan::getItems() const { return items; }
 uint32_t Plan::getNumberRepetitions() const { return numberRepetitions; }
 
 QString Plan::getName() const { return name; }
+
+Plan* Plan::getParent() const { return parentItem; }
+void Plan::setParent(Plan* parent) { parentItem = parent; }
 void Plan::setNumberRepetitions(uint32_t const& repetitions) { numberRepetitions = repetitions; }
 
 QDebug operator<<(QDebug debug, const Plan& plan) {

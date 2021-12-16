@@ -1,12 +1,14 @@
 #pragma once
 #include "Interval.h"
+#include <QObject>
 #include <QString>
 #include <QVariantList>
 
 class Plan : public QObject {
     Q_OBJECT
 public:
-    Plan(QObject* parent = nullptr);
+    explicit Plan(Plan* parent);
+    explicit Plan(QObject* parent = nullptr);
 
     auto operator==(Plan const&) const -> bool;
 
@@ -20,6 +22,8 @@ public:
 
     Q_INVOKABLE QString getName() const;
 
+    Plan* getParent() const;
+    void setParent(Plan*);
 signals:
     void preItemAppended();
     void postItemAppended();
@@ -33,6 +37,7 @@ public slots:
     Q_INVOKABLE void setName(QString const&);
 
 protected:
+    Plan* parentItem{nullptr};
     QString name;
     QVariantList items;
     uint32_t numberRepetitions{1};
