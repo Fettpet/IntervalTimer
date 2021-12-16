@@ -14,7 +14,7 @@ TEST(Interval, description) {
     auto interval = Interval{};
     interval.setDescripton("Hello World");
 
-    EXPECT_EQ(interval.getDescripton(), std::string{"Hello World"});
+    EXPECT_EQ(interval.getDescripton(), QString{"Hello World"});
 }
 
 TEST(Interval, toJson) {

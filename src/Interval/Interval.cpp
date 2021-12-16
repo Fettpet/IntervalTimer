@@ -2,17 +2,17 @@
 
 Interval::Interval() {}
 
-Interval::Interval(std::chrono::milliseconds const& duration, std::string const& description)
+Interval::Interval(std::chrono::milliseconds const& duration, QString const& description)
     : duration(duration)
     , description(description) {}
 
 void Interval::setDuration(std::chrono::milliseconds const& dur) { duration = dur; }
 
-void Interval::setDescripton(std::string const& descr) { description = descr; }
-std::string Interval::getDescripton() const { return description; }
+void Interval::setDescripton(QString const& descr) { description = descr; }
+QString Interval::getDescripton() const { return description; }
 
 QDebug operator<<(QDebug debug, const Interval& interval) {
-    debug.nospace() << "Duration: " << interval.getDuration<std::chrono::seconds>().count() << "s ("
-                    << QString::fromStdString(interval.getDescripton());
+    debug.nospace() << interval.getDescripton() << " (" << interval.getDuration<std::chrono::seconds>().count()
+                    << "s )";
     return debug;
 }
