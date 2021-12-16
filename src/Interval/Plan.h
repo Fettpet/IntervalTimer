@@ -1,50 +1,41 @@
 #pragma once
 #include "Interval.h"
-#include <QObject>
 #include <QString>
 #include <QVariantList>
+#include <memory>
 
-class Plan : public QObject {
-    Q_OBJECT
+class Plan : public std::enable_shared_from_this<Plan> {
 public:
-    explicit Plan(Plan* parent);
-    explicit Plan(QObject* parent = nullptr);
-
     auto operator==(Plan const&) const -> bool;
 
-    void setItemAt(size_t const& index, Plan* plan);
+    void setItemAt(size_t const& index, std::shared_ptr<Plan> plan);
 
     void setItemAt(size_t const& index, Interval const& interval);
     QVariant getItemAt(size_t const& index);
     QVariantList getItems() const;
 
-    Q_INVOKABLE uint32_t getNumberRepetitions() const;
+    uint32_t getNumberRepetitions() const;
 
-    Q_INVOKABLE QString getName() const;
+    QString getName() const;
 
-    Plan* getParent() const;
-    void setParent(Plan*);
+    void setParentPlan(std::shared_ptr<Plan>);
+    std::weak_ptr<Plan> getParentPlan() const;
 
     uint32_t getRow() const;
 
     uint32_t getNumberItems() const;
-signals:
-    void preItemAppended();
-    void postItemAppended();
-    void preItemRemoved(size_t index);
-    void postItemRemoved();
 
-public slots:
-    Q_INVOKABLE void setNumberRepetitions(uint32_t const&);
+    void setNumberRepetitions(uint32_t const&);
     void appendInterval();
     void appendPlan();
-    Q_INVOKABLE void setName(QString const&);
+    void setName(QString const&);
 
 protected:
-    Plan* parentItem{nullptr};
+    std::weak_ptr<Plan> parentItem;
     QString name;
     QVariantList items;
     uint32_t numberRepetitions{1};
 };
 
 QDebug operator<<(QDebug debug, const Plan& plan);
+Q_DECLARE_METATYPE(std::shared_ptr<Plan>);

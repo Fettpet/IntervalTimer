@@ -27,8 +27,8 @@ protected:
     }
 
 public:
-    Plan* nestedPlan = new Plan{};
-    Plan* plan = new Plan{};
+    std::shared_ptr<Plan> nestedPlan{new Plan{}};
+    std::shared_ptr<Plan> plan{new Plan{}};
 };
 
 TEST_F(PlanTesting, getRow) {
@@ -39,13 +39,13 @@ TEST_F(PlanTesting, getRow) {
 TEST_F(PlanTesting, appendInterval) {
     auto intervalItem = plan->getItemAt(0);
     EXPECT_TRUE(intervalItem.canConvert<Interval>());
-    EXPECT_FALSE(intervalItem.canConvert<Plan*>());
+    EXPECT_FALSE(intervalItem.canConvert<std::shared_ptr<Plan>>());
 }
 
 TEST_F(PlanTesting, appendPlan) {
     auto planItem = plan->getItemAt(2);
     EXPECT_FALSE(planItem.canConvert<Interval>());
-    EXPECT_TRUE(planItem.canConvert<Plan*>());
+    EXPECT_TRUE(planItem.canConvert<std::shared_ptr<Plan>>());
 }
 
 TEST_F(PlanTesting, setInterval) {
@@ -56,45 +56,24 @@ TEST_F(PlanTesting, setInterval) {
 }
 
 TEST_F(PlanTesting, checkParent) {
-    auto nestedPlan = plan->getItemAt(2).value<Plan*>();
+    auto nestedPlan = plan->getItemAt(2).value<std::shared_ptr<Plan>>();
 
-    EXPECT_EQ(nestedPlan->getParent(), plan);
+    EXPECT_EQ(nestedPlan->getParentPlan().lock(), plan);
 }
 
 TEST_F(PlanTesting, setPlan) {
-    auto plan = new Plan{};
-    auto planItem = new Plan{};
+    auto plan = std::make_shared<Plan>();
+    auto planItem = std::make_shared<Plan>();
     planItem->setNumberRepetitions(42);
     plan->appendPlan();
     plan->setItemAt(0, planItem);
 
-    EXPECT_EQ(plan->getItemAt(0).value<Plan*>()->getNumberRepetitions(), planItem->getNumberRepetitions());
-}
-
-TEST_F(PlanTesting, CheckSignalsAppendInterval) {
-    auto plan = new Plan{};
-    auto preSpy = QSignalSpy(plan, &Plan::preItemAppended);
-    auto postSpy = QSignalSpy(plan, &Plan::postItemAppended);
-
-    plan->appendInterval();
-
-    EXPECT_EQ(preSpy.count(), 1);
-    EXPECT_EQ(postSpy.count(), 1);
-}
-
-TEST_F(PlanTesting, CheckSignalsAppendPlan) {
-    auto plan = new Plan{};
-    auto preSpy = QSignalSpy(plan, &Plan::preItemAppended);
-    auto postSpy = QSignalSpy(plan, &Plan::postItemAppended);
-
-    plan->appendPlan();
-
-    EXPECT_EQ(preSpy.count(), 1);
-    EXPECT_EQ(postSpy.count(), 1);
+    EXPECT_EQ(
+        plan->getItemAt(0).value<std::shared_ptr<Plan>>()->getNumberRepetitions(), planItem->getNumberRepetitions());
 }
 
 TEST_F(PlanTesting, toJson_IntervalsOnly) {
-    auto nestedPlan = plan->getItemAt(2).value<Plan*>();
+    auto nestedPlan = plan->getItemAt(2).value<std::shared_ptr<Plan>>();
     auto json = PlanToJson::transform(*nestedPlan);
     EXPECT_EQ(json.at(2).toObject()["description"].toString(), QString("third"));
     EXPECT_EQ(json.at(3).toObject()["description"].toString(), QString("fourth"));

@@ -3,5 +3,5 @@
 #include <QJsonArray>
 
 struct PlanFromJson {
-    static Plan* transform(QJsonArray const&);
+    static std::shared_ptr<Plan> transform(QJsonArray const&);
 };

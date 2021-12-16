@@ -14,8 +14,8 @@ QJsonArray PlanToJson::transform(const Plan& plan) {
         if (item.canConvert<Interval>()) {
             result.insert(counter, IntervalToJson::transform(item.value<Interval>()));
         }
-        else if (item.canConvert<Plan*>()) {
-            result.insert(counter, PlanToJson::transform(*(item.value<Plan*>())));
+        else if (item.canConvert<std::shared_ptr<Plan>>()) {
+            result.insert(counter, PlanToJson::transform(*(item.value<std::shared_ptr<Plan>>())));
         }
         else {
             qWarning() << "no known datatype to transform to json";

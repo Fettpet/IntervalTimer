@@ -1,19 +1,12 @@
 #include "Plan.h"
 #include <exception>
 
-Plan::Plan(Plan* parent)
-    : QObject(parent)
-    , parentItem(parent) {}
-
-Plan::Plan(QObject* parent)
-    : QObject(parent) {}
-
-void Plan::setItemAt(size_t const& index, Plan* plan) {
+void Plan::setItemAt(size_t const& index, std::shared_ptr<Plan> plan) {
     if (index >= items.size()) {
         throw std::range_error{"index out of range"};
     }
-    plan->setParent(this);
-    items[index] = QVariant::fromValue<Plan*>(plan);
+    plan->setParentPlan(this->shared_from_this());
+    items[index] = QVariant::fromValue<std::shared_ptr<Plan>>(plan);
 }
 
 void Plan::setItemAt(size_t const& index, Interval const& interval) {
@@ -46,15 +39,11 @@ auto Plan::operator==(Plan const& lhs) const -> bool {
     return true;
 }
 
-void Plan::appendInterval() {
-    emit preItemAppended();
-    items.push_back(QVariant::fromValue(Interval{}));
-    emit postItemAppended();
-}
+void Plan::appendInterval() { items.push_back(QVariant::fromValue(Interval{})); }
 void Plan::appendPlan() {
-    emit preItemAppended();
-    items.push_back(QVariant::fromValue<Plan*>(new Plan{this}));
-    emit postItemAppended();
+    auto newPlan = std::make_shared<Plan>();
+    newPlan->setParentPlan(this->shared_from_this());
+    items.push_back(QVariant::fromValue<std::shared_ptr<Plan>>(newPlan));
 }
 
 void Plan::setName(const QString& newName) { name = newName; }
@@ -72,14 +61,15 @@ uint32_t Plan::getNumberRepetitions() const { return numberRepetitions; }
 
 QString Plan::getName() const { return name; }
 
-Plan* Plan::getParent() const { return parentItem; }
-void Plan::setParent(Plan* parent) { parentItem = parent; }
+std::weak_ptr<Plan> Plan::getParentPlan() const { return parentItem; }
+void Plan::setParentPlan(std::shared_ptr<Plan> parent) { parentItem = parent; }
 
 uint32_t Plan::getRow() const {
-    if (!parentItem) {
+    if (parentItem.expired()) {
         return 0;
     }
-    return parentItem->items.indexOf(QVariant::fromValue<Plan*>(const_cast<Plan*>(this)));
+    auto variant = QVariant::fromValue(const_cast<Plan*>(this)->shared_from_this());
+    return parentItem.lock()->items.indexOf(variant);
 }
 
 uint32_t Plan::getNumberItems() const { return items.size(); }
