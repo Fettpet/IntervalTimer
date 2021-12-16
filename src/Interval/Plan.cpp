@@ -53,13 +53,18 @@ void Plan::appendInterval() {
 }
 void Plan::appendPlan() {
     emit preItemAppended();
-    items.push_back(QVariant::fromValue<Plan*>(new Plan{}));
+    items.push_back(QVariant::fromValue<Plan*>(new Plan{this}));
     emit postItemAppended();
 }
 
 void Plan::setName(const QString& newName) { name = newName; }
 
-QVariant Plan::getItemAt(const size_t& index) { return items.at(index); }
+QVariant Plan::getItemAt(const size_t& index) {
+    if (index >= items.size()) {
+        return QVariant();
+    }
+    return items.at(index);
+}
 
 QVariantList Plan::getItems() const { return items; }
 
