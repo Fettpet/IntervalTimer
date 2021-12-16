@@ -69,6 +69,16 @@ QString Plan::getName() const { return name; }
 
 Plan* Plan::getParent() const { return parentItem; }
 void Plan::setParent(Plan* parent) { parentItem = parent; }
+
+uint32_t Plan::getRow() const {
+    if (!parentItem) {
+        return 0;
+    }
+    return parentItem->items.indexOf(QVariant::fromValue<Plan*>(const_cast<Plan*>(this)));
+}
+
+uint32_t Plan::getNumberItems() const { return items.size(); }
+
 void Plan::setNumberRepetitions(uint32_t const& repetitions) { numberRepetitions = repetitions; }
 
 QDebug operator<<(QDebug debug, const Plan& plan) {

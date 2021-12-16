@@ -24,6 +24,10 @@ public:
 
     Plan* getParent() const;
     void setParent(Plan*);
+
+    uint32_t getRow() const;
+
+    uint32_t getNumberItems() const;
 signals:
     void preItemAppended();
     void postItemAppended();
