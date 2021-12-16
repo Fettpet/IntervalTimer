@@ -31,6 +31,11 @@ public:
     Plan* plan = new Plan{};
 };
 
+TEST_F(PlanTesting, getRow) {
+    EXPECT_EQ(plan->getRow(), 0);
+    EXPECT_EQ(nestedPlan->getRow(), 2);
+}
+
 TEST_F(PlanTesting, appendInterval) {
     auto intervalItem = plan->getItemAt(0);
     EXPECT_TRUE(intervalItem.canConvert<Interval>());
