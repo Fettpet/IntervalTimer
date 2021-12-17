@@ -58,11 +58,11 @@ QModelIndex PlanModel::index(int row, int column, const QModelIndex& parent) con
         return QModelIndex();
     }
     if (containsPlan(childItem)) {
-        auto newIndex = createIndex(row, 0, childItem.value<std::shared_ptr<Plan>>().get());
+        auto newIndex = createIndex(row, planColumn, childItem.value<std::shared_ptr<Plan>>().get());
         return newIndex;
     }
     if (containsInterval(childItem)) {
-        auto newIndex = createIndex(row, 1, parentItem.get());
+        auto newIndex = createIndex(row, intervalColumn, parentItem.get());
         return newIndex;
     }
     return QModelIndex();
@@ -174,10 +174,10 @@ QModelIndex PlanModel::parent(const QModelIndex& index) const {
         auto parentPtr = parentItem.lock();
         if (parentPtr == rootPlan || parentPtr == nullptr) return QModelIndex();
 
-        return createIndex(parentPtr->getRow(), 0, parentPtr.get());
+        return createIndex(parentPtr->getRow(), planColumn, parentPtr.get());
     }
     if (containsInterval(index)) {
-        return createIndex(currentPlan->getRow(), 0, currentPlan);
+        return createIndex(currentPlan->getRow(), planColumn, currentPlan);
     }
 }
 
@@ -216,9 +216,9 @@ void PlanModel::setPlan(std::shared_ptr<Plan> newPlan) {
     rootPlan = newPlan;
 }
 
-bool PlanModel::containsPlan(const QModelIndex& index) { return index.column() == 0; }
+bool PlanModel::containsPlan(const QModelIndex& index) { return index.column() == planColumn; }
 
-bool PlanModel::containsInterval(const QModelIndex& index) { return index.column() == 1; }
+bool PlanModel::containsInterval(const QModelIndex& index) { return index.column() == intervalColumn; }
 
 bool PlanModel::containsPlan(const QVariant& variant) { return variant.canConvert<std::shared_ptr<Plan>>(); }
 

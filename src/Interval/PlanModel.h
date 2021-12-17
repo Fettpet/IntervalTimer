@@ -9,6 +9,8 @@ class PlanModel : public QAbstractItemModel {
     Q_OBJECT
     QML_ELEMENT
     //   Q_PROPERTY(Plan* rootPlan READ getPlan WRITE setPlan);
+    constexpr int planColumn = 0;
+    constexpr int intervalColumn = 1;
 
 public:
     explicit PlanModel(QObject* parent = nullptr);
