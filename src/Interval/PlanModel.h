@@ -45,6 +45,12 @@ public:
     std::weak_ptr<Plan> getPlan() const;
     void setPlan(std::shared_ptr<Plan>);
 
+protected:
+    static bool containsPlan(QModelIndex const&);
+    static bool containsInterval(QModelIndex const&);
+    static bool containsPlan(QVariant const&);
+    static bool containsInterval(QVariant const&);
+
 private:
     std::shared_ptr<Plan> rootPlan;
 };

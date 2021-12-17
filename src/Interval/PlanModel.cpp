@@ -57,11 +57,11 @@ QModelIndex PlanModel::index(int row, int column, const QModelIndex& parent) con
     if (childItem.isNull()) {
         return QModelIndex();
     }
-    if (childItem.canConvert<std::shared_ptr<Plan>>()) {
+    if (containsPlan(childItem)) {
         auto newIndex = createIndex(row, 0, childItem.value<std::shared_ptr<Plan>>().get());
         return newIndex;
     }
-    else if (childItem.canConvert<Interval>()) {
+    if (containsInterval(childItem)) {
         auto newIndex = createIndex(row, 1, parentItem.get());
         return newIndex;
     }
@@ -74,13 +74,13 @@ QVariant PlanModel::data(const QModelIndex& index, int role) const {
     Plan* itemPtr = static_cast<Plan*>(index.internalPointer());
 
     switch (role) {
-    case isIntervalRole: return QVariant(item.canConvert<Interval>());
-    case isPlanRole: return QVariant(item.canConvert<std::shared_ptr<Plan>>());
+    case isIntervalRole: return QVariant(containsInterval(index));
+    case isPlanRole: return QVariant(containsInterval(index));
     }
 
     // if (item.canConvert<std::shared_ptr<Plan>>()) {
 
-    if (index.column() == 0) {
+    if (containsPlan(index)) {
         switch (role) {
         case nameRole: return QVariant::fromValue(itemPtr->getName());
         default: return QVariant{};
@@ -166,8 +166,7 @@ QModelIndex PlanModel::parent(const QModelIndex& index) const {
     if (!index.isValid()) return QModelIndex();
     auto* currentPlan = static_cast<Plan*>(index.internalPointer());
 
-    if (index.column() == 0) {
-
+    if (containsPlan(index)) {
         auto parentItem = currentPlan->getParentPlan();
         if (parentItem.expired()) {
             return QModelIndex();
@@ -177,7 +176,7 @@ QModelIndex PlanModel::parent(const QModelIndex& index) const {
 
         return createIndex(parentPtr->getRow(), 0, parentPtr.get());
     }
-    else if (index.column() == 1) {
+    if (containsInterval(index)) {
         return createIndex(currentPlan->getRow(), 0, currentPlan);
     }
 }
@@ -216,6 +215,14 @@ void PlanModel::setPlan(std::shared_ptr<Plan> newPlan) {
     }
     rootPlan = newPlan;
 }
+
+bool PlanModel::containsPlan(const QModelIndex& index) { return index.column() == 0; }
+
+bool PlanModel::containsInterval(const QModelIndex& index) { return index.column() == 1; }
+
+bool PlanModel::containsPlan(const QVariant& variant) { return variant.canConvert<std::shared_ptr<Plan>>(); }
+
+bool PlanModel::containsInterval(const QVariant& variant) { return variant.canConvert<Interval>(); }
 
 // void PlanModel::setPlan(Plan* newPlan) {
 //     beginResetModel();
