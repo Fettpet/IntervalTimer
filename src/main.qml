@@ -13,12 +13,12 @@ Window {
     Loader {
         id: loader
         sourceComponent: planComponent
-        onLoaded: item.plan = rootPlan
+        onLoaded: item.planModel = rootPlanModel
     }
 
     Component {
         id: planComponent
-        Plan {
+        PlanView {
             childComponent: planComponent
         }
     }

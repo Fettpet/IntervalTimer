@@ -15,8 +15,8 @@ qt_add_qml_module(IntervaltimerLib
     VERSION 1.0
     OUTPUT_DIRECTORY Intervaltimer
     QML_FILES
-        qml/Interval.qml
-        qml/Plan.qml
+        qml/IntervalView.qml
+        qml/PlanView.qml
     SOURCES
         Interval/Interval.cpp
         Interval/Interval.h
