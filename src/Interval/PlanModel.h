@@ -3,15 +3,16 @@
 #include "Plan.h"
 #include <QAbstractListModel>
 #include <QtQml/qqmlregistration.h>
+#include <memory>
 
-class PlanModel : public QAbstractListModel {
+class PlanModel : public QAbstractItemModel {
     Q_OBJECT
     QML_ELEMENT
-    Q_PROPERTY(Plan* plan READ getPlan WRITE setPlan);
+    //   Q_PROPERTY(Plan* rootPlan READ getPlan WRITE setPlan);
 
 public:
     explicit PlanModel(QObject* parent = nullptr);
-
+    //~PlanModel();
     enum { durationRole = Qt::UserRole, descriptionRole, subPlanRole, nameRole, isIntervalRole, isPlanRole };
     // Header:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
@@ -21,6 +22,9 @@ public:
 
     // Basic functionality:
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+
+    QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
 
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 
@@ -29,6 +33,7 @@ public:
 
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
+    QModelIndex parent(const QModelIndex& index) const override;
     // // Add data:
     // bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
 
@@ -37,9 +42,9 @@ public:
 
     virtual QHash<int, QByteArray> roleNames() const override;
 
-    Plan* getPlan() const;
-    void setPlan(Plan*);
+    std::weak_ptr<Plan> getPlan() const;
+    void setPlan(std::shared_ptr<Plan>);
 
 private:
-    Plan* plan{nullptr};
+    std::shared_ptr<Plan> rootPlan;
 };

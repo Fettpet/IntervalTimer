@@ -1,11 +1,14 @@
 #include "PlanModel.h"
+#include <stdexcept>
 
 PlanModel::PlanModel(QObject* parent)
-    : QAbstractListModel(parent) {}
+    : QAbstractItemModel(parent)
+    , rootPlan(new Plan{}) {}
 
 QVariant PlanModel::headerData(int section, Qt::Orientation orientation, int role) const {
-    // FIXME: Implement me!
-    return {};
+    if (orientation == Qt::Horizontal && role == Qt::DisplayRole) return QVariant(rootPlan->getName());
+
+    return QVariant();
 }
 
 // bool PlanModel::setHeaderData(int section, Qt::Orientation orientation, const QVariant& value, int role) {
@@ -18,91 +21,144 @@ QVariant PlanModel::headerData(int section, Qt::Orientation orientation, int rol
 // }
 
 int PlanModel::rowCount(const QModelIndex& parent) const {
-    // For list models only the root node (an invalid parent) should return the list's size. For all
-    // other (valid) parents, rowCount() should return 0 so that it does not become a tree model.
-    if (parent.isValid() || !plan) return 0;
+    if (parent.column() > 0) {
+        return 0;
+    }
+    Plan* parentItem;
+    if (!parent.isValid()) {
+        parentItem = rootPlan.get();
+    }
+    else if (parent.internalPointer() != nullptr)
+        parentItem = static_cast<Plan*>(parent.internalPointer());
+    else {
+        return 0;
+    }
+    return parentItem->getNumberItems();
+}
 
-    return plan->getItems().size();
+int PlanModel::columnCount(const QModelIndex& parent) const { return 2; }
+
+QModelIndex PlanModel::index(int row, int column, const QModelIndex& parent) const {
+    qDebug() << "index" << parent;
+    if (!hasIndex(row, column, parent)) {
+        return QModelIndex();
+    }
+    std::shared_ptr<Plan> parentItem;
+
+    if (!parent.isValid())
+        parentItem = rootPlan;
+    else if (parent.internalPointer() != nullptr) {
+        parentItem = static_cast<Plan*>(parent.internalPointer())->shared_from_this();
+    }
+    else {
+        qWarning() << "Should not happen";
+        return QModelIndex();
+    }
+    qDebug() << *parentItem;
+    QVariant childItem = parentItem->getItemAt(row);
+    if (childItem.isNull()) {
+        qDebug() << "Null";
+        return QModelIndex();
+    }
+    if (childItem.canConvert<std::shared_ptr<Plan>>()) {
+        auto newIndex = createIndex(row, 0, childItem.value<std::shared_ptr<Plan>>().get());
+        qDebug() << "Create Index: " << newIndex << "parent " << parentItem->getName();
+        return newIndex;
+    }
+    else if (childItem.canConvert<Interval>()) {
+        auto newIndex = createIndex(row, 1, parentItem.get());
+        qDebug() << "create Interval index" << newIndex << "parent " << parentItem->getName();
+        return newIndex;
+    }
+    return QModelIndex();
 }
 
 QVariant PlanModel::data(const QModelIndex& index, int role) const {
-    if (!index.isValid() || !plan) return QVariant();
+    qDebug() << "Index data " << index << "role " << roleNames()[role];
+    if (!index.isValid()) return QVariant();
 
-    auto const& item = plan->getItems().at(index.row());
+    Plan* itemPtr = static_cast<Plan*>(index.internalPointer());
 
     switch (role) {
     case isIntervalRole: return QVariant(item.canConvert<Interval>());
-    case isPlanRole: return QVariant(item.canConvert<Plan*>());
+    case isPlanRole: return QVariant(item.canConvert<std::shared_ptr<Plan>>());
     }
 
-    if (item.canConvert<Plan*>()) {
+    // if (item.canConvert<std::shared_ptr<Plan>>()) {
+
+    if (index.column() == 0) {
         switch (role) {
-        case subPlanRole: return item;
-        case nameRole: return QVariant::fromValue(item.value<Plan*>()->getName());
-        default: return QVariant();
+        case nameRole: return QVariant::fromValue(itemPtr->getName());
+        default: return QVariant{};
         }
     }
-
-    switch (role) {
-    case descriptionRole: return QVariant::fromValue(QString::fromStdString(item.value<Interval>().getDescripton()));
-    case durationRole: return QVariant::fromValue(item.value<Interval>().getDuration<std::chrono::seconds>().count());
-    default: return QVariant();
+    if (index.column() == 1) {
+        qDebug() << "Data Interval " << itemPtr->getName();
+        return QVariant::fromValue(itemPtr->getItemAt(index.row()).value<Interval>().getDescripton());
     }
+    // }
+    // }
 
-    return QVariant();
+    // switch (role) {
+    // case descriptionRole: return QVariant::fromValue(QString::fromStdString(item.value<Interval>().getDescripton()));
+    // case durationRole: return
+    // QVariant::fromValue(item.value<Interval>().getDuration<std::chrono::seconds>().count()); default:
+    //     qWarning() << "Fix Default to QVariant" << QString::fromStdString(item.value<Interval>().getDescripton());
+    // return QVariant::fromValue(QString::fromStdString(item.value<Interval>().getDescripton()));
+    //    }
 }
 
 bool PlanModel::setData(const QModelIndex& index, const QVariant& value, int role) {
-    if (!plan) return false;
-    if (data(index, role) == value) {
-        return false;
-    }
+    // if (!rootPlan) return false;
+    // if (data(index, role) == value) {
+    //     return false;
+    // }
 
-    auto item = plan->getItems().at(index.row());
-    if (item.canConvert<Plan*>()) {
-        auto plan = item.value<Plan*>();
-        switch (role) {
-        case nameRole: {
-            plan->setName(value.toString());
-            break;
-        }
-        case subPlanRole: {
-            break;
-        }
-        default: {
-            auto roleName = roleNames()[role];
-            qWarning() << "Role " << roleName << " is not useable in Interval";
-            return false;
-        }
-        }
+    // auto item = rootPlan->getItemAt(index.row());
+    // if (item.canConvert<std::shared_ptr<Plan>>()) {
+    //     auto plan = item.value<std::shared_ptr<Plan>>();
+    //     switch (role) {
+    //     case nameRole: {
+    //         plan->setName(value.toString());
+    //         break;
+    //     }
+    //     case subPlanRole: {
+    //         break;
+    //     }
+    //     default: {
+    //         auto roleName = roleNames()[role];
+    //         qWarning() << "Role " << roleName << " is not useable in Interval";
+    //         return false;
+    //     }
+    //     }
 
-        plan->setItemAt(index.row(), plan);
-        emit dataChanged(index, index, QVector<int>() << role);
-        return true;
-    }
+    //     plan->setItemAt(index.row(), plan);
+    //     emit dataChanged(index, index, QVector<int>() << role);
+    //     return true;
+    // }
 
-    if (item.canConvert<Interval>()) {
-        auto interval = item.value<Interval>();
-        switch (role) {
-        case descriptionRole: {
-            interval.setDescripton(value.toString().toStdString());
-            break;
-        }
-        case durationRole: {
-            interval.setDuration(std::chrono::seconds{value.toInt()});
-            break;
-        }
-        default: {
-            auto roleName = roleNames()[role];
-            qWarning() << "Role " << roleName << " is not useable in Interval";
-            return false;
-        }
-        }
+    // if (item.canConvert<Interval>()) {
+    //     auto interval = item.value<Interval>();
+    //     switch (role) {
+    //     case descriptionRole: {
+    //         interval.setDescripton(value.toString().toStdString());
+    //         break;
+    //     }
+    //     case durationRole: {
+    //         interval.setDuration(std::chrono::seconds{value.toInt()});
+    //         break;
+    //     }
+    //     default: {
+    //         auto roleName = roleNames()[role];
+    //         qWarning() << "Role " << roleName << " is not useable in Interval";
+    //         return false;
+    //     }
+    //     }
 
-        plan->setItemAt(index.row(), interval);
-        emit dataChanged(index, index, QVector<int>() << role);
-        return true;
-    }
+    //     rootPlan->setItemAt(index.row(), interval);
+    //     emit dataChanged(index, index, QVector<int>() << role);
+    //     return true;
+    // }
 
     return false;
 }
@@ -110,7 +166,27 @@ bool PlanModel::setData(const QModelIndex& index, const QVariant& value, int rol
 Qt::ItemFlags PlanModel::flags(const QModelIndex& index) const {
     if (!index.isValid()) return Qt::NoItemFlags;
 
-    return Qt::ItemIsEditable;
+    return QAbstractItemModel::flags(index);
+}
+
+QModelIndex PlanModel::parent(const QModelIndex& index) const {
+    if (!index.isValid()) return QModelIndex();
+    auto* currentPlan = static_cast<Plan*>(index.internalPointer());
+
+    if (index.column() == 0) {
+
+        auto parentItem = currentPlan->getParentPlan();
+        if (parentItem.expired()) {
+            return QModelIndex();
+        }
+        auto parentPtr = parentItem.lock();
+        if (parentPtr == rootPlan || parentPtr == nullptr) return QModelIndex();
+
+        return createIndex(parentPtr->getRow(), 0, parentPtr.get());
+    }
+    else if (index.column() == 1) {
+        return createIndex(currentPlan->getRow(), 0, currentPlan);
+    }
 }
 
 // bool PlanModel::insertRows(int row, int count, const QModelIndex& parent) {
@@ -139,21 +215,32 @@ QHash<int, QByteArray> PlanModel::roleNames() const {
     return names;
 }
 
-Plan* PlanModel::getPlan() const { return plan; }
-void PlanModel::setPlan(Plan* newPlan) {
-    beginResetModel();
-    if (plan) {
-        plan->disconnect(this);
+std::weak_ptr<Plan> PlanModel::getPlan() const { return rootPlan; }
+
+void PlanModel::setPlan(std::shared_ptr<Plan> newPlan) {
+    if (newPlan.use_count() == 0) {
+        throw std::invalid_argument("setPlan must contain a plan");
     }
-    plan = newPlan;
-    if (plan) {
-        connect(plan, &Plan::preItemAppended, this, [=]() {
-            const int index = plan->getItems().size();
-            beginInsertRows(QModelIndex(), index, index);
-        });
-        connect(plan, &Plan::postItemAppended, this, [=]() { endInsertRows(); });
-        connect(plan, &Plan::preItemRemoved, this, [=](size_t index) { beginRemoveRows(QModelIndex(), index, index); });
-        connect(plan, &Plan::postItemRemoved, this, [=]() { endRemoveRows(); });
-    }
-    endResetModel();
+    rootPlan = newPlan;
 }
+
+// void PlanModel::setPlan(Plan* newPlan) {
+//     beginResetModel();
+//     rootPlan = newPlan;
+//     // TODO
+//     // if (plan) {
+//     //     plan->disconnect(this);
+//     // }
+//     // plan = newPlan;
+//     // if (plan) {
+//     //     connect(plan, &Plan::preItemAppended, this, [=]() {
+//     //         const int index = plan->getNumberItems();
+//     //         beginInsertRows(QModelIndex(), index, index);
+//     //     });
+//     //     connect(plan, &Plan::postItemAppended, this, [=]() { endInsertRows(); });
+//     //     connect(plan, &Plan::preItemRemoved, this, [=](size_t index) { beginRemoveRows(QModelIndex(), index,
+//     index);
+//     //     }); connect(plan, &Plan::postItemRemoved, this, [=]() { endRemoveRows(); });
+//     // }
+//     endResetModel();
+// }
