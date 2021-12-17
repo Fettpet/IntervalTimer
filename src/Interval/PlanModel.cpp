@@ -86,8 +86,7 @@ QVariant PlanModel::data(const QModelIndex& index, int role) const {
         default: return QVariant{};
         }
     }
-    if (index.column() == 1) {
-        qDebug() << "Data Interval " << itemPtr->getName();
+    if (containsInterval(index)) {
         return QVariant::fromValue(itemPtr->getItemAt(index.row()).value<Interval>().getDescripton());
     }
     // }
