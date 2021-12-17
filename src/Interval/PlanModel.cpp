@@ -71,14 +71,12 @@ QModelIndex PlanModel::index(int row, int column, const QModelIndex& parent) con
 QVariant PlanModel::data(const QModelIndex& index, int role) const {
     if (!index.isValid()) return QVariant();
 
-    Plan* itemPtr = static_cast<Plan*>(index.internalPointer());
-
     switch (role) {
     case isIntervalRole: return QVariant(containsInterval(index));
-    case isPlanRole: return QVariant(containsInterval(index));
+    case isPlanRole: return QVariant(containsPlan(index));
     }
 
-    // if (item.canConvert<std::shared_ptr<Plan>>()) {
+    Plan* itemPtr = static_cast<Plan*>(index.internalPointer());
 
     if (containsPlan(index)) {
         switch (role) {
@@ -99,6 +97,7 @@ QVariant PlanModel::data(const QModelIndex& index, int role) const {
     //     qWarning() << "Fix Default to QVariant" << QString::fromStdString(item.value<Interval>().getDescripton());
     // return QVariant::fromValue(QString::fromStdString(item.value<Interval>().getDescripton()));
     //    }
+    return QVariant{};
 }
 
 bool PlanModel::setData(const QModelIndex& index, const QVariant& value, int role) {
@@ -179,6 +178,7 @@ QModelIndex PlanModel::parent(const QModelIndex& index) const {
     if (containsInterval(index)) {
         return createIndex(currentPlan->getRow(), planColumn, currentPlan);
     }
+    return QModelIndex();
 }
 
 // bool PlanModel::insertRows(int row, int count, const QModelIndex& parent) {
