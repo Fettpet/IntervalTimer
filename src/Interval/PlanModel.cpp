@@ -39,7 +39,6 @@ int PlanModel::rowCount(const QModelIndex& parent) const {
 int PlanModel::columnCount(const QModelIndex& parent) const { return 2; }
 
 QModelIndex PlanModel::index(int row, int column, const QModelIndex& parent) const {
-    qDebug() << "index" << parent;
     if (!hasIndex(row, column, parent)) {
         return QModelIndex();
     }
@@ -54,27 +53,22 @@ QModelIndex PlanModel::index(int row, int column, const QModelIndex& parent) con
         qWarning() << "Should not happen";
         return QModelIndex();
     }
-    qDebug() << *parentItem;
     QVariant childItem = parentItem->getItemAt(row);
     if (childItem.isNull()) {
-        qDebug() << "Null";
         return QModelIndex();
     }
     if (childItem.canConvert<std::shared_ptr<Plan>>()) {
         auto newIndex = createIndex(row, 0, childItem.value<std::shared_ptr<Plan>>().get());
-        qDebug() << "Create Index: " << newIndex << "parent " << parentItem->getName();
         return newIndex;
     }
     else if (childItem.canConvert<Interval>()) {
         auto newIndex = createIndex(row, 1, parentItem.get());
-        qDebug() << "create Interval index" << newIndex << "parent " << parentItem->getName();
         return newIndex;
     }
     return QModelIndex();
 }
 
 QVariant PlanModel::data(const QModelIndex& index, int role) const {
-    qDebug() << "Index data " << index << "role " << roleNames()[role];
     if (!index.isValid()) return QVariant();
 
     Plan* itemPtr = static_cast<Plan*>(index.internalPointer());
