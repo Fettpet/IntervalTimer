@@ -224,6 +224,18 @@ void PlanModel::setName(const QString& name) { rootPlan->setName(name); }
 void PlanModel::setRepetitionCount(const int& counter) { rootPlan->setNumberRepetitions(counter); }
 int PlanModel::getRepetitionCount() const { return rootPlan->getNumberRepetitions(); }
 
+void PlanModel::appendInterval() {
+    beginInsertRows(QModelIndex(), rootPlan->getNumberItems(), rootPlan->getNumberItems());
+    rootPlan->appendInterval();
+    endInsertRows();
+}
+
+void PlanModel::appendPlan() {
+    beginInsertRows(QModelIndex(), rootPlan->getNumberItems(), rootPlan->getNumberItems());
+    rootPlan->appendPlan();
+    endInsertRows();
+}
+
 bool PlanModel::containsPlan(const QModelIndex& index) { return index.column() == planColumn; }
 
 bool PlanModel::containsInterval(const QModelIndex& index) { return index.column() == intervalColumn; }

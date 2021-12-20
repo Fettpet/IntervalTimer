@@ -20,7 +20,14 @@ Frame {
             Text {
                 text: planModel.name
             }
-
+            Button {
+                text: "Interval"
+                onClicked: root.planModel.appendInterval()
+            }
+            Button {
+                text: "Plan"
+                onClicked: root.planModel.appendPlan()
+            }
             Repeater {
                 id: repeater
                 model: root.planModel

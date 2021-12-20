@@ -54,6 +54,9 @@ public:
     void setRepetitionCount(int const&);
     int getRepetitionCount() const;
 
+    Q_INVOKABLE void appendInterval();
+    Q_INVOKABLE void appendPlan();
+
 protected:
     static bool containsPlan(QModelIndex const&);
     static bool containsInterval(QModelIndex const&);
