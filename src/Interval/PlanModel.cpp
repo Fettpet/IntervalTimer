@@ -76,11 +76,16 @@ QVariant PlanModel::data(const QModelIndex& index, int role) const {
     case isPlanRole: return QVariant(containsPlan(index));
     }
 
-    Plan* itemPtr = static_cast<Plan*>(index.internalPointer());
+    auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
 
     if (containsPlan(index)) {
         switch (role) {
         case nameRole: return QVariant::fromValue(itemPtr->getName());
+        case subPlanRole: {
+            auto result = new PlanModel(const_cast<PlanModel*>(this));
+            result->setPlan(itemPtr);
+            return QVariant::fromValue(result);
+        }
         default: return QVariant{};
         }
     }

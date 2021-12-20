@@ -9,17 +9,40 @@ Frame {
     property QtObject planModel: null
     property Component childComponent: null
 
-    contentItem: ListView {
-        id: repeater
-        model: root.planModel
-        implicitWidth: 250
-        implicitHeight: 250
-        clip: true
-        delegate: RowLayout {
-            id: layout
-            required property var name
+    contentItem: RowLayout {
+        Text {
+            text: planModel.repetitions
+        }
+
+        ColumnLayout {
+            implicitWidth: 250
+            implicitHeight: 250
             Text {
-                text: "Hello" + layout.name
+                text: planModel.name
+            }
+
+            Repeater {
+                id: repeater
+                model: root.planModel
+
+                clip: true
+                delegate: RowLayout {
+                    id: layout
+                    required property var name
+                    required property bool isPlan
+                    required property bool isInterval
+                    required property var description
+                    required property var duration
+                    required property var subPlan
+                    Loader {
+                        active: layout.isPlan
+                        visible: active
+                        sourceComponent: childComponent
+                        onLoaded: {
+                            item.planModel = layout.subPlan
+                        }
+                    }
+                }
             }
         }
     }
