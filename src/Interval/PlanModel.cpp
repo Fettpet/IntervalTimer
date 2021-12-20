@@ -216,6 +216,13 @@ void PlanModel::setPlan(std::shared_ptr<Plan> newPlan) {
     rootPlan = newPlan;
 }
 
+QString PlanModel::getName() const { return rootPlan->getName(); }
+
+void PlanModel::setName(const QString& name) { rootPlan->setName(name); }
+
+void PlanModel::setRepetitionCount(const int& counter) { rootPlan->setNumberRepetitions(counter); }
+int PlanModel::getRepetitionCount() const { return rootPlan->getNumberRepetitions(); }
+
 bool PlanModel::containsPlan(const QModelIndex& index) { return index.column() == planColumn; }
 
 bool PlanModel::containsInterval(const QModelIndex& index) { return index.column() == intervalColumn; }

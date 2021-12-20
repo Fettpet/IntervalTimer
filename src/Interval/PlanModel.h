@@ -8,7 +8,8 @@
 class PlanModel : public QAbstractItemModel {
     Q_OBJECT
     QML_ELEMENT
-    //   Q_PROPERTY(Plan* rootPlan READ getPlan WRITE setPlan);
+    Q_PROPERTY(QString name READ getName WRITE setName);
+    Q_PROPERTY(int repetitions READ getRepetitionCount WRITE setRepetitionCount);
     static constexpr int planColumn = 0;
     static constexpr int intervalColumn = 1;
 
@@ -46,6 +47,12 @@ public:
 
     std::weak_ptr<Plan> getPlan() const;
     void setPlan(std::shared_ptr<Plan>);
+
+    QString getName() const;
+    void setName(QString const&);
+
+    void setRepetitionCount(int const&);
+    int getRepetitionCount() const;
 
 protected:
     static bool containsPlan(QModelIndex const&);
