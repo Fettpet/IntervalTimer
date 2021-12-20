@@ -34,6 +34,15 @@ Frame {
                     required property var description
                     required property var duration
                     required property var subPlan
+
+                    Loader {
+                        active: layout.isInterval
+                        visible: active
+                        sourceComponent: IntervalView {
+                            description: layout.description
+                            duration: layout.duration
+                        }
+                    }
                     Loader {
                         active: layout.isPlan
                         visible: active
@@ -75,14 +84,6 @@ Frame {
     //         required property bool isInterval
     //         required property QtObject subPlan
 
-    //         Loader {
-    //             active: delegate.isPlan
-    //             visible: active
-    //             sourceComponent: childComponent
-    //             onLoaded: {
-    //                 item.plan = delegate.subPlan
-    //             }
-    //         }
     //         Loader {
     //             active: delegate.isInterval
     //             visible: active

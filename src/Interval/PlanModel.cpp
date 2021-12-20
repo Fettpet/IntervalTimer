@@ -90,18 +90,14 @@ QVariant PlanModel::data(const QModelIndex& index, int role) const {
         }
     }
     if (containsInterval(index)) {
-        return QVariant::fromValue(itemPtr->getItemAt(index.row()).value<Interval>().getDescripton());
+        auto item = itemPtr->getItemAt(index.row()).value<Interval>();
+        switch (role) {
+        case descriptionRole: return QVariant::fromValue(item.getDescripton());
+        case durationRole: return QVariant::fromValue(item.getDuration<std::chrono::seconds>().count());
+        default: return QVariant{};
+        }
     }
-    // }
-    // }
 
-    // switch (role) {
-    // case descriptionRole: return QVariant::fromValue(QString::fromStdString(item.value<Interval>().getDescripton()));
-    // case durationRole: return
-    // QVariant::fromValue(item.value<Interval>().getDuration<std::chrono::seconds>().count()); default:
-    //     qWarning() << "Fix Default to QVariant" << QString::fromStdString(item.value<Interval>().getDescripton());
-    // return QVariant::fromValue(QString::fromStdString(item.value<Interval>().getDescripton()));
-    //    }
     return QVariant{};
 }
 
