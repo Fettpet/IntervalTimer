@@ -29,6 +29,7 @@ public:
     void appendInterval();
     void appendPlan();
     void setName(QString const&);
+    void removeItem(int const&);
 
 protected:
     std::weak_ptr<Plan> parentItem;

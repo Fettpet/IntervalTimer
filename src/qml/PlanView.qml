@@ -41,13 +41,20 @@ Frame {
                     required property var description
                     required property var duration
                     required property var subPlan
+                    required property var index
 
                     Loader {
                         active: layout.isInterval
                         visible: active
-                        sourceComponent: IntervalView {
-                            description: layout.description
-                            duration: layout.duration
+                        sourceComponent: ColumnLayout {
+                            IntervalView {
+                                description: layout.description
+                                duration: layout.duration
+                            }
+                            Button {
+                                text: "X"
+                                onClicked: root.planModel.removeItem(index)
+                            }
                         }
                     }
                     Loader {

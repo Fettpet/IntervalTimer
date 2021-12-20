@@ -48,6 +48,8 @@ void Plan::appendPlan() {
 
 void Plan::setName(const QString& newName) { name = newName; }
 
+void Plan::removeItem(const int& index) { items.remove(index); }
+
 QVariant Plan::getItemAt(const size_t& index) {
     if (index >= items.size()) {
         return QVariant();

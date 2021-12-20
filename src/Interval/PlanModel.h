@@ -56,6 +56,7 @@ public:
 
     Q_INVOKABLE void appendInterval();
     Q_INVOKABLE void appendPlan();
+    Q_INVOKABLE void removeItem(int const&);
 
 protected:
     static bool containsPlan(QModelIndex const&);

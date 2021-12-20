@@ -236,6 +236,12 @@ void PlanModel::appendPlan() {
     endInsertRows();
 }
 
+void PlanModel::removeItem(const int& index) {
+    beginRemoveRows(QModelIndex(), index, index);
+    rootPlan->removeItem(index);
+    endRemoveRows();
+}
+
 bool PlanModel::containsPlan(const QModelIndex& index) { return index.column() == planColumn; }
 
 bool PlanModel::containsInterval(const QModelIndex& index) { return index.column() == intervalColumn; }
