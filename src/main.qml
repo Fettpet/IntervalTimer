@@ -5,31 +5,34 @@ import QtQuick.Layouts 1.0
 import Intervaltimer 1.0
 
 Window {
+    id: root
+    property bool isRunning: false
+
     width: 640
     height: 480
     visible: true
     title: qsTr("Hello World")
 
     ColumnLayout {
+        id: layout
+
         Loader {
-            id: loader
-            sourceComponent: planComponent
-            onLoaded: item.planModel = rootPlanModel
-        }
-        Component {
-            id: planComponent
-            PlanView {
-                childComponent: planComponent
+            id: editorLoader
+            active: !root.isRunning
+            sourceComponent: PlanEditorView {
+                planModel: rootPlanModel
+                onStartRunning: {
+                    root.isRunning = true
+                }
             }
         }
-        RowLayout {
-            Button {
-                text: "Save"
-                onClicked: rootPlanModel.savePlanToFile("S:\\test.json")
-            }
-            Button {
-                text: "Load"
-                onClicked: rootPlanModel.loadPlanFromFile("S:\\test.json")
+        Loader {
+            id: runnerLoader
+            active: root.isRunning
+            sourceComponent: PlanRunningView {
+                onStopRunning: {
+                    root.isRunning = false
+                }
             }
         }
     }
