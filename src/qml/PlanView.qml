@@ -11,14 +11,14 @@ Frame {
 
     contentItem: RowLayout {
         Text {
-            text: planModel.repetitions
+            text: planModel ? planModel.repetitions : ""
         }
 
         ColumnLayout {
             implicitWidth: 250
             implicitHeight: 250
             Text {
-                text: planModel.name
+                text: planModel ? planModel.name : ""
             }
             Button {
                 text: "Interval"

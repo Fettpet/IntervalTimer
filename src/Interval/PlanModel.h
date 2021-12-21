@@ -8,10 +8,14 @@
 class PlanModel : public QAbstractItemModel {
     Q_OBJECT
     QML_ELEMENT
-    Q_PROPERTY(QString name READ getName WRITE setName);
-    Q_PROPERTY(int repetitions READ getRepetitionCount WRITE setRepetitionCount);
+    Q_PROPERTY(QString name READ getName WRITE setName NOTIFY changedName);
+    Q_PROPERTY(int repetitions READ getRepetitionCount WRITE setRepetitionCount NOTIFY changedRepetitions);
     static constexpr int planColumn = 0;
     static constexpr int intervalColumn = 1;
+
+signals:
+    void changedName();
+    void changedRepetitions();
 
 public:
     explicit PlanModel(QObject* parent = nullptr);
