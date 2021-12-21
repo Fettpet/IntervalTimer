@@ -17,16 +17,18 @@ Frame {
         ColumnLayout {
             implicitWidth: 250
             implicitHeight: 250
-            Text {
-                text: planModel ? planModel.name : ""
-            }
-            Button {
-                text: "Interval"
-                onClicked: root.planModel.appendInterval()
-            }
-            Button {
-                text: "Plan"
-                onClicked: root.planModel.appendPlan()
+            RowLayout {
+                Text {
+                    text: planModel ? planModel.name : ""
+                }
+                Button {
+                    text: "Interval"
+                    onClicked: root.planModel.appendInterval()
+                }
+                Button {
+                    text: "Plan"
+                    onClicked: root.planModel.appendPlan()
+                }
             }
             Repeater {
                 id: repeater
@@ -46,7 +48,7 @@ Frame {
                     Loader {
                         active: layout.isInterval
                         visible: active
-                        sourceComponent: ColumnLayout {
+                        sourceComponent: RowLayout {
                             IntervalView {
                                 description: layout.description
                                 duration: layout.duration
