@@ -249,24 +249,3 @@ bool PlanModel::containsInterval(const QModelIndex& index) { return index.column
 bool PlanModel::containsPlan(const QVariant& variant) { return variant.canConvert<std::shared_ptr<Plan>>(); }
 
 bool PlanModel::containsInterval(const QVariant& variant) { return variant.canConvert<Interval>(); }
-
-// void PlanModel::setPlan(Plan* newPlan) {
-//     beginResetModel();
-//     rootPlan = newPlan;
-//     // TODO
-//     // if (plan) {
-//     //     plan->disconnect(this);
-//     // }
-//     // plan = newPlan;
-//     // if (plan) {
-//     //     connect(plan, &Plan::preItemAppended, this, [=]() {
-//     //         const int index = plan->getNumberItems();
-//     //         beginInsertRows(QModelIndex(), index, index);
-//     //     });
-//     //     connect(plan, &Plan::postItemAppended, this, [=]() { endInsertRows(); });
-//     //     connect(plan, &Plan::preItemRemoved, this, [=](size_t index) { beginRemoveRows(QModelIndex(), index,
-//     index);
-//     //     }); connect(plan, &Plan::postItemRemoved, this, [=]() { endRemoveRows(); });
-//     // }
-//     endResetModel();
-// }
