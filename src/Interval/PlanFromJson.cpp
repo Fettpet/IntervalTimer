@@ -21,3 +21,7 @@ std::shared_ptr<Plan> PlanFromJson::transform(const QJsonArray& array) {
     }
     return result;
 }
+
+std::shared_ptr<Plan> PlanFromJson::transform(const QJsonDocument& document) {
+    return PlanFromJson::transform(document.array());
+}

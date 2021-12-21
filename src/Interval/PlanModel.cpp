@@ -1,4 +1,5 @@
 #include "PlanModel.h"
+#include "PlanFromJson.h"
 #include "PlanToJson.h"
 #include <QFile>
 #include <QJsonDocument>
@@ -227,6 +228,18 @@ void PlanModel::savePlanToFile(const QString& filename) {
     QFile file(filename);
     file.open(QIODevice::WriteOnly);
     file.write(document.toJson());
+}
+
+void PlanModel::loadPlanFromFile(const QString& filename) {
+    QFile loadFile(filename);
+    if (!loadFile.open(QIODevice::ReadOnly)) {
+        qWarning("Couldn't open save file.");
+        return;
+    }
+    QByteArray saveData = loadFile.readAll();
+    auto loadDoc = QJsonDocument::fromJson(saveData);
+    auto plan = PlanFromJson::transform(loadDoc);
+    setPlan(plan);
 }
 
 bool PlanModel::containsPlan(const QModelIndex& index) { return index.column() == planColumn; }

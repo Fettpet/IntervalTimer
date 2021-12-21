@@ -22,9 +22,15 @@ Window {
                 childComponent: planComponent
             }
         }
-        Button {
-            text: "Save"
-            onClicked: rootPlanModel.savePlanToFile("S:\\test.json")
+        RowLayout {
+            Button {
+                text: "Save"
+                onClicked: rootPlanModel.savePlanToFile("S:\\test.json")
+            }
+            Button {
+                text: "Load"
+                onClicked: rootPlanModel.loadPlanFromFile("S:\\test.json")
+            }
         }
     }
 }

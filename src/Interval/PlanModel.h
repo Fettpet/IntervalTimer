@@ -53,6 +53,7 @@ public:
     Q_INVOKABLE void removeItem(int const&);
 
     Q_INVOKABLE void savePlanToFile(QString const& filename);
+    Q_INVOKABLE void loadPlanFromFile(QString const& filename);
 
 protected:
     static bool containsPlan(QModelIndex const&);
