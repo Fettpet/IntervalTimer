@@ -58,6 +58,8 @@ protected:
     static bool containsPlan(QVariant const&);
     static bool containsInterval(QVariant const&);
 
+    bool isDataSetable(const QModelIndex& index, const QVariant& value, int role) const;
+
 private:
     std::shared_ptr<Plan> rootPlan;
 };

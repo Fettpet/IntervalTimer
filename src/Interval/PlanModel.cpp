@@ -86,58 +86,61 @@ QVariant PlanModel::data(const QModelIndex& index, int role) const {
     return QVariant{};
 }
 
+bool PlanModel::isDataSetable(const QModelIndex& index, const QVariant& value, int role) const {
+    if (!rootPlan) return false;
+    if (data(index, role) == value) {
+        return false;
+    }
+    switch (role) {
+    case isIntervalRole: [[fallthrough]];
+    case isPlanRole: //
+        qWarning() << "This should not happen";
+        return false;
+    }
+    return true;
+}
+
 bool PlanModel::setData(const QModelIndex& index, const QVariant& value, int role) {
-    // if (!rootPlan) return false;
-    // if (data(index, role) == value) {
-    //     return false;
-    // }
+    if (!isDataSetable(index, value, role)) {
+        return false;
+    }
 
-    // auto item = rootPlan->getItemAt(index.row());
-    // if (item.canConvert<std::shared_ptr<Plan>>()) {
-    //     auto plan = item.value<std::shared_ptr<Plan>>();
-    //     switch (role) {
-    //     case nameRole: {
-    //         plan->setName(value.toString());
-    //         break;
-    //     }
-    //     case subPlanRole: {
-    //         break;
-    //     }
-    //     default: {
-    //         auto roleName = roleNames()[role];
-    //         qWarning() << "Role " << roleName << " is not useable in Interval";
-    //         return false;
-    //     }
-    //     }
+    auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
 
-    //     plan->setItemAt(index.row(), plan);
-    //     emit dataChanged(index, index, QVector<int>() << role);
-    //     return true;
-    // }
-
-    // if (item.canConvert<Interval>()) {
-    //     auto interval = item.value<Interval>();
-    //     switch (role) {
-    //     case descriptionRole: {
-    //         interval.setDescripton(value.toString().toStdString());
-    //         break;
-    //     }
-    //     case durationRole: {
-    //         interval.setDuration(std::chrono::seconds{value.toInt()});
-    //         break;
-    //     }
-    //     default: {
-    //         auto roleName = roleNames()[role];
-    //         qWarning() << "Role " << roleName << " is not useable in Interval";
-    //         return false;
-    //     }
-    //     }
-
-    //     rootPlan->setItemAt(index.row(), interval);
-    //     emit dataChanged(index, index, QVector<int>() << role);
-    //     return true;
-    // }
-
+    if (containsPlan(index)) {
+        switch (role) {
+        case nameRole: //
+            itemPtr->setName(value.toString());
+            emit dataChanged(index, index, QVector<int>() << role);
+            return true;
+        case subPlanRole: {
+            qWarning() << "This should not happen";
+            return false;
+        }
+        default: return false;
+        }
+    }
+    if (containsInterval(index)) {
+        auto interval = itemPtr->getItemAt(index.row()).value<Interval>();
+        switch (role) {
+        case descriptionRole: {
+            interval.setDescripton(value.toString());
+            break;
+        }
+        case durationRole: {
+            interval.setDuration(std::chrono::seconds{value.toInt()});
+            break;
+        }
+        default: {
+            auto roleName = roleNames()[role];
+            qWarning() << "Role " << roleName << " is not useable in Interval";
+            return false;
+        }
+        }
+        rootPlan->setItemAt(index.row(), interval);
+        emit dataChanged(index, index, QVector<int>() << role);
+        return true;
+    }
     return false;
 }
 
@@ -185,7 +188,9 @@ void PlanModel::setPlan(std::shared_ptr<Plan> newPlan) {
     if (newPlan.use_count() == 0) {
         throw std::invalid_argument("setPlan must contain a plan");
     }
+    beginResetModel();
     rootPlan = newPlan;
+    endResetModel();
 }
 
 QString PlanModel::getName() const { return rootPlan->getName(); }
