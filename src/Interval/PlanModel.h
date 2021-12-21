@@ -17,11 +17,6 @@ public:
     explicit PlanModel(QObject* parent = nullptr);
     //~PlanModel();
     enum { durationRole = Qt::UserRole, descriptionRole, subPlanRole, nameRole, isIntervalRole, isPlanRole };
-    // Header:
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
-
-    // bool setHeaderData(
-    //     int section, Qt::Orientation orientation, const QVariant& value, int role = Qt::EditRole) override;
 
     // Basic functionality:
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;

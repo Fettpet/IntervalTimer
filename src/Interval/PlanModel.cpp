@@ -5,21 +5,6 @@ PlanModel::PlanModel(QObject* parent)
     : QAbstractItemModel(parent)
     , rootPlan(new Plan{}) {}
 
-QVariant PlanModel::headerData(int section, Qt::Orientation orientation, int role) const {
-    if (orientation == Qt::Horizontal && role == Qt::DisplayRole) return QVariant(rootPlan->getName());
-
-    return QVariant();
-}
-
-// bool PlanModel::setHeaderData(int section, Qt::Orientation orientation, const QVariant& value, int role) {
-//     if (value != headerData(section, orientation, role)) {
-//         // FIXME: Implement me!
-//         emit headerDataChanged(orientation, section, section);
-//         return true;
-//     }
-//     return false;
-// }
-
 int PlanModel::rowCount(const QModelIndex& parent) const {
     if (parent.column() > 0) {
         return 0;
