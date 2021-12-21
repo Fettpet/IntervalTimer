@@ -10,16 +10,21 @@ Window {
     visible: true
     title: qsTr("Hello World")
 
-    Loader {
-        id: loader
-        sourceComponent: planComponent
-        onLoaded: item.planModel = rootPlanModel
-    }
-
-    Component {
-        id: planComponent
-        PlanView {
-            childComponent: planComponent
+    ColumnLayout {
+        Loader {
+            id: loader
+            sourceComponent: planComponent
+            onLoaded: item.planModel = rootPlanModel
+        }
+        Component {
+            id: planComponent
+            PlanView {
+                childComponent: planComponent
+            }
+        }
+        Button {
+            text: "Save"
+            onClicked: rootPlanModel.savePlanToFile("S:\\test.json")
         }
     }
 }

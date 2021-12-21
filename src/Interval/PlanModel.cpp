@@ -1,4 +1,7 @@
 #include "PlanModel.h"
+#include "PlanToJson.h"
+#include <QFile>
+#include <QJsonDocument>
 #include <stdexcept>
 
 PlanModel::PlanModel(QObject* parent)
@@ -216,6 +219,14 @@ void PlanModel::removeItem(const int& index) {
     beginRemoveRows(QModelIndex(), index, index);
     rootPlan->removeItem(index);
     endRemoveRows();
+}
+
+void PlanModel::savePlanToFile(const QString& filename) {
+    auto json = PlanToJson::transform(*rootPlan);
+    QJsonDocument document(json);
+    QFile file(filename);
+    file.open(QIODevice::WriteOnly);
+    file.write(document.toJson());
 }
 
 bool PlanModel::containsPlan(const QModelIndex& index) { return index.column() == planColumn; }

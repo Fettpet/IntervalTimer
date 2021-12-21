@@ -12,16 +12,18 @@ Frame {
     signal deletePlanModel
 
     contentItem: RowLayout {
-        Text {
+        TextInput {
             text: planModel ? planModel.repetitions : ""
+            onEditingFinished: planModel.repetitions = text
         }
 
         ColumnLayout {
             implicitWidth: 250
             implicitHeight: 250
             RowLayout {
-                Text {
+                TextInput {
                     text: planModel ? planModel.name : ""
+                    onEditingFinished: planModel.name = text
                 }
                 Button {
                     text: "Interval"
@@ -50,6 +52,7 @@ Frame {
                     required property var duration
                     required property var subPlan
                     required property var index
+                    required property var model
 
                     Loader {
                         active: layout.isInterval
@@ -58,6 +61,8 @@ Frame {
                             IntervalView {
                                 description: layout.description
                                 duration: layout.duration
+                                onDescriptionChanged: model.description = description
+                                onDurationChanged: model.duration = duration
                             }
                             Button {
                                 text: "X"

@@ -52,6 +52,8 @@ public:
     Q_INVOKABLE void appendPlan();
     Q_INVOKABLE void removeItem(int const&);
 
+    Q_INVOKABLE void savePlanToFile(QString const& filename);
+
 protected:
     static bool containsPlan(QModelIndex const&);
     static bool containsInterval(QModelIndex const&);
