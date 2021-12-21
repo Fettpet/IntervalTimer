@@ -37,11 +37,6 @@ public:
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
     QModelIndex parent(const QModelIndex& index) const override;
-    // // Add data:
-    // bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
-
-    // // Remove data:
-    // bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
 
     virtual QHash<int, QByteArray> roleNames() const override;
 

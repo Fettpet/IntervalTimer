@@ -182,20 +182,6 @@ QModelIndex PlanModel::parent(const QModelIndex& index) const {
     return QModelIndex();
 }
 
-// bool PlanModel::insertRows(int row, int count, const QModelIndex& parent) {
-//     beginInsertRows(parent, row, row + count - 1);
-//     // FIXME: Implement me!
-//     endInsertRows();
-//     return true;
-// }
-
-// bool PlanModel::removeRows(int row, int count, const QModelIndex& parent) {
-//     beginRemoveRows(parent, row, row + count - 1);
-//     // FIXME: Implement me!
-//     endRemoveRows();
-//     return true;
-// }
-
 QHash<int, QByteArray> PlanModel::roleNames() const {
     QHash<int, QByteArray> names;
     names[durationRole] = "duration";
