@@ -9,6 +9,8 @@ Frame {
     property QtObject planModel: null
     property Component childComponent: null
 
+    signal deletePlanModel
+
     contentItem: RowLayout {
         Text {
             text: planModel ? planModel.repetitions : ""
@@ -28,6 +30,10 @@ Frame {
                 Button {
                     text: "Plan"
                     onClicked: root.planModel.appendPlan()
+                }
+                Button {
+                    text: "X"
+                    onClicked: root.deletePlanModel()
                 }
             }
             Repeater {
@@ -60,11 +66,19 @@ Frame {
                         }
                     }
                     Loader {
+                        id: planLoader
                         active: layout.isPlan
                         visible: active
                         sourceComponent: childComponent
                         onLoaded: {
                             item.planModel = layout.subPlan
+                        }
+                    }
+                    Connections {
+                        enabled: layout.isPlan
+                        target: planLoader.item
+                        function onDeletePlanModel() {
+                            root.planModel.removeItem(index)
                         }
                     }
                 }
