@@ -8,9 +8,10 @@ if(${BUILD_INTERVAL_TESTS})
     find_package(Qt6 6.2 COMPONENTS Test REQUIRED)
 
     add_executable(UnitTests
-        interval/interval.test.cpp
-        interval/plan.test.cpp
+        Interval/Interval.test.cpp
+        Interval/Plan.test.cpp
+        Interval/PlanModel.test.cpp
     )
-    target_link_libraries(UnitTests gtest_main intervaltimer Qt::Test)
+    target_link_libraries(UnitTests gtest_main IntervaltimerLib Qt::Test)
     add_test(UnitTests UnitTests)
 endif()

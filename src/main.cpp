@@ -1,16 +1,13 @@
-#include "PlanModel.h"
+#include <Interval/Plan.h>
+#include <Interval/PlanModel.h>
 #include <QGuiApplication>
 #include <QLocale>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QTranslator>
-#include <interval/plan.h>
 
 int main(int argc, char* argv[]) {
     QGuiApplication app(argc, argv);
-
-    qmlRegisterType<PlanModel>("interval", 1, 0, "PlanModel");
-    qmlRegisterType<Plan>("interval", 1, 0, "Plan");
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
@@ -23,10 +20,37 @@ int main(int argc, char* argv[]) {
     }
 
     QQmlApplicationEngine engine;
-    Plan plan{};
-    engine.rootContext()->setContextProperty(QStringLiteral("rootPlan"), &plan);
+    auto nestedPlan = std::make_shared<Plan>();
+    nestedPlan->setName("Inner");
+    nestedPlan->setNumberRepetitions(12);
+    nestedPlan->appendInterval();
+    nestedPlan->appendInterval();
+    nestedPlan->setItemAt(0, Interval{std::chrono::seconds{3}, "third"});
+    nestedPlan->setItemAt(1, Interval{std::chrono::seconds{4}, "fourth"});
 
-    const QUrl url(u"qrc:/Intervaltimer/qml/main.qml"_qs);
+    auto plan = std::make_shared<Plan>();
+    plan->setName("Outer");
+    plan->setNumberRepetitions(10);
+    plan->appendInterval();
+    plan->appendInterval();
+    plan->appendPlan();
+    auto outerFirst = Interval{std::chrono::seconds{1}, "first"};
+    auto outerSecond = Interval{std::chrono::seconds{2}, "second"};
+    plan->setItemAt(0, outerFirst);
+    plan->setItemAt(1, outerSecond);
+    plan->setItemAt(2, nestedPlan);
+
+    auto planToModel = std::make_shared<Plan>();
+    planToModel->appendPlan();
+    planToModel->setName("Wurzel");
+    planToModel->setItemAt(0, plan);
+
+    auto model = PlanModel();
+    model.setPlan(plan);
+
+    engine.rootContext()->setContextProperty(QStringLiteral("rootPlanModel"), &model);
+
+    const QUrl url(u"qrc:/IntervalApplication/main.qml"_qs);
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreated,

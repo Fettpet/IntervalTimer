@@ -1,12 +1,13 @@
 #pragma once
+#include <QDebug>
 #include <QMetaType>
+#include <QString>
 #include <chrono>
-#include <string>
 
 struct Interval {
 public:
     Interval();
-    Interval(std::chrono::milliseconds const&, std::string const&);
+    Interval(std::chrono::milliseconds const&, QString const&);
     Interval(Interval const&) = default;
     Interval(Interval&&) = default;
 
@@ -21,12 +22,14 @@ public:
         return std::chrono::duration_cast<Duration>(duration);
     }
 
-    void setDescripton(std::string const&);
-    std::string getDescripton() const;
+    void setDescripton(QString const&);
+    QString getDescripton() const;
 
 protected:
     std::chrono::milliseconds duration{0};
-    std::string description;
+    QString description;
 };
+
+QDebug operator<<(QDebug debug, const Interval& interval);
 
 Q_DECLARE_METATYPE(Interval);
