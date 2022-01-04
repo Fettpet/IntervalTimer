@@ -57,6 +57,13 @@ QVariant Plan::getItemAt(const size_t& index) {
     return items.at(index);
 }
 
+QVariant& Plan::getReferenceAt(const size_t& index) {
+    if (index >= items.size()) {
+        throw std::out_of_range{"not in range"};
+    }
+    return items[index];
+}
+
 QVariantList Plan::getItems() const { return items; }
 
 uint32_t Plan::getNumberRepetitions() const { return numberRepetitions; }
