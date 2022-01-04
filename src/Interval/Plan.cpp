@@ -1,4 +1,5 @@
 #include "Plan.h"
+#include "PlanIterator.h"
 #include <exception>
 
 void Plan::setItemAt(size_t const& index, std::shared_ptr<Plan> plan) {
@@ -49,6 +50,10 @@ void Plan::appendPlan() {
 void Plan::setName(const QString& newName) { name = newName; }
 
 void Plan::removeItem(const int& index) { items.remove(index); }
+
+PlanIterator Plan::begin() const { return PlanIterator{const_cast<Plan*>(this)->shared_from_this()}; }
+
+PlanIterator Plan::end() const { return PlanIterator{}; }
 
 QVariant Plan::getItemAt(const size_t& index) {
     if (index >= items.size()) {

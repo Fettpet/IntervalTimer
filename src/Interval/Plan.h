@@ -1,5 +1,7 @@
 #pragma once
 #include "Interval.h"
+#include "PlanIterator.h"
+
 #include <QString>
 #include <QVariantList>
 #include <memory>
@@ -31,6 +33,9 @@ public:
     void appendPlan();
     void setName(QString const&);
     void removeItem(int const&);
+
+    PlanIterator begin() const;
+    PlanIterator end() const;
 
 protected:
     std::weak_ptr<Plan> parentItem;

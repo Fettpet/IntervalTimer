@@ -28,6 +28,8 @@ qt_add_qml_module(IntervaltimerLib
         Interval/IntervalToJson.cpp
         Interval/Plan.cpp
         Interval/Plan.h
+        Interval/PlanIterator.h
+        Interval/PlanIterator.cpp
         Interval/PlanModel.cpp
         Interval/PlanModel.h
         Interval/PlanFromJson.h
