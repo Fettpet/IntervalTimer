@@ -23,7 +23,7 @@ public:
     }
 
     void setDescripton(QString const&);
-    QString getDescripton() const;
+    QString getDescription() const;
 
 protected:
     std::chrono::milliseconds duration{0};

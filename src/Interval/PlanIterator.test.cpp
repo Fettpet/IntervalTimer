@@ -36,15 +36,15 @@ public:
 
 TEST_F(PlanIteratorTesting, Initalize) {
     auto iterator = PlanIterator{planForModel};
-    EXPECT_EQ((*iterator).getDescripton(), "first");
+    EXPECT_EQ((*iterator).getDescription(), "first");
 }
 
 TEST_F(PlanIteratorTesting, preincrement) {
     auto iterator = PlanIterator{planForModel};
     ++iterator;
-    EXPECT_EQ((*iterator).getDescripton(), "second");
+    EXPECT_EQ((*iterator).getDescription(), "second");
     ++iterator;
-    EXPECT_EQ((*iterator).getDescripton(), "third");
+    EXPECT_EQ((*iterator).getDescription(), "third");
     ++iterator;
     EXPECT_EQ((*iterator).getDescription(), "second");
     ++iterator;
@@ -56,9 +56,9 @@ TEST_F(PlanIteratorTesting, preincrement) {
 TEST_F(PlanIteratorTesting, postincrement) {
     auto iterator = PlanIterator{planForModel};
     iterator++;
-    EXPECT_EQ((*iterator).getDescripton(), "second");
+    EXPECT_EQ((*iterator).getDescription(), "second");
     iterator++;
-    EXPECT_EQ((*iterator).getDescripton(), "third");
+    EXPECT_EQ((*iterator).getDescription(), "third");
     iterator++;
     EXPECT_EQ((*iterator).getDescription(), "second");
     ++iterator;
@@ -70,7 +70,7 @@ TEST_F(PlanIteratorTesting, postincrement) {
 TEST_F(PlanIteratorTesting, Access) {
     auto iterator = PlanIterator{planForModel};
     for (auto i = 0; i < 4; ++i) {
-        EXPECT_EQ((*iterator).getDescripton(), iterator->getDescripton());
+        EXPECT_EQ((*iterator).getDescription(), iterator->getDescription());
         ++iterator;
     }
 }
@@ -87,6 +87,6 @@ TEST_F(PlanIteratorTesting, beginEnd) {
     QVector<QString> elements = {"first", "second", "third", "second", "third", "fourth"};
     auto counter = 0;
     for (auto interval : *plan) {
-        EXPECT_EQ(elements[counter++], interval.getDescripton());
+        EXPECT_EQ(elements[counter++], interval.getDescription());
     }
 }
