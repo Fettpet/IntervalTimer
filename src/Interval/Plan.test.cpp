@@ -36,6 +36,7 @@ TEST_F(PlanTesting, getRow) {
     EXPECT_EQ(nestedPlan->getRow(), 2);
 }
 
+TEST_F(PlanTesting, duration) { EXPECT_EQ(plan->getDuration(), std::chrono::seconds{10 * (1 + 2 + 12 * (3 + 4))}); }
 TEST_F(PlanTesting, appendInterval) {
     auto intervalItem = plan->getItemAt(0);
     EXPECT_TRUE(intervalItem.canConvert<Interval>());
