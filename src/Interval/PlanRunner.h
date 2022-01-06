@@ -18,20 +18,20 @@ class PlanRunner : public QObject {
     Q_PROPERTY(
         int intervalDurationRunningTime READ getIntervalDurationRunningTime NOTIFY changedIntervalDurationRunningTime);
     Q_PROPERTY(int refreshingTimeForInterval READ getRefreshingTimeInterval WRITE setRefreshingTimeInterval);
-    // Q_PROPERTY(int totalDurationOfAllPlansMilliseconds READ getTotalDurationOfAllPlansMilliseconds)
-    // Q_PROPERTY(int currentDurationOfAllPlansMilliseconds READ getCurrentDurationOfAllPlansMilliseconds NOTIFY
-    //                changedCurrentDurationOfAllPlansMilliseconds)
-    // Q_PROPERTY(int refreshingTimeForTotalPlanMilliseconds READ getRefreshingTimeForTotalPlanMilliseconds WRITE
-    //                setRefreshingTimeForTotalPlanMilliseconds);
+    Q_PROPERTY(int planDurationCompleteTime READ getPlanDurationCompleteTime CONSTANT)
+    Q_PROPERTY(int planDurationRunningTime READ getPlanDurationRunningTime NOTIFY changedPlanDurationRunningTime)
+    Q_PROPERTY(int refreshingTimeForPlan READ getRefreshingTimePlan WRITE setRefreshingTimePlan);
 
 public:
     PlanRunner(QObject* = nullptr);
     ~PlanRunner();
 
+    int getPlanDurationCompleteTime() const;
+    int getPlanDurationRunningTime() const;
+
     QString getDescriptionOfInterval() const;
 
     int getIntervalDurationCompleteTime() const;
-
     int getIntervalDurationRunningTime() const;
 
     std::weak_ptr<Plan> getPlan() const;
@@ -39,6 +39,9 @@ public:
 
     int getRefreshingTimeInterval() const;
     void setRefreshingTimeInterval(int const&);
+
+    int getRefreshingTimePlan() const;
+    void setRefreshingTimePlan(int const&);
 
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
@@ -51,18 +54,23 @@ protected:
     std::shared_ptr<Plan> plan{nullptr};
     PlanIterator iterator{};
     std::shared_ptr<QTimer> intervalTimer{new QTimer{}};
-    std::shared_ptr<QTimer> intervalRunningTimer{new QTimer{}};
+    std::shared_ptr<QTimer> planRefreshingTimer{new QTimer{}};
+    std::shared_ptr<QTimer> planTimer{new QTimer{}};
+    std::shared_ptr<QTimer> intervalRefreshingTimer{new QTimer{}};
     std::unique_ptr<QThread> timerThread{new QThread{}};
     std::chrono::milliseconds refreshingTimeForRunningInterval{500};
+    std::chrono::milliseconds refreshingTimeForRunningPlan{500};
+    std::chrono::milliseconds totalDurationOfAllPlans{};
 
 private:
     void startInterval();
-
 private slots:
     void changedInterval();
     void changedIntervalRunningTime();
+    void changedPlanRunningTime();
 
 signals:
+    void changedPlanDurationRunningTime();
     void changedDescriptionOfInterval();
     void finished();
     void changedIntervalDurationCompleteTime();

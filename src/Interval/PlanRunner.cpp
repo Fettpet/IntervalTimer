@@ -13,6 +13,12 @@ PlanRunner::~PlanRunner() {
     }
 }
 
+int PlanRunner::getPlanDurationCompleteTime() const { return plan->getDuration().count(); }
+
+int PlanRunner::getPlanDurationRunningTime() const {
+    return getPlanDurationCompleteTime() - planTimer->remainingTimeAsDuration().count();
+}
+
 QString PlanRunner::getDescriptionOfInterval() const {
     Q_ASSERT(iterator != PlanIterator{});
     return iterator->getDescription();
@@ -37,12 +43,20 @@ void PlanRunner::setRefreshingTimeInterval(const int& newTime) {
     refreshingTimeForRunningInterval = std::chrono::milliseconds{newTime};
 }
 
+int PlanRunner::getRefreshingTimePlan() const { return refreshingTimeForRunningPlan.count(); }
+
+void PlanRunner::setRefreshingTimePlan(const int& newTime) {
+    refreshingTimeForRunningPlan = std::chrono::milliseconds{newTime};
+}
+
 void PlanRunner::start() {
     stop();
 
     connect(intervalTimer.get(), SIGNAL(timeout()), this, SLOT(changedInterval()));
-    connect(intervalRunningTimer.get(), SIGNAL(timeout()), this, SLOT(changedIntervalRunningTime()));
-
+    connect(intervalRefreshingTimer.get(), SIGNAL(timeout()), this, SLOT(changedIntervalRunningTime()));
+    connect(planRefreshingTimer.get(), SIGNAL(timeout()), this, SLOT(changedPlanRunningTime()));
+    planRefreshingTimer->start(refreshingTimeForRunningPlan);
+    planTimer->start(getPlanDurationCompleteTime());
     isRunning = true;
     iterator = plan->begin();
     startInterval();
@@ -50,14 +64,15 @@ void PlanRunner::start() {
 
 void PlanRunner::stop() {
     disconnect();
+    planRefreshingTimer->stop();
     intervalTimer->stop();
-    intervalRunningTimer->stop();
+    intervalRefreshingTimer->stop();
     isRunning = false;
 }
 
 void PlanRunner::startInterval() {
     intervalTimer->start(iterator->getDuration<std::chrono::milliseconds>());
-    intervalRunningTimer->start(refreshingTimeForRunningInterval);
+    intervalRefreshingTimer->start(refreshingTimeForRunningInterval);
 }
 
 void PlanRunner::changedInterval() {
@@ -74,5 +89,7 @@ void PlanRunner::changedInterval() {
 }
 
 void PlanRunner::changedIntervalRunningTime() { emit changedIntervalDurationRunningTime(); }
+
+void PlanRunner::changedPlanRunningTime() { emit changedPlanDurationRunningTime(); }
 
 void PlanRunner::setIntervalTimer(std::shared_ptr<QTimer> newTimer) { intervalTimer = std::move(newTimer); }
