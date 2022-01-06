@@ -34,7 +34,6 @@ void PlanRunner::setPlan(std::shared_ptr<Plan> newPlan) { plan = newPlan; }
 int PlanRunner::getRefreshingTimeInterval() const { return refreshingTimeForRunningInterval.count(); }
 
 void PlanRunner::setRefreshingTimeInterval(const int& newTime) {
-    qDebug() << newTime;
     refreshingTimeForRunningInterval = std::chrono::milliseconds{newTime};
 }
 
