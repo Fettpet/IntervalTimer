@@ -37,6 +37,8 @@ public:
     PlanIterator begin() const;
     PlanIterator end() const;
 
+    std::chrono::milliseconds getDuration() const;
+
 protected:
     std::weak_ptr<Plan> parentItem;
     QString name;

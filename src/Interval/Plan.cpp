@@ -55,6 +55,14 @@ PlanIterator Plan::begin() const { return PlanIterator{const_cast<Plan*>(this)->
 
 PlanIterator Plan::end() const { return PlanIterator{}; }
 
+std::chrono::milliseconds Plan::getDuration() const {
+    auto result = std::chrono::milliseconds{0};
+    for (auto interval : *this) {
+        result += interval.getDuration<std::chrono::milliseconds>();
+    }
+    return result;
+}
+
 QVariant Plan::getItemAt(const size_t& index) {
     if (index >= items.size()) {
         return QVariant();
