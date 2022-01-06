@@ -19,6 +19,7 @@ public:
 
     reference operator*();
     pointer operator->();
+    Interval const* operator->() const;
 
     PlanIterator& operator++();
 
