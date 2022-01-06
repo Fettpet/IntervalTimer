@@ -17,8 +17,7 @@ class PlanRunner : public QObject {
                    changedIntervalDurationCompleteTime);
     Q_PROPERTY(
         int intervalDurationRunningTime READ getIntervalDurationRunningTime NOTIFY changedIntervalDurationRunningTime);
-    // Q_PROPERTY(int refreshingTimeForIntervalMilliseconds READ getRefreshingTimeIntervalMilliseconds WRITE
-    //                setRefreshingTimeIntervalMilliseconds);
+    Q_PROPERTY(int refreshingTimeForInterval READ getRefreshingTimeInterval WRITE setRefreshingTimeInterval);
     // Q_PROPERTY(int totalDurationOfAllPlansMilliseconds READ getTotalDurationOfAllPlansMilliseconds)
     // Q_PROPERTY(int currentDurationOfAllPlansMilliseconds READ getCurrentDurationOfAllPlansMilliseconds NOTIFY
     //                changedCurrentDurationOfAllPlansMilliseconds)
@@ -27,6 +26,7 @@ class PlanRunner : public QObject {
 
 public:
     PlanRunner(QObject* = nullptr);
+    ~PlanRunner();
 
     QString getDescriptionOfInterval() const;
 
@@ -36,6 +36,9 @@ public:
 
     std::weak_ptr<Plan> getPlan() const;
     void setPlan(std::shared_ptr<Plan>);
+
+    int getRefreshingTimeInterval() const;
+    void setRefreshingTimeInterval(int const&);
 
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
