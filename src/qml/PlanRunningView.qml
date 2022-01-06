@@ -15,8 +15,12 @@ Frame {
             text: "Interval-Name: " + planRunner.intervalDescription
         }
         Text {
-            text: "Time: " + planRunner.intervalDurationRunningTime + "/"
-                  + planRunner.intervalDurationCompleteTime
+            text: "Interval-Time: " + planRunner.intervalDurationRunningTime
+                  + "/" + planRunner.intervalDurationCompleteTime
+        }
+        Text {
+            text: "Plan-Time: " + planRunner.planDurationRunningTime + "/"
+                  + planRunner.planDurationCompleteTime
         }
 
         Button {
