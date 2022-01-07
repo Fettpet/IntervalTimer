@@ -20,23 +20,23 @@ qt_add_qml_module(IntervaltimerLib
         qml/PlanEditorView.qml
         qml/PlanRunningView.qml
     SOURCES
-        Interval/Interval.cpp
-        Interval/Interval.h
-        Interval/IntervalFromJson.h
-        Interval/IntervalFromJson.cpp
-        Interval/IntervalToJson.h
-        Interval/IntervalToJson.cpp
-        Interval/Plan.cpp
-        Interval/Plan.h
-        Interval/PlanIterator.h
-        Interval/PlanIterator.cpp
-        Interval/PlanModel.cpp
-        Interval/PlanModel.h
-        Interval/PlanFromJson.h
-        Interval/PlanFromJson.cpp
-        Interval/PlanRunner.h
-        Interval/PlanRunner.cpp
-        Interval/PlanToJson.h
-        Interval/PlanToJson.cpp
+        interval/Interval.cpp
+        interval/Interval.h
+        interval/IntervalFromJson.h
+        interval/IntervalFromJson.cpp
+        interval/IntervalToJson.h
+        interval/IntervalToJson.cpp
+        interval/Plan.cpp
+        interval/Plan.h
+        interval/PlanIterator.h
+        interval/PlanIterator.cpp
+        interval/PlanModel.cpp
+        interval/PlanModel.h
+        interval/PlanFromJson.h
+        interval/PlanFromJson.cpp
+        interval/PlanRunner.h
+        interval/PlanRunner.cpp
+        interval/PlanToJson.h
+        interval/PlanToJson.cpp
 )
 

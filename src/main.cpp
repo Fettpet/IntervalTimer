@@ -1,11 +1,11 @@
-#include <Interval/Plan.h>
-#include <Interval/PlanModel.h>
-#include <Interval/PlanRunner.h>
 #include <QGuiApplication>
 #include <QLocale>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QTranslator>
+#include <interval/Plan.h>
+#include <interval/PlanModel.h>
+#include <interval/PlanRunner.h>
 
 int main(int argc, char* argv[]) {
     QGuiApplication app(argc, argv);
