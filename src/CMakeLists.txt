@@ -1,30 +1,30 @@
 cmake_minimum_required(VERSION 3.21)
 
-
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 find_package(Qt6 6.2 COMPONENTS Quick Core REQUIRED)
 
 OPTION(BUILD_INTERVAL_APPLICATON "Build the Application" ON)
 
+add_subdirectory(Intervaltimer)
+
 include(tests.cmake)
-include(interval.cmake)
 
 if(${BUILD_INTERVAL_APPLICATON})
-    qt_add_executable(appIntervaltimer
+    qt_add_executable(IntervaltimerApplication
         main.cpp
     )
-
-    qt_add_qml_module(appIntervaltimer
+    qt_add_qml_module(IntervaltimerApplication
         URI IntervalApplication
         VERSION 1.0
         QML_FILES 
             main.qml
+        IMPORT_PATH "${QML_IMPORT_PATH}/src"
     )
 
-    target_compile_definitions(appIntervaltimer
+    target_compile_definitions(IntervaltimerApplication
         PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
-    target_link_libraries(appIntervaltimer
-        PRIVATE Qt6::Quick IntervaltimerLib IntervaltimerLibplugin)
+    target_link_libraries(IntervaltimerApplication
+        PRIVATE Qt6::Quick
+        PRIVATE IntervaltimerPlugin
+        PRIVATE Intervaltimer
+        )
 endif()

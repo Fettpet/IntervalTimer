@@ -1,11 +1,12 @@
+#include <Plan.h>
+#include <PlanModel.h>
+#include <PlanRunner.h>
+#include <QDirIterator>
 #include <QGuiApplication>
 #include <QLocale>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QTranslator>
-#include <interval/Plan.h>
-#include <interval/PlanModel.h>
-#include <interval/PlanRunner.h>
 
 int main(int argc, char* argv[]) {
     QGuiApplication app(argc, argv);
@@ -49,11 +50,18 @@ int main(int argc, char* argv[]) {
     auto model = PlanModel();
     model.setPlan(plan);
 
+    QDirIterator it(":", QDirIterator::Subdirectories);
+    while (it.hasNext()) {
+        qDebug() << it.next();
+    }
+
     PlanRunner planRunner;
     planRunner.setPlan(plan);
     engine.rootContext()->setContextProperty(QStringLiteral("rootPlanModel"), &model);
     engine.rootContext()->setContextProperty(QStringLiteral("rootPlanRunner"), &planRunner);
-
+    engine.addImportPath(QStringLiteral("qrc:/"));
+    engine.addImportPath(QStringLiteral(":/"));
+    engine.addImportPath(QStringLiteral(":/Intervaltimer"));
     const QUrl url(u"qrc:/IntervalApplication/main.qml"_qs);
     QObject::connect(
         &engine,

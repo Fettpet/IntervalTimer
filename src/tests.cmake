@@ -8,12 +8,16 @@ if(${BUILD_INTERVAL_TESTS})
     find_package(Qt6 6.2 COMPONENTS Test REQUIRED)
 
     add_executable(UnitTests
-        Interval/Interval.test.cpp
-        Interval/Plan.test.cpp
-        Interval/PlanIterator.test.cpp
-        Interval/PlanModel.test.cpp
-        Interval/PlanRunner.test.cpp
+        Intervaltimer/intervaltimer/Interval.test.cpp
+        Intervaltimer/intervaltimer/Plan.test.cpp
+        Intervaltimer/intervaltimer/PlanIterator.test.cpp
+        Intervaltimer/intervaltimer/PlanModel.test.cpp
+        Intervaltimer/intervaltimer/PlanRunner.test.cpp
     )
-    target_link_libraries(UnitTests gtest_main IntervaltimerLib Qt::Test)
+    target_link_libraries(UnitTests
+        gtest_main
+        IntervaltimerPlugin
+        Intervaltimer
+        Qt::Test)
     add_test(UnitTests UnitTests)
 endif()

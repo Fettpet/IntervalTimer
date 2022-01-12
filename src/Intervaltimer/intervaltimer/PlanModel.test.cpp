@@ -1,3 +1,4 @@
+#include <Interval.h>
 #include <Plan.h>
 #include <PlanModel.h>
 #include <QSignalSpy>
