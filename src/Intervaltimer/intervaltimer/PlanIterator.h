@@ -25,8 +25,8 @@ public:
 
     PlanIterator operator++(int);
 
-    friend bool operator==(const PlanIterator& a, const PlanIterator& b) = default;
-    friend bool operator!=(const PlanIterator& a, const PlanIterator& b) = default;
+    bool operator==(PlanIterator const&) const;
+    bool operator!=(PlanIterator const&) const;
 
 private:
     void setToBegin();

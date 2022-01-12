@@ -127,3 +127,10 @@ std::shared_ptr<Plan> PlanIterator::getCurrentPlan() {
     }
     throw std::domain_error{"Variant should contain a Plan"};
 }
+
+bool PlanIterator::operator==(PlanIterator const& lhs) const {
+    return currentRepetition == lhs.currentRepetition && currentIndex == lhs.currentIndex && plan == lhs.plan &&
+        childIterator == lhs.childIterator;
+}
+
+bool PlanIterator::operator!=(PlanIterator const& lhs) const { return !(*this == lhs); }

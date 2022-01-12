@@ -1,6 +1,6 @@
-#include <Interval/Plan.h>
-#include <Interval/PlanModel.h>
-#include <Interval/PlanRunner.h>
+#include <Plan.h>
+#include <PlanModel.h>
+#include <PlanRunner.h>
 #include <QGuiApplication>
 #include <QLocale>
 #include <QQmlApplicationEngine>
@@ -53,6 +53,7 @@ int main(int argc, char* argv[]) {
     planRunner.setPlan(plan);
     engine.rootContext()->setContextProperty(QStringLiteral("rootPlanModel"), &model);
     engine.rootContext()->setContextProperty(QStringLiteral("rootPlanRunner"), &planRunner);
+    engine.addImportPath(QStringLiteral("qrc:/"));
 
     const QUrl url(u"qrc:/IntervalApplication/main.qml"_qs);
     QObject::connect(

@@ -14,7 +14,9 @@ public:
     Interval& operator=(Interval const&) = default;
     Interval& operator=(Interval&&) = default;
 
-    auto operator==(Interval const&) const -> bool = default;
+    auto operator==(Interval const&) const -> bool;
+    auto operator!=(Interval const&) const -> bool;
+
     void setDuration(std::chrono::milliseconds const& dur);
 
     template<typename Duration>
