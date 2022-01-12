@@ -10,7 +10,9 @@ if(${BUILD_INTERVAL_TESTS})
     add_executable(UnitTests
         Interval/Interval.test.cpp
         Interval/Plan.test.cpp
+        Interval/PlanIterator.test.cpp
         Interval/PlanModel.test.cpp
+        Interval/PlanRunner.test.cpp
     )
     target_link_libraries(UnitTests gtest_main IntervaltimerLib Qt::Test)
     add_test(UnitTests UnitTests)

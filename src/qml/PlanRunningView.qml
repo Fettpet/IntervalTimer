@@ -7,10 +7,21 @@ import Intervaltimer 1.0
 Frame {
     id: root
 
-    required property var planModel
+    required property var planRunner
     signal stopRunning
 
-    RowLayout {
+    ColumnLayout {
+        Text {
+            text: "Interval-Name: " + planRunner.intervalDescription
+        }
+        Text {
+            text: "Interval-Time: " + planRunner.intervalDurationRunningTime
+                  + "/" + planRunner.intervalDurationCompleteTime
+        }
+        Text {
+            text: "Plan-Time: " + planRunner.planDurationRunningTime + "/"
+                  + planRunner.planDurationCompleteTime
+        }
 
         Button {
             text: "stop"

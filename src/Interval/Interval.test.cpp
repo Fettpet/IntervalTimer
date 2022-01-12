@@ -14,7 +14,7 @@ TEST(Interval, description) {
     auto interval = Interval{};
     interval.setDescripton("Hello World");
 
-    EXPECT_EQ(interval.getDescripton(), QString{"Hello World"});
+    EXPECT_EQ(interval.getDescription(), QString{"Hello World"});
 }
 
 TEST(Interval, toJson) {
@@ -29,6 +29,6 @@ TEST(Interval, fromJson) {
     auto json = IntervalToJson::transform(interval);
     auto transformedInterval = IntervalFromJson::transform(json);
 
-    EXPECT_EQ(interval.getDescripton(), transformedInterval.getDescripton());
+    EXPECT_EQ(interval.getDescription(), transformedInterval.getDescription());
     EXPECT_EQ(interval.getDuration<std::chrono::seconds>(), transformedInterval.getDuration<std::chrono::seconds>());
 }

@@ -1,5 +1,7 @@
 #pragma once
 #include "Interval.h"
+#include "PlanIterator.h"
+
 #include <QString>
 #include <QVariantList>
 #include <memory>
@@ -12,6 +14,7 @@ public:
 
     void setItemAt(size_t const& index, Interval const& interval);
     QVariant getItemAt(size_t const& index);
+    QVariant& getReferenceAt(size_t const& index);
     QVariantList getItems() const;
 
     uint32_t getNumberRepetitions() const;
@@ -30,6 +33,11 @@ public:
     void appendPlan();
     void setName(QString const&);
     void removeItem(int const&);
+
+    PlanIterator begin() const;
+    PlanIterator end() const;
+
+    std::chrono::milliseconds getDuration() const;
 
 protected:
     std::weak_ptr<Plan> parentItem;

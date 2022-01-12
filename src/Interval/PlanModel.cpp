@@ -81,7 +81,7 @@ QVariant PlanModel::data(const QModelIndex& index, int role) const {
     if (containsInterval(index)) {
         auto item = itemPtr->getItemAt(index.row()).value<Interval>();
         switch (role) {
-        case descriptionRole: return QVariant::fromValue(item.getDescripton());
+        case descriptionRole: return QVariant::fromValue(item.getDescription());
         case durationRole: return QVariant::fromValue(item.getDuration<std::chrono::seconds>().count());
         default: return QVariant{};
         }
