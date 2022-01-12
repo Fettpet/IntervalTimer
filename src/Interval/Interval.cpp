@@ -16,3 +16,8 @@ QDebug operator<<(QDebug debug, const Interval& interval) {
                     << "s )";
     return debug;
 }
+
+auto Interval::operator==(Interval const& lhs) const -> bool {
+    return lhs.duration == duration && description == lhs.description;
+}
+auto Interval::operator!=(Interval const& lhs) const -> bool { return !(*this == lhs); }

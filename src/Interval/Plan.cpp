@@ -39,6 +39,7 @@ auto Plan::operator==(Plan const& lhs) const -> bool {
     }
     return true;
 }
+auto Plan::operator!=(Plan const& lhs) const -> bool { return !(*this == lhs); }
 
 void Plan::appendInterval() { items.push_back(QVariant::fromValue(Interval{})); }
 void Plan::appendPlan() {

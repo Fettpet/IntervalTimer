@@ -9,6 +9,7 @@
 class Plan : public std::enable_shared_from_this<Plan> {
 public:
     auto operator==(Plan const&) const -> bool;
+    auto operator!=(Plan const&) const -> bool;
 
     void setItemAt(size_t const& index, std::shared_ptr<Plan> plan);
 
