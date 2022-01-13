@@ -1,0 +1,53 @@
+name: Test Runner
+
+on: push
+# on:
+#   push:
+#     branches:
+#       - master
+jobs:
+  Deploy-MSCV:
+    name: "Run-Tests-MSCV"
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2
+        with:
+          version: '6.2.1'
+
+      - name: env varialbes
+        run: | 
+          gci env:* | sort-object name
+
+      - name: show QT
+        run: | 
+          Get-ChildItem -Recurse $Env:Qt6_DIR | Where { ! $_.PSIsContainer } | Select Name,FullName,Length
+
+      - name: Install Tools Ninja and mvsc
+        uses: ilammy/msvc-dev-cmd@v1
+      - uses: seanmiddleditch/gha-setup-ninja@master
+      
+      - name: build 
+        shell: pwsh 
+        run: |
+          mkdir build
+          cd build
+          cmake .. -GNinja
+          cmake --build . --target all
+          cd ..
+          mkdir deploy 
+          cd deploy
+          Copy-Item "../build/src/IntervaltimerApplication.exe" -Destination "./IntervaltimerApplication.exe"
+          $deploy_exe = "${Env:Qt6_DIR}" + "/bin/windeployqt.exe"
+          & $deploy_exe --dir . --qmldir ../build ../build/src/IntervaltimerApplication.exe
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: windows
+          path: deploy
