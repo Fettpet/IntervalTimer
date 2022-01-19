@@ -38,5 +38,7 @@ qt_add_qml_module(Intervaltimer
         intervaltimer/PlanRunner.cpp
         intervaltimer/PlanToJson.h
         intervaltimer/PlanToJson.cpp
+        intervaltimer/TimerBase.h
+        intervaltimer/TimerBase.cpp
 )
 
