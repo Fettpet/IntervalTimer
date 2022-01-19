@@ -40,10 +40,8 @@ public:
     std::shared_ptr<Plan> nestedPlan{new Plan{}};
     std::shared_ptr<Plan> plan{new Plan{}};
     std::shared_ptr<Plan> planForModel{new Plan{}};
-    std::shared_ptr<QTimer> timer{std::make_shared<QTimer>()};
     PlanRunner* runner{new PlanRunner{}};
     int args = 0;
-    std::unique_ptr<QCoreApplication> app = std::make_unique<QCoreApplication>(args, nullptr);
 };
 
 TEST_F(PlanRunnerTesting, start) {
