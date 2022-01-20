@@ -61,3 +61,8 @@ jobs:
           -v ${GITHUB_WORKSPACE}/build:/build
           ghcr.io/fettpet/docker_qt_android:qt6.2.2-android_sdk7583922
           -DCMAKE_BUILD_TYPE=Release
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: IntervalTimer.apk
+          path: build/src/android-build/build/outputs/apk/debug/android-build-debug.apk
