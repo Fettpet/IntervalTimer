@@ -1,17 +1,8 @@
 #include "PlanRunner.h"
 
 PlanRunner::PlanRunner(QObject* object)
-    : QObject(object) {
+    : QObject(object) {}
 
-    timerThread->start(QThread::LowPriority);
-}
-
-PlanRunner::~PlanRunner() {
-    timerThread->exit();
-    // needed to avoid an exception
-    while (!timerThread->isFinished()) {
-    }
-}
 
 int PlanRunner::getPlanDurationCompleteTime() const { return plan->getDuration().count(); }
 
@@ -92,4 +83,13 @@ void PlanRunner::changedIntervalRunningTime() { emit changedIntervalDurationRunn
 
 void PlanRunner::changedPlanRunningTime() { emit changedPlanDurationRunningTime(); }
 
-void PlanRunner::setIntervalTimer(std::shared_ptr<QTimer> newTimer) { intervalTimer = std::move(newTimer); }
+void PlanRunner::setIntervalTimer(std::shared_ptr<TimerBase> newTimer) { intervalTimer = std::move(newTimer); }
+
+void PlanRunner::setIntervalRefeshingTimer(std::shared_ptr<TimerBase> newTimer) {
+    intervalRefreshingTimer = std::move(newTimer);
+}
+
+void PlanRunner::setPlanTimer(std::shared_ptr<TimerBase> newTimer) { planTimer = std::move(newTimer); }
+void PlanRunner::setPlanRefeshingTimer(std::shared_ptr<TimerBase> newTimer) {
+    planRefreshingTimer = std::move(newTimer);
+}
