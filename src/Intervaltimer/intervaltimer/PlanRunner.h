@@ -7,16 +7,17 @@
 #include <QtQml/qqmlregistration.h>
 #include <memory>
 
-#include <QTimer>
+#include "Timer.h"
+#include "TimerBase.h"
 
 class PlanRunner : public QObject {
     Q_OBJECT
     QML_ELEMENT
     Q_PROPERTY(QString intervalDescription READ getDescriptionOfInterval NOTIFY changedDescriptionOfInterval);
-    Q_PROPERTY(int intervalDurationCompleteTime READ getIntervalDurationCompleteTime NOTIFY
+    Q_PROPERTY(int intervalDurationCompleteTime READ getIntervalDuration NOTIFY
                    changedIntervalDurationCompleteTime);
     Q_PROPERTY(
-        int intervalDurationRunningTime READ getIntervalDurationRunningTime NOTIFY changedIntervalDurationRunningTime);
+        int intervalDurationRunningTime READ getIntervalElapsedTime NOTIFY changedIntervalDurationRunningTime);
     Q_PROPERTY(int refreshingTimeForInterval READ getRefreshingTimeInterval WRITE setRefreshingTimeInterval);
     Q_PROPERTY(int planDurationCompleteTime READ getPlanDurationCompleteTime CONSTANT)
     Q_PROPERTY(int planDurationRunningTime READ getPlanDurationRunningTime NOTIFY changedPlanDurationRunningTime)
@@ -24,15 +25,14 @@ class PlanRunner : public QObject {
 
 public:
     PlanRunner(QObject* = nullptr);
-    ~PlanRunner();
 
     int getPlanDurationCompleteTime() const;
     int getPlanDurationRunningTime() const;
 
     QString getDescriptionOfInterval() const;
 
-    int getIntervalDurationCompleteTime() const;
-    int getIntervalDurationRunningTime() const;
+    int getIntervalDuration() const;
+    int getIntervalElapsedTime() const;
 
     std::weak_ptr<Plan> getPlan() const;
     void setPlan(std::shared_ptr<Plan>);
@@ -47,17 +47,20 @@ public:
     Q_INVOKABLE void stop();
     // Q_INVOKABLE void pause();
 
-    void setIntervalTimer(std::shared_ptr<QTimer> newTimer);
+    void setIntervalTimer(std::shared_ptr<TimerBase> newTimer);
+    void setIntervalRefeshingTimer(std::shared_ptr<TimerBase> newTimer);
+
+    void setPlanTimer(std::shared_ptr<TimerBase> newTimer);
+    void setPlanRefeshingTimer(std::shared_ptr<TimerBase> newTimer);
 
 protected:
     bool isRunning{false};
     std::shared_ptr<Plan> plan{nullptr};
     PlanIterator iterator{};
-    std::shared_ptr<QTimer> intervalTimer{new QTimer{}};
-    std::shared_ptr<QTimer> planRefreshingTimer{new QTimer{}};
-    std::shared_ptr<QTimer> planTimer{new QTimer{}};
-    std::shared_ptr<QTimer> intervalRefreshingTimer{new QTimer{}};
-    std::unique_ptr<QThread> timerThread{new QThread{}};
+    std::shared_ptr<TimerBase> intervalTimer{new Timer{}};
+    std::shared_ptr<TimerBase> planRefreshingTimer{new Timer{}};
+    std::shared_ptr<TimerBase> planTimer{new Timer{}};
+    std::shared_ptr<TimerBase> intervalRefreshingTimer{new Timer{}};
     std::chrono::milliseconds refreshingTimeForRunningInterval{500};
     std::chrono::milliseconds refreshingTimeForRunningPlan{500};
     std::chrono::milliseconds totalDurationOfAllPlans{};
