@@ -14,10 +14,10 @@ class PlanRunner : public QObject {
     Q_OBJECT
     QML_ELEMENT
     Q_PROPERTY(QString intervalDescription READ getDescriptionOfInterval NOTIFY changedDescriptionOfInterval);
-    Q_PROPERTY(int intervalDurationCompleteTime READ getIntervalDurationCompleteTime NOTIFY
+    Q_PROPERTY(int intervalDurationCompleteTime READ getIntervalDuration NOTIFY
                    changedIntervalDurationCompleteTime);
     Q_PROPERTY(
-        int intervalDurationRunningTime READ getIntervalDurationRunningTime NOTIFY changedIntervalDurationRunningTime);
+        int intervalDurationRunningTime READ getIntervalElapsedTime NOTIFY changedIntervalDurationRunningTime);
     Q_PROPERTY(int refreshingTimeForInterval READ getRefreshingTimeInterval WRITE setRefreshingTimeInterval);
     Q_PROPERTY(int planDurationCompleteTime READ getPlanDurationCompleteTime CONSTANT)
     Q_PROPERTY(int planDurationRunningTime READ getPlanDurationRunningTime NOTIFY changedPlanDurationRunningTime)
@@ -31,8 +31,8 @@ public:
 
     QString getDescriptionOfInterval() const;
 
-    int getIntervalDurationCompleteTime() const;
-    int getIntervalDurationRunningTime() const;
+    int getIntervalDuration() const;
+    int getIntervalElapsedTime() const;
 
     std::weak_ptr<Plan> getPlan() const;
     void setPlan(std::shared_ptr<Plan>);

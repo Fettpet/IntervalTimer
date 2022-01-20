@@ -3,26 +3,21 @@
 PlanRunner::PlanRunner(QObject* object)
     : QObject(object) {}
 
+int PlanRunner::getPlanDurationCompleteTime() const { return planTimer->getDuration().count(); }
 
-int PlanRunner::getPlanDurationCompleteTime() const { return plan->getDuration().count(); }
-
-int PlanRunner::getPlanDurationRunningTime() const {
-    return getPlanDurationCompleteTime() - planTimer->remainingTimeAsDuration().count();
-}
+int PlanRunner::getPlanDurationRunningTime() const { return planTimer->getElapsedTime().count(); }
 
 QString PlanRunner::getDescriptionOfInterval() const {
     Q_ASSERT(iterator != PlanIterator{});
     return iterator->getDescription();
 }
 
-int PlanRunner::getIntervalDurationCompleteTime() const {
+int PlanRunner::getIntervalDuration() const {
     Q_ASSERT(iterator != PlanIterator{});
     return iterator->getDuration<std::chrono::milliseconds>().count();
 }
 
-int PlanRunner::getIntervalDurationRunningTime() const {
-    return getIntervalDurationCompleteTime() - intervalTimer->remainingTimeAsDuration().count();
-}
+int PlanRunner::getIntervalElapsedTime() const { return intervalTimer->getElapsedTime().count(); }
 
 std::weak_ptr<Plan> PlanRunner::getPlan() const { return plan; }
 
@@ -47,7 +42,7 @@ void PlanRunner::start() {
     connect(intervalRefreshingTimer.get(), SIGNAL(timeout()), this, SLOT(changedIntervalRunningTime()));
     connect(planRefreshingTimer.get(), SIGNAL(timeout()), this, SLOT(changedPlanRunningTime()));
     planRefreshingTimer->start(refreshingTimeForRunningPlan);
-    planTimer->start(getPlanDurationCompleteTime());
+    planTimer->start(plan->getDuration());
     isRunning = true;
     iterator = plan->begin();
     startInterval();
