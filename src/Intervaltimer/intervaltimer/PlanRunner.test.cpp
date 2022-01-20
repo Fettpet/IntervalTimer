@@ -7,8 +7,26 @@
 #include <QThread>
 #include <QTimer>
 #include <QtTest/QtTest>
+#include <TimerBase.h>
 #include <gtest/gtest.h>
 #include <memory>
+
+struct TestTimer : public TimerBase {
+
+    TestTimer()
+        : TimerBase(nullptr) {}
+
+public:
+    virtual void start(const std::chrono::milliseconds& dur) override { duration = dur; }
+    void emitTimeout() { emit timeout(); }
+
+    virtual std::chrono::milliseconds getElapsedTime() const override { return elapsedTime; }
+    void setElapsedTime(std::chrono::milliseconds time) { elapsedTime = time; }
+    virtual std::chrono::milliseconds getDuration() const override { return duration; }
+    virtual void stop() override { elapsedTime = std::chrono::milliseconds{0}; }
+
+    std::chrono::milliseconds elapsedTime, duration;
+};
 
 struct PlanRunnerTesting : ::testing::Test, public QObject {
 protected:
@@ -34,17 +52,61 @@ protected:
         planForModel->setItemAt(0, plan);
 
         runner->setPlan(planForModel);
+
+        runner->setIntervalRefeshingTimer(intervalRefreshingTimer);
+        runner->setIntervalTimer(intervalTimer);
+        runner->setPlanTimer(planTimer);
+        runner->setPlanRefeshingTimer(planRefreshingTimer);
+        runner->start();
     }
 
 public:
     std::shared_ptr<Plan> nestedPlan{new Plan{}};
     std::shared_ptr<Plan> plan{new Plan{}};
     std::shared_ptr<Plan> planForModel{new Plan{}};
+    std::shared_ptr<TestTimer> intervalTimer{new TestTimer{}}, intervalRefreshingTimer{new TestTimer{}};
+    std::shared_ptr<TestTimer> planTimer{new TestTimer{}}, planRefreshingTimer{new TestTimer{}};
     PlanRunner* runner{new PlanRunner{}};
     int args = 0;
 };
 
-TEST_F(PlanRunnerTesting, start) {
-    runner->start();
-    EXPECT_EQ(runner->getDescriptionOfInterval().toStdString(), "first");
+TEST_F(PlanRunnerTesting, start) { EXPECT_EQ(runner->getDescriptionOfInterval().toStdString(), "first"); }
+
+TEST_F(PlanRunnerTesting, getIntervalDuration) { EXPECT_EQ(runner->getIntervalDuration(), 100); }
+
+TEST_F(PlanRunnerTesting, getIntervalElapsedTime) {
+    intervalTimer->setElapsedTime(std::chrono::milliseconds{42});
+    EXPECT_EQ(runner->getIntervalElapsedTime(), 42);
+}
+
+TEST_F(PlanRunnerTesting, emitChangedIntervalDurationRunningTime) {
+    QSignalSpy spy(runner, SIGNAL(changedIntervalDurationRunningTime()));
+    intervalRefreshingTimer->emitTimeout();
+    EXPECT_EQ(spy.count(), 1);
+}
+
+TEST_F(PlanRunnerTesting, intervalIsFinished) {
+    QSignalSpy spyIntervalCompleteTime(runner, SIGNAL(changedIntervalDurationCompleteTime()));
+    QSignalSpy spyIntervalDescription(runner, SIGNAL(changedDescriptionOfInterval()));
+    QSignalSpy spyIntervalRunningTime(runner, SIGNAL(changedIntervalDurationRunningTime()));
+    intervalTimer->emitTimeout();
+    EXPECT_EQ(spyIntervalCompleteTime.count(), 1);
+    EXPECT_EQ(spyIntervalDescription.count(), 1);
+    EXPECT_EQ(spyIntervalRunningTime.count(), 1);
+    EXPECT_EQ(runner->getDescriptionOfInterval().toStdString(), "second");
+}
+
+TEST_F(PlanRunnerTesting, getPlanDurationCompleteTime) {
+    EXPECT_EQ(runner->getPlanDurationCompleteTime(), plan->getDuration().count());
+}
+
+TEST_F(PlanRunnerTesting, getPlanDurationRunningTime) {
+    planTimer->setElapsedTime(std::chrono::milliseconds{42});
+    EXPECT_EQ(runner->getPlanDurationRunningTime(), 42);
+}
+
+TEST_F(PlanRunnerTesting, changedPlanRunningTime) {
+    QSignalSpy spy(runner, SIGNAL(changedPlanDurationRunningTime()));
+    planRefreshingTimer->emitTimeout();
+    EXPECT_EQ(spy.count(), 1);
 }
