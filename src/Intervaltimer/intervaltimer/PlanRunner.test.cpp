@@ -66,7 +66,7 @@ public:
     std::shared_ptr<Plan> planForModel{new Plan{}};
     std::shared_ptr<TestTimer> intervalTimer{new TestTimer{}}, intervalRefreshingTimer{new TestTimer{}};
     std::shared_ptr<TestTimer> planTimer{new TestTimer{}}, planRefreshingTimer{new TestTimer{}};
-    PlanRunner* runner{new PlanRunner{}};
+    PlanRunner* runner{PlanRunner::create(nullptr, nullptr)};
     int args = 0;
 };
 

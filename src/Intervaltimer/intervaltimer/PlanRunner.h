@@ -1,30 +1,42 @@
 #pragma once
+#include <QQmlEngine>
+#include <QtQml/qqmlregistration.h>
 
 #include "Plan.h"
 #include "PlanIterator.h"
 #include <QObject>
 #include <QThread>
-#include <QtQml/qqmlregistration.h>
+
 #include <memory>
 
 #include "Timer.h"
 #include "TimerBase.h"
 
 class PlanRunner : public QObject {
+
     Q_OBJECT
-    QML_ELEMENT
+    QML_SINGLETON
+    QML_NAMED_ELEMENT(PlanRunner)
+
     Q_PROPERTY(QString intervalDescription READ getDescriptionOfInterval NOTIFY changedDescriptionOfInterval);
-    Q_PROPERTY(int intervalDurationCompleteTime READ getIntervalDuration NOTIFY
-                   changedIntervalDurationCompleteTime);
-    Q_PROPERTY(
-        int intervalDurationRunningTime READ getIntervalElapsedTime NOTIFY changedIntervalDurationRunningTime);
+    Q_PROPERTY(int intervalDurationCompleteTime READ getIntervalDuration NOTIFY changedIntervalDurationCompleteTime);
+    Q_PROPERTY(int intervalDurationRunningTime READ getIntervalElapsedTime NOTIFY changedIntervalDurationRunningTime);
     Q_PROPERTY(int refreshingTimeForInterval READ getRefreshingTimeInterval WRITE setRefreshingTimeInterval);
     Q_PROPERTY(int planDurationCompleteTime READ getPlanDurationCompleteTime CONSTANT)
     Q_PROPERTY(int planDurationRunningTime READ getPlanDurationRunningTime NOTIFY changedPlanDurationRunningTime)
     Q_PROPERTY(int refreshingTimeForPlan READ getRefreshingTimePlan WRITE setRefreshingTimePlan);
 
+    PlanRunner();
+    static PlanRunner* instance;
+
 public:
-    PlanRunner(QObject* = nullptr);
+    static PlanRunner* create(QQmlEngine*, QJSEngine* engine) {
+        if (!instance) {
+            instance = new PlanRunner{};
+        }
+        return instance;
+    }
+    ~PlanRunner() {}
 
     int getPlanDurationCompleteTime() const;
     int getPlanDurationRunningTime() const;

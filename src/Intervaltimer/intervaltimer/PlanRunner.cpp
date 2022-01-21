@@ -1,7 +1,8 @@
 #include "PlanRunner.h"
 
-PlanRunner::PlanRunner(QObject* object)
-    : QObject(object) {}
+PlanRunner* PlanRunner::instance = nullptr;
+
+PlanRunner::PlanRunner() {}
 
 int PlanRunner::getPlanDurationCompleteTime() const { return planTimer->getDuration().count(); }
 

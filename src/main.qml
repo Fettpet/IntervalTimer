@@ -22,7 +22,7 @@ Window {
             sourceComponent: PlanEditorView {
                 planModel: PlanModel
                 onStartRunning: {
-                    rootPlanRunner.start()
+                    PlanRunner.start()
                     root.isRunning = true
                 }
             }
@@ -31,7 +31,6 @@ Window {
             id: runnerLoader
             active: root.isRunning
             sourceComponent: PlanRunningView {
-                planRunner: rootPlanRunner
                 onStopRunning: {
                     root.isRunning = false
                 }
