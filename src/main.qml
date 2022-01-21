@@ -20,7 +20,7 @@ Window {
             id: editorLoader
             active: !root.isRunning
             sourceComponent: PlanEditorView {
-                planModel: rootPlanModel
+                planModel: PlanModel
                 onStartRunning: {
                     rootPlanRunner.start()
                     root.isRunning = true

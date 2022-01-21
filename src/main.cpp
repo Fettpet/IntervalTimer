@@ -46,14 +46,15 @@ int main(int argc, char* argv[]) {
     planToModel->setName("Wurzel");
     planToModel->setItemAt(0, plan);
 
-    auto model = PlanModel();
-    model.setPlan(plan);
+    PlanModel::create(nullptr, nullptr)->setPlan(plan);
 
     PlanRunner planRunner;
     planRunner.setPlan(plan);
-    engine.rootContext()->setContextProperty(QStringLiteral("rootPlanModel"), &model);
     engine.rootContext()->setContextProperty(QStringLiteral("rootPlanRunner"), &planRunner);
     engine.addImportPath(QStringLiteral("qrc:/"));
+    PlanRunner::create(nullptr, nullptr)->setPlan(plan);
+
+    qmlRegisterSingletonInstance("Intervaltimer", 1, 0, "PlanModel", PlanModel::create());
 
     const QUrl url(u"qrc:/IntervalApplication/main.qml"_qs);
     QObject::connect(
