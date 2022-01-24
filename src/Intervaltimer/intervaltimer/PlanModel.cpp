@@ -5,6 +5,8 @@
 #include <QJsonDocument>
 #include <stdexcept>
 
+PlanModel* PlanModel::instance = nullptr;
+
 PlanModel::PlanModel(QObject* parent)
     : QAbstractItemModel(parent)
     , rootPlan(new Plan{}) {}

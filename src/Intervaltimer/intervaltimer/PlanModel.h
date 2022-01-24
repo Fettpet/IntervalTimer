@@ -2,24 +2,31 @@
 
 #include "Plan.h"
 #include <QAbstractListModel>
+#include <QQmlEngine>
 #include <QtQml/qqmlregistration.h>
 #include <memory>
 
 class PlanModel : public QAbstractItemModel {
     Q_OBJECT
-    QML_ELEMENT
+    QML_SINGLETON
+    QML_NAMED_ELEMENT(PlanModel)
+
     Q_PROPERTY(QString name READ getName WRITE setName NOTIFY changedName);
     Q_PROPERTY(int repetitions READ getRepetitionCount WRITE setRepetitionCount NOTIFY changedRepetitions);
     static constexpr int planColumn = 0;
     static constexpr int intervalColumn = 1;
 
-signals:
-    void changedName();
-    void changedRepetitions();
+    explicit PlanModel(QObject* parent = nullptr);
+    static PlanModel* instance;
 
 public:
-    explicit PlanModel(QObject* parent = nullptr);
-    //~PlanModel();
+    static PlanModel* create(QQmlEngine*, QJSEngine* engine) {
+        if (!instance) {
+            instance = new PlanModel{};
+        }
+        return instance;
+    }
+
     enum { durationRole = Qt::UserRole, descriptionRole, subPlanRole, nameRole, isIntervalRole, isPlanRole };
 
     // Basic functionality:
@@ -62,6 +69,10 @@ protected:
     static bool containsInterval(QVariant const&);
 
     bool isDataSetable(const QModelIndex& index, const QVariant& value, int role) const;
+
+signals:
+    void changedName();
+    void changedRepetitions();
 
 private:
     std::shared_ptr<Plan> rootPlan;

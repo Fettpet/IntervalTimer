@@ -19,7 +19,4 @@ public:
 private:
     std::shared_ptr<QTimer> timer{new QTimer{}};
     std::unique_ptr<QThread> thread{new QThread{}};
-
-signals:
-    void timeout();
 };

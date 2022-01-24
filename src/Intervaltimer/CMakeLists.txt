@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 
 set(CMAKE_CXX_STANDARD 20)
 
-find_package(Qt6 6.2 COMPONENTS Quick  REQUIRED)
+find_package(Qt6 6.2 COMPONENTS Quick Qml REQUIRED)
 
 qt_add_library(Intervaltimer STATIC)
 
@@ -44,3 +44,7 @@ qt_add_qml_module(Intervaltimer
         intervaltimer/TimerBase.cpp
 )
 
+target_link_libraries(Intervaltimer PUBLIC
+    PUBLIC Qt6::Quick
+    PUBLIC Qt6::Qml
+    )

@@ -27,26 +27,27 @@ protected:
         planForModel->setName("Root");
         planForModel->setItemAt(0, plan);
 
-        model.setPlan(plan);
+        model = PlanModel::create(nullptr, nullptr);
+        model->setPlan(plan);
     }
 
 public:
     std::shared_ptr<Plan> nestedPlan{new Plan{}};
     std::shared_ptr<Plan> plan{new Plan{}};
     std::shared_ptr<Plan> planForModel{new Plan{}};
-    PlanModel model{};
+    PlanModel* model;
 };
 
 TEST_F(PlanModelTesting, numberColumns) { //
-    EXPECT_EQ(model.columnCount(), 2);
+    EXPECT_EQ(model->columnCount(), 2);
 }
 
 TEST_F(PlanModelTesting, rowCountRoot) { //
-    EXPECT_EQ(model.rowCount(), plan->getNumberItems());
+    EXPECT_EQ(model->rowCount(), plan->getNumberItems());
 }
 
 TEST_F(PlanModelTesting, indexRootInterval) {
-    QModelIndex index = model.index(0, 0);
+    QModelIndex index = model->index(0, 0);
     EXPECT_EQ(index.row(), 0);
     constexpr int IntervalColumn = 1;
     EXPECT_EQ(index.column(), IntervalColumn);
@@ -54,7 +55,7 @@ TEST_F(PlanModelTesting, indexRootInterval) {
 }
 
 TEST_F(PlanModelTesting, indexRootSubplan) {
-    QModelIndex index = model.index(2, 0);
+    QModelIndex index = model->index(2, 0);
     EXPECT_EQ(index.row(), 2);
     constexpr int PlanColumn = 0;
     EXPECT_EQ(index.column(), PlanColumn);
@@ -62,10 +63,10 @@ TEST_F(PlanModelTesting, indexRootSubplan) {
 }
 
 TEST_F(PlanModelTesting, rowCountOuter) { //
-    EXPECT_EQ(model.rowCount(), plan->getNumberItems());
+    EXPECT_EQ(model->rowCount(), plan->getNumberItems());
 }
 
 TEST_F(PlanModelTesting, rowCountInner) { //
-    QModelIndex index = model.index(2, 0);
-    EXPECT_EQ(model.rowCount(index), nestedPlan->getNumberItems());
+    QModelIndex index = model->index(2, 0);
+    EXPECT_EQ(model->rowCount(index), nestedPlan->getNumberItems());
 }
