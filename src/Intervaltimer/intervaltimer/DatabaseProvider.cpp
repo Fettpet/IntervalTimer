@@ -1,0 +1,118 @@
+#include "DatabaseProvider.h"
+#include "PlanFromJson.h"
+#include "PlanToJson.h"
+#include <QDir>
+#include <QFileInfo>
+#include <QJsonDocument>
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QSqlQuery>
+#include <QSqlRecord>
+#include <QString>
+#include <QSysInfo>
+#include <exception>
+
+DatabaseProvider::DatabaseProvider()
+    : database(new QSqlDatabase{})
+    , databasePath(getDatabaseDefaultPath()) {}
+
+void DatabaseProvider::setDatabasePath(const QString& path) { databasePath = path; }
+
+void DatabaseProvider::setDatabase(std::shared_ptr<QSqlDatabase> newDatabase) { database = newDatabase; }
+
+void DatabaseProvider::storePlan(QString const& name, const Plan& plan) {
+    if (!nameIsValid(name)) {
+        // TODO
+    }
+    auto query = transformToWriteQuery(name, plan);
+    query.exec();
+}
+
+Plan DatabaseProvider::loadPlan(QString const& name) {
+    if (!nameIsValid(name)) {
+        // TODO
+    }
+
+    auto query = transformToReadQuery(name);
+    Q_ASSERT(query.exec());
+    Q_ASSERT(query.first());
+    Q_ASSERT(query.isValid());
+
+    QSqlRecord rec = query.record();
+    auto text = rec.value(0).toString();
+    auto ptr = PlanFromJson::transform(text);
+    return *ptr;
+}
+
+void DatabaseProvider::initialize() {
+    auto const bufferDatabaseExists = databaseExists();
+    *database = QSqlDatabase::addDatabase("QSQLITE");
+    database->setDatabaseName(databasePath);
+    if (!bufferDatabaseExists) {
+        createDatabaseFolder();
+    }
+    if (!database->open()) {
+        qWarning() << "ERROR: " << database->lastError();
+        return;
+    }
+    if (!bufferDatabaseExists) {
+        createDatabase();
+    }
+}
+
+QString DatabaseProvider::getDatabaseDefaultPath() {
+    if (QSysInfo::productType() == "windows" || QSysInfo::productType() == "winrt") {
+        return QFile(QDir::homePath() + QDir::separator() + ".intervaltimer" + QDir::separator() + "storage.sqlite")
+            .fileName();
+    }
+    if (QSysInfo::productType() == "android") {
+        return QFile(QDir::homePath() + QDir::separator() + ".intervaltimer" + QDir::separator() + "storage.sqlite")
+            .fileName();
+    }
+    if (QSysInfo::kernelType() == "linux") {
+        return QFile(QDir::homePath() + QDir::separator() + ".intervaltimer" + QDir::separator() + "storage.sqlite")
+            .fileName();
+    }
+    throw std::runtime_error("Operating System not supported");
+}
+
+void DatabaseProvider::createDatabaseFolder() {
+    QFileInfo file(databasePath);
+    QDir dir = file.absoluteDir().path();
+    dir.mkdir(file.absoluteDir().path());
+}
+
+bool DatabaseProvider::databaseExists() { return databasePath != ":memory:" && QFileInfo::exists(databasePath); }
+
+void DatabaseProvider::createDatabase() {
+
+    QSqlQuery query("CREATE TABLE Plans (name TEXT PRIMARY KEY, plan TEXT)", *database);
+    query.exec();
+}
+
+QString DatabaseProvider::planToString(const Plan& plan) {
+    auto jsonObject = PlanToJson::transform(plan);
+    QJsonDocument document(jsonObject);
+    auto string = document.toJson();
+    return QString(string);
+}
+
+QSqlQuery DatabaseProvider::transformToWriteQuery(const QString& name, const Plan& plan) {
+    QSqlQuery query(*database);
+    auto planStr = planToString(plan);
+    query.prepare(
+        "INSERT INTO Plans (name, plan) "
+        "VALUES (:name, :plan);");
+    query.bindValue(":name", name);
+    query.bindValue(":plan", planStr);
+    return query;
+}
+
+QSqlQuery DatabaseProvider::transformToReadQuery(const QString& name) {
+    QSqlQuery query(*database);
+    query.prepare("Select plan from Plans where name = :name;");
+    query.bindValue(":name", name);
+    return query;
+}
+
+bool DatabaseProvider::nameIsValid(const QString&) { return true; }
