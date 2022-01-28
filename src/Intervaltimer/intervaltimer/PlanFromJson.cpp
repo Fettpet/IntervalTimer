@@ -25,3 +25,8 @@ std::shared_ptr<Plan> PlanFromJson::transform(const QJsonArray& array) {
 std::shared_ptr<Plan> PlanFromJson::transform(const QJsonDocument& document) {
     return PlanFromJson::transform(document.array());
 }
+
+std::shared_ptr<Plan> PlanFromJson::transform(const QString& str) {
+    auto json = QJsonDocument::fromJson(str.toLocal8Bit());
+    return PlanFromJson::transform(json);
+}
