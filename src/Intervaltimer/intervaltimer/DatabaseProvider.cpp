@@ -21,9 +21,6 @@ void DatabaseProvider::setDatabasePath(const QString& path) { databasePath = pat
 void DatabaseProvider::setDatabase(std::shared_ptr<QSqlDatabase> newDatabase) { database = newDatabase; }
 
 void DatabaseProvider::storePlan(QString const& name, const Plan& plan) {
-    if (!nameIsValid(name)) {
-        // TODO
-    }
     auto query = transformToWriteQuery(name, plan);
     query.exec();
     planBuffer[name] = plan;
@@ -129,7 +126,6 @@ QSqlQuery DatabaseProvider::transformToReadQuery(const QString& name) {
     return query;
 }
 
-bool DatabaseProvider::nameIsValid(const QString&) { return true; }
 void DatabaseProvider::loadAllPlans() {
     QSqlQuery query("SELECT name, plan FROM Plans", *database);
     if (query.exec() && query.first()) {

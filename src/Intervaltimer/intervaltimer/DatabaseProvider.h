@@ -37,7 +37,7 @@ protected:
     static QString planToString(Plan const&);
     QSqlQuery transformToWriteQuery(QString const& name, Plan const& plan);
     QSqlQuery transformToReadQuery(QString const& name);
-    static bool nameIsValid(QString const&);
+
     void loadAllPlans();
 
     std::shared_ptr<QSqlDatabase> database;
