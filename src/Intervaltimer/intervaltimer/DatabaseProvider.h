@@ -2,6 +2,7 @@
 
 #include <Plan.h>
 #include <QDir>
+#include <QMap>
 #include <QObject>
 #include <QSqlDatabase>
 #include <QString>
@@ -24,6 +25,9 @@ public:
 
     void initialize();
 
+    QMap<QString, Plan>::const_iterator beginPlans() const;
+    QMap<QString, Plan>::const_iterator endPlans() const;
+
 protected:
     static QString getDatabaseDefaultPath();
     bool databaseExists();
@@ -33,10 +37,13 @@ protected:
     QSqlQuery transformToWriteQuery(QString const& name, Plan const& plan);
     QSqlQuery transformToReadQuery(QString const& name);
     static bool nameIsValid(QString const&);
+    void loadAllPlans();
 
     std::shared_ptr<QSqlDatabase> database;
     QString databasePath;
 
     void createDatabaseFolder();
 
+private:
+    QMap<QString, Plan> planBuffer;
 };

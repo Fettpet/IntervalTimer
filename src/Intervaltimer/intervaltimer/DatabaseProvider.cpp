@@ -26,11 +26,12 @@ void DatabaseProvider::storePlan(QString const& name, const Plan& plan) {
     }
     auto query = transformToWriteQuery(name, plan);
     query.exec();
+    planBuffer[name] = plan;
 }
 
 Plan DatabaseProvider::loadPlan(QString const& name) {
-    if (!nameIsValid(name)) {
-        // TODO
+    if (planBuffer.contains(name)) {
+        return planBuffer[name];
     }
 
     auto query = transformToReadQuery(name);
@@ -58,7 +59,11 @@ void DatabaseProvider::initialize() {
     if (!bufferDatabaseExists) {
         createDatabase();
     }
+    loadAllPlans();
 }
+
+QMap<QString, Plan>::const_iterator DatabaseProvider::beginPlans() const { return planBuffer.cbegin(); }
+QMap<QString, Plan>::const_iterator DatabaseProvider::endPlans() const { return planBuffer.cend(); }
 
 QString DatabaseProvider::getDatabaseDefaultPath() {
     if (QSysInfo::productType() == "windows" || QSysInfo::productType() == "winrt") {
@@ -116,3 +121,14 @@ QSqlQuery DatabaseProvider::transformToReadQuery(const QString& name) {
 }
 
 bool DatabaseProvider::nameIsValid(const QString&) { return true; }
+void DatabaseProvider::loadAllPlans() {
+    QSqlQuery query("SELECT name, plan FROM Plans", *database);
+    if (query.exec() && query.first()) {
+        do {
+            auto record = query.record();
+            auto name = record.value("name").toString();
+            auto plan = record.value("plan").toString();
+            planBuffer[name] = *PlanFromJson::transform(plan);
+        } while (query.next());
+    }
+}
