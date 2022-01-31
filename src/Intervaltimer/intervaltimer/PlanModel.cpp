@@ -244,6 +244,13 @@ void PlanModel::loadPlanFromFile(const QString& filename) {
     setPlan(plan);
 }
 
+PlanModel* PlanModel::create(QQmlEngine*, QJSEngine* engine) {
+    if (!instance) {
+        instance = new PlanModel{};
+    }
+    return instance;
+}
+
 bool PlanModel::containsPlan(const QModelIndex& index) { return index.column() == planColumn; }
 
 bool PlanModel::containsInterval(const QModelIndex& index) { return index.column() == intervalColumn; }
