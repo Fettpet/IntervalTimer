@@ -45,6 +45,15 @@ Plan DatabaseProvider::loadPlan(QString const& name) {
     return *ptr;
 }
 
+void DatabaseProvider::deletePlan(const QString& name) {
+    QSqlQuery query(*database);
+    query.prepare(
+        "DELETE FROM Plans "
+        "WHERE name = :name;");
+    query.bindValue(":name", name);
+    query.exec();
+    planBuffer.remove(name);
+}
 void DatabaseProvider::initialize() {
     auto const bufferDatabaseExists = databaseExists();
     *database = QSqlDatabase::addDatabase("QSQLITE");

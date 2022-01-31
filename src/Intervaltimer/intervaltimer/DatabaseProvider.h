@@ -22,6 +22,7 @@ public:
     QVector<QString> nameOfAllPlans();
 
     Plan loadPlan(QString const& name);
+    void deletePlan(QString const& name);
 
     void initialize();
 
