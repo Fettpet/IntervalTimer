@@ -19,7 +19,7 @@ public:
 
     void storePlan(QString const& name, Plan const&);
 
-    QVector<QString> nameOfAllPlans();
+    QList<QString> nameOfAllPlans() const;
 
     Plan loadPlan(QString const& name);
     void deletePlan(QString const& name);

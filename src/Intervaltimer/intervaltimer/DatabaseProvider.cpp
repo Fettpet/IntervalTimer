@@ -26,6 +26,8 @@ void DatabaseProvider::storePlan(QString const& name, const Plan& plan) {
     planBuffer[name] = plan;
 }
 
+QList<QString> DatabaseProvider::nameOfAllPlans() const { return planBuffer.keys(); }
+
 Plan DatabaseProvider::loadPlan(QString const& name) {
     if (planBuffer.contains(name)) {
         return planBuffer[name];
