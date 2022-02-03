@@ -39,9 +39,14 @@ jobs:
           $deploy_exe = "${Env:Qt6_DIR}" + "/bin/windeployqt.exe"
           & $deploy_exe --dir . --qmldir ../build ../build/src/IntervaltimerApplication.exe
 
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
       - uses: actions/upload-artifact@v2
         with:
-          name: windows
+          name: Intervaltimer-${{ steps.extract_branch.outputs.branch }}-windows-x86.zip
           path: deploy
 
   Deploy-Android:
@@ -62,7 +67,12 @@ jobs:
           ghcr.io/fettpet/docker_qt_android:qt6.2.2-android_sdk7583922
           -DCMAKE_BUILD_TYPE=Release
 
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
       - uses: actions/upload-artifact@v2
         with:
-          name: IntervalTimer.apk
+          name: Intervaltimer-${{ steps.extract_branch.outputs.branch }}-android.apk
           path: build/src/android-build/build/outputs/apk/debug/android-build-debug.apk
