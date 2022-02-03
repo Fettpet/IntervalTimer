@@ -43,11 +43,20 @@ jobs:
         shell: bash
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
         id: extract_branch
-
-      - uses: actions/upload-artifact@v2
+      
+      - name: zip the build
+        uses: vimtor/action-zip@v1
         with:
-          name: Intervaltimer-${{ steps.extract_branch.outputs.branch }}-windows-x86.zip
-          path: deploy
+          files: deploy/ 
+          dest: Intervaltimer-${{ steps.extract_branch.outputs.branch }}-windows-x86.zip
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: Intervaltimer-${{ steps.extract_branch.outputs.branch }}-windows-x86.zip
+          prerelease: false
+          title: Intervaltimer-${{ steps.extract_branch.outputs.branch }}-windows-x86.zip
+          files: Intervaltimer-${{ steps.extract_branch.outputs.branch }}-windows-x86.zip
 
   Deploy-Android:
     name: "Deploy Intervaltimer for Android"
@@ -72,7 +81,10 @@ jobs:
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
         id: extract_branch
 
-      - uses: actions/upload-artifact@v2
+      - uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          name: Intervaltimer-${{ steps.extract_branch.outputs.branch }}-android.apk
-          path: build/src/android-build/build/outputs/apk/debug/android-build-debug.apk
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: Intervaltimer-${{ steps.extract_branch.outputs.branch }}-android.apk
+          prerelease: false
+          title: "Intervaltimer-${{ steps.extract_branch.outputs.branch }}-android.apk"
+          files: build/src/android-build/build/outputs/apk/debug/android-build-debug.apk
