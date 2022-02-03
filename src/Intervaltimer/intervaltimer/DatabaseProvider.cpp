@@ -21,7 +21,13 @@ void DatabaseProvider::setDatabasePath(const QString& path) { databasePath = pat
 void DatabaseProvider::setDatabase(std::shared_ptr<QSqlDatabase> newDatabase) { database = newDatabase; }
 
 void DatabaseProvider::storePlan(QString const& name, const Plan& plan) {
-    auto query = transformToWriteQuery(name, plan);
+    QSqlQuery query;
+    if (planBuffer.contains(name)) {
+        query = transformToUpdateQuery(name, plan);
+    }
+    else {
+        query = transformToWriteQuery(name, plan);
+    }
     query.exec();
     planBuffer[name] = plan;
 }
@@ -116,6 +122,18 @@ QSqlQuery DatabaseProvider::transformToWriteQuery(const QString& name, const Pla
     query.prepare(
         "INSERT INTO Plans (name, plan) "
         "VALUES (:name, :plan);");
+    query.bindValue(":name", name);
+    query.bindValue(":plan", planStr);
+    return query;
+}
+
+QSqlQuery DatabaseProvider::transformToUpdateQuery(const QString& name, const Plan& plan) {
+    QSqlQuery query(*database);
+    auto planStr = planToString(plan);
+    query.prepare(
+        "UPDATE Plans"
+        "SET plan = :plan"
+        "WHERE name = :name;");
     query.bindValue(":name", name);
     query.bindValue(":plan", planStr);
     return query;

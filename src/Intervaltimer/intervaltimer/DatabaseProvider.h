@@ -36,6 +36,7 @@ protected:
 
     static QString planToString(Plan const&);
     QSqlQuery transformToWriteQuery(QString const& name, Plan const& plan);
+    QSqlQuery transformToUpdateQuery(QString const& name, Plan const& plan);
     QSqlQuery transformToReadQuery(QString const& name);
 
     void loadAllPlans();
