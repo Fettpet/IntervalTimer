@@ -57,6 +57,9 @@ public:
     Q_INVOKABLE void savePlanToFile(QString const& filename);
     Q_INVOKABLE void loadPlanFromFile(QString const& filename);
 
+public slots:
+    void reset();
+
 protected:
     static bool containsPlan(QModelIndex const&);
     static bool containsInterval(QModelIndex const&);
