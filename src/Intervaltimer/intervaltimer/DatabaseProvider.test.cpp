@@ -5,8 +5,6 @@
 #include <gtest/gtest.h>
 #include <memory>
 
-struct TestDatabaseProvider : public DatabaseProvider {};
-
 struct DatabaseProviderTest : public ::testing::Test {
 
     void SetUp() override {
@@ -38,7 +36,7 @@ struct DatabaseProviderTest : public ::testing::Test {
     std::shared_ptr<Plan> plan{new Plan{}};
 
     std::shared_ptr<QSqlDatabase> database;
-    TestDatabaseProvider provider;
+    DatabaseProvider provider;
 };
 
 TEST_F(DatabaseProviderTest, Initialize) {
@@ -56,6 +54,16 @@ TEST_F(DatabaseProviderTest, storePlan) {
     auto name = record.value("name");
     EXPECT_EQ(name.toString().toStdString(), "Test");
     EXPECT_FALSE(query.next());
+}
+
+TEST_F(DatabaseProviderTest, updatePlan) {
+    provider.storePlan("Test", *plan);
+    auto newPlan = provider.loadPlan("Test");
+    EXPECT_EQ(newPlan.getName(), "Ou'ter");
+    newPlan.setName("Updated");
+    provider.storePlan("Test", newPlan);
+    auto updatedPlan = provider.loadPlan("Test");
+    EXPECT_EQ(updatedPlan.getName(), "Updated");
 }
 
 TEST_F(DatabaseProviderTest, insertAndLoad) {
