@@ -16,9 +16,11 @@ qt_add_qml_module(Intervaltimer
     PLUGIN_TARGET IntervaltimerPlugin
     QML_FILES
         qml/IntervalView.qml
+        qml/LoadPlanView.qml
         qml/PlanView.qml
         qml/PlanEditorView.qml
         qml/PlanRunningView.qml
+        qml/StorePlanView.qml
     SOURCES
         intervaltimer/DatabaseProvider.h
         intervaltimer/DatabaseProvider.cpp
