@@ -2,8 +2,8 @@ name: Deploy Runner
 
 on:
   push:
-    branches:
-      - master
+    tags:        
+      - '*'
 
 jobs:
   Deploy-MSCV:
