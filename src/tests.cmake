@@ -8,11 +8,13 @@ if(${BUILD_INTERVAL_TESTS})
     find_package(Qt6 6.2 COMPONENTS Test REQUIRED)
 
     add_executable(UnitTests
+        Intervaltimer/intervaltimer/DatabaseProvider.test.cpp
         Intervaltimer/intervaltimer/Interval.test.cpp
         Intervaltimer/intervaltimer/Plan.test.cpp
         Intervaltimer/intervaltimer/PlanIterator.test.cpp
         Intervaltimer/intervaltimer/PlanModel.test.cpp
         Intervaltimer/intervaltimer/PlanRunner.test.cpp
+        Intervaltimer/intervaltimer/PlanStorageModel.test.cpp
         Intervaltimer/intervaltimer/Timer.test.cpp
         Intervaltimer/intervaltimer/main.test.cpp
     )

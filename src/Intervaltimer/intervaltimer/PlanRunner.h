@@ -30,12 +30,7 @@ class PlanRunner : public QObject {
     static PlanRunner* instance;
 
 public:
-    static PlanRunner* create(QQmlEngine*, QJSEngine* engine) {
-        if (!instance) {
-            instance = new PlanRunner{};
-        }
-        return instance;
-    }
+    static PlanRunner* create(QQmlEngine*, QJSEngine* engine);
     ~PlanRunner() {}
 
     int getPlanDurationCompleteTime() const;

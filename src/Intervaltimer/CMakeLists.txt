@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 
 set(CMAKE_CXX_STANDARD 20)
 
-find_package(Qt6 6.2 COMPONENTS Quick Qml REQUIRED)
+find_package(Qt6 6.2 COMPONENTS Quick Qml Sql Core REQUIRED)
 
 qt_add_library(Intervaltimer STATIC)
 
@@ -16,10 +16,14 @@ qt_add_qml_module(Intervaltimer
     PLUGIN_TARGET IntervaltimerPlugin
     QML_FILES
         qml/IntervalView.qml
+        qml/LoadPlanView.qml
         qml/PlanView.qml
         qml/PlanEditorView.qml
         qml/PlanRunningView.qml
+        qml/StorePlanView.qml
     SOURCES
+        intervaltimer/DatabaseProvider.h
+        intervaltimer/DatabaseProvider.cpp
         intervaltimer/Interval.cpp
         intervaltimer/Interval.h
         intervaltimer/IntervalFromJson.h
@@ -36,6 +40,8 @@ qt_add_qml_module(Intervaltimer
         intervaltimer/PlanFromJson.cpp
         intervaltimer/PlanRunner.h
         intervaltimer/PlanRunner.cpp
+        intervaltimer/PlanStorageModel.h
+        intervaltimer/PlanStorageModel.cpp
         intervaltimer/PlanToJson.h
         intervaltimer/PlanToJson.cpp
         intervaltimer/Timer.h
@@ -47,4 +53,6 @@ qt_add_qml_module(Intervaltimer
 target_link_libraries(Intervaltimer PUBLIC
     PUBLIC Qt6::Quick
     PUBLIC Qt6::Qml
+    PUBLIC Qt6::Sql
+    PUBLIC Qt6::Core
     )

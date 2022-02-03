@@ -15,6 +15,14 @@ Frame {
             onLoaded: item.planModel = planModel
         }
 
+        StorePlanView {
+            id: loaderStorePlan
+        }
+
+        LoadPlanView {
+            id: loaderLoadPlan
+        }
+
         Component {
             id: planComponent
             PlanView {
@@ -24,11 +32,15 @@ Frame {
         RowLayout {
             Button {
                 text: "Save"
-                onClicked: root.planModel.savePlanToFile("S:\\test.json")
+                onClicked: {
+                    loaderStorePlan.open()
+                }
             }
             Button {
                 text: "Load"
-                onClicked: root.planModel.loadPlanFromFile("S:\\test.json")
+                onClicked: {
+                    loaderLoadPlan.open()
+                }
             }
             Button {
                 text: "run"

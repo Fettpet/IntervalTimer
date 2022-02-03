@@ -36,6 +36,13 @@ void PlanRunner::setRefreshingTimePlan(const int& newTime) {
     refreshingTimeForRunningPlan = std::chrono::milliseconds{newTime};
 }
 
+PlanRunner* PlanRunner::create(QQmlEngine*, QJSEngine* engine) {
+    if (!instance) {
+        instance = new PlanRunner{};
+    }
+    return instance;
+}
+
 void PlanRunner::start() {
     stop();
 

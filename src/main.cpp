@@ -1,6 +1,7 @@
 #include <Plan.h>
 #include <PlanModel.h>
 #include <PlanRunner.h>
+#include <PlanStorageModel.h>
 #include <QGuiApplication>
 #include <QLocale>
 #include <QQmlApplicationEngine>
@@ -50,6 +51,12 @@ int main(int argc, char* argv[]) {
 
     engine.addImportPath(QStringLiteral("qrc:/"));
     PlanRunner::create(nullptr, nullptr)->setPlan(plan);
+    PlanStorageModel::create(nullptr, nullptr)->setPlan(plan);
+    QObject::connect(
+        PlanStorageModel::create(nullptr, nullptr),
+        SIGNAL(planChanged()),
+        PlanModel::create(nullptr, nullptr),
+        SLOT(reset()));
 
     const QUrl url(u"qrc:/IntervalApplication/main.qml"_qs);
     QObject::connect(

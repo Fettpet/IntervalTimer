@@ -20,12 +20,7 @@ class PlanModel : public QAbstractItemModel {
     static PlanModel* instance;
 
 public:
-    static PlanModel* create(QQmlEngine*, QJSEngine* engine) {
-        if (!instance) {
-            instance = new PlanModel{};
-        }
-        return instance;
-    }
+    static PlanModel* create(QQmlEngine*, QJSEngine* engine);
 
     enum { durationRole = Qt::UserRole, descriptionRole, subPlanRole, nameRole, isIntervalRole, isPlanRole };
 
@@ -61,6 +56,9 @@ public:
 
     Q_INVOKABLE void savePlanToFile(QString const& filename);
     Q_INVOKABLE void loadPlanFromFile(QString const& filename);
+
+public slots:
+    void reset();
 
 protected:
     static bool containsPlan(QModelIndex const&);
