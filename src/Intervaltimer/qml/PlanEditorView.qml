@@ -15,14 +15,6 @@ Frame {
             onLoaded: item.planModel = planModel
         }
 
-        StorePlanView {
-            id: loaderStorePlan
-        }
-
-        LoadPlanView {
-            id: loaderLoadPlan
-        }
-
         Component {
             id: planComponent
             PlanView {
@@ -46,6 +38,16 @@ Frame {
                 text: "run"
                 onClicked: startRunning()
             }
+        }
+
+        StorePlanView {
+            id: loaderStorePlan
+            anchors.centerIn: parent
+        }
+
+        LoadPlanView {
+            id: loaderLoadPlan
+            anchors.centerIn: parent
         }
     }
 }

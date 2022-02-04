@@ -16,7 +16,7 @@ Popup {
         RowLayout {
             TextField {
                 id: nameEdit
-                text: "root.duration"
+                text: "name"
             }
             Button {
                 text: "save"
