@@ -8,25 +8,30 @@ Popup {
     id: root
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
 
-    Rectangle {
-        color: "red"
-        width: 200
-        height: 500
+    width: 200
+    height: 300
+    RowLayout {
         ColumnLayout {
             Repeater {
                 model: PlanStorageModel
-                RowLayout {
-                    Button {
-                        text: nameRole
-                        onClicked: {
-                            PlanStorageModel.loadPlan(nameRole)
-                        }
+
+                Button {
+                    text: nameRole
+                    onClicked: {
+                        PlanStorageModel.loadPlan(nameRole)
                     }
-                    Button {
-                        text: "X"
-                        onClicked: {
-                            PlanStorageModel.removePlan(nameRole)
-                        }
+                }
+            }
+        }
+
+        ColumnLayout {
+            Repeater {
+                model: PlanStorageModel
+
+                Button {
+                    text: "X"
+                    onClicked: {
+                        PlanStorageModel.removePlan(nameRole)
                     }
                 }
             }
