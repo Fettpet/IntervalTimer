@@ -13,6 +13,11 @@ Frame {
 
     contentItem: RowLayout {
         TextInput {
+            id: repetitionEdit
+
+            validator: IntValidator {
+                bottom: 1
+            }
             text: planModel ? planModel.repetitions : ""
             onEditingFinished: planModel.repetitions = text
         }

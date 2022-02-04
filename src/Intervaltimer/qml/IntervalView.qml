@@ -9,6 +9,9 @@ RowLayout {
 
     TextField {
         id: durationEdit
+        validator: IntValidator {
+            bottom: 1
+        }
         text: root.duration
         onEditingFinished: root.duration = text
     }
