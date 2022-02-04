@@ -41,7 +41,7 @@ jobs:
 
       - name: Extract branch name
         shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/tags/})"
         id: extract_branch
       
       - name: zip the build
@@ -55,7 +55,7 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: Intervaltimer-${{ steps.extract_branch.outputs.branch }}-windows-x86.zip
           prerelease: false
-          title: Intervaltimer-${{ steps.extract_branch.outputs.branch }}-windows-x86.zip
+          title: Intervaltimer-${{ steps.extract_branch.outputs.branch }}-windows-x86
           files: Intervaltimer-${{ steps.extract_branch.outputs.branch }}-windows-x86.zip
 
   Deploy-Android:
@@ -78,7 +78,7 @@ jobs:
 
       - name: Extract branch name
         shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/tags/})"
         id: extract_branch
 
       - uses: "marvinpinto/action-automatic-releases@latest"
@@ -86,5 +86,5 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: Intervaltimer-${{ steps.extract_branch.outputs.branch }}-android.apk
           prerelease: false
-          title: "Intervaltimer-${{ steps.extract_branch.outputs.branch }}-android.apk"
+          title: "Intervaltimer-${{ steps.extract_branch.outputs.branch }}-android"
           files: build/src/android-build/build/outputs/apk/debug/android-build-debug.apk
