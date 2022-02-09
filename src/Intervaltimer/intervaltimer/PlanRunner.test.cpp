@@ -110,3 +110,14 @@ TEST_F(PlanRunnerTesting, changedPlanRunningTime) {
     planRefreshingTimer->emitTimeout();
     EXPECT_EQ(spy.count(), 1);
 }
+
+TEST_F(PlanRunnerTesting, Restart) {
+    EXPECT_EQ(runner->getDescriptionOfInterval().toStdString(), "first");
+    intervalTimer->emitTimeout();
+    EXPECT_EQ(runner->getDescriptionOfInterval().toStdString(), "second");
+    runner->stop();
+    runner->start();
+    EXPECT_EQ(runner->getDescriptionOfInterval().toStdString(), "first");
+    intervalTimer->emitTimeout();
+    EXPECT_EQ(runner->getDescriptionOfInterval().toStdString(), "second");
+}
