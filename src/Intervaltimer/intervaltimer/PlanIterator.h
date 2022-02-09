@@ -15,7 +15,12 @@ public:
 
 public:
     PlanIterator();
+    PlanIterator(PlanIterator const&) = default;
+    PlanIterator(PlanIterator &&) = default;
     PlanIterator(std::shared_ptr<Plan> const&);
+
+    PlanIterator& operator=(PlanIterator const&) = default;
+    PlanIterator& operator=(PlanIterator&&) = default;
 
     reference operator*();
     pointer operator->();

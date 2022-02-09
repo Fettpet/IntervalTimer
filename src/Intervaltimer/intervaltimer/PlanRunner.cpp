@@ -57,7 +57,9 @@ void PlanRunner::start() {
 }
 
 void PlanRunner::stop() {
-    disconnect();
+    disconnect(intervalTimer.get(), SIGNAL(timeout()), this, SLOT(changedInterval()));
+    disconnect(intervalRefreshingTimer.get(), SIGNAL(timeout()), this, SLOT(changedIntervalRunningTime()));
+    disconnect(planRefreshingTimer.get(), SIGNAL(timeout()), this, SLOT(changedPlanRunningTime()));
     planRefreshingTimer->stop();
     intervalTimer->stop();
     intervalRefreshingTimer->stop();
