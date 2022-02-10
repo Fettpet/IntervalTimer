@@ -21,6 +21,7 @@ qt_add_qml_module(Intervaltimer
         qml/PlanEditorView.qml
         qml/PlanRunningView.qml
         qml/StorePlanView.qml
+        qml/ProgressView.qml
     SOURCES
         intervaltimer/DatabaseProvider.h
         intervaltimer/DatabaseProvider.cpp

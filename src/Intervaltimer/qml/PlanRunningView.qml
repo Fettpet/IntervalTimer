@@ -10,16 +10,16 @@ Frame {
     signal stopRunning
 
     ColumnLayout {
-        Text {
-            text: "Interval-Name: " + PlanRunner.intervalDescription
-        }
-        Text {
-            text: "Interval-Time: " + PlanRunner.intervalDurationRunningTime
-                  + "/" + PlanRunner.intervalDurationCompleteTime
-        }
-        Text {
-            text: "Plan-Time: " + PlanRunner.planDurationRunningTime + "/"
-                  + PlanRunner.planDurationCompleteTime
+
+        ProgressView {
+            minimumValueInner: 0
+            maximumValueInner: PlanRunner.intervalDurationCompleteTime
+            currentValueInner: PlanRunner.intervalDurationRunningTime
+            minimumValueOuter: 0
+            maximumValueOuter: PlanRunner.planDurationCompleteTime
+            currentValueOuter: PlanRunner.planDurationRunningTime
+
+            text: PlanRunner.intervalDescription
         }
 
         Button {
