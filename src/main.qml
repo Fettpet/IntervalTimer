@@ -18,10 +18,10 @@ Window {
         active: !root.isRunning
         width: !root.isRunning ? parent.width : 0
         height: !root.isRunning ? parent.height : 0
-        x: 0
-        y: 0
         sourceComponent: PlanEditorView {
             planModel: PlanModel
+            width: root.width
+            height: root.height
             onStartRunning: {
                 PlanRunner.start()
                 root.isRunning = true
@@ -34,6 +34,8 @@ Window {
         width: root.isRunning ? parent.width : 0
         height: root.isRunning ? parent.height : 0
         sourceComponent: PlanRunningView {
+            width: root.width
+            height: root.height
             onStopRunning: {
                 root.isRunning = false
             }
