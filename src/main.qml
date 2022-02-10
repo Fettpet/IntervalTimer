@@ -13,27 +13,29 @@ Window {
     visible: true
     title: qsTr("Hello World")
 
-    ColumnLayout {
-        id: layout
-
-        Loader {
-            id: editorLoader
-            active: !root.isRunning
-            sourceComponent: PlanEditorView {
-                planModel: PlanModel
-                onStartRunning: {
-                    PlanRunner.start()
-                    root.isRunning = true
-                }
+    Loader {
+        id: editorLoader
+        active: !root.isRunning
+        width: !root.isRunning ? parent.width : 0
+        height: !root.isRunning ? parent.height : 0
+        x: 0
+        y: 0
+        sourceComponent: PlanEditorView {
+            planModel: PlanModel
+            onStartRunning: {
+                PlanRunner.start()
+                root.isRunning = true
             }
         }
-        Loader {
-            id: runnerLoader
-            active: root.isRunning
-            sourceComponent: PlanRunningView {
-                onStopRunning: {
-                    root.isRunning = false
-                }
+    }
+    Loader {
+        id: runnerLoader
+        active: root.isRunning
+        width: root.isRunning ? parent.width : 0
+        height: root.isRunning ? parent.height : 0
+        sourceComponent: PlanRunningView {
+            onStopRunning: {
+                root.isRunning = false
             }
         }
     }
