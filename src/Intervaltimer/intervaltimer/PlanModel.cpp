@@ -226,6 +226,8 @@ void PlanModel::removeItem(const int& index) {
 
 void PlanModel::reset() {
     beginResetModel();
+    emit changedRepetitions();
+    emit changedName();
     endResetModel();
 }
 
