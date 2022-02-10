@@ -4,21 +4,42 @@ PlanRunner* PlanRunner::instance = nullptr;
 
 PlanRunner::PlanRunner() {}
 
-int PlanRunner::getPlanDurationCompleteTime() const { return planTimer->getDuration().count(); }
+int PlanRunner::getPlanDurationCompleteTime() const {
+    if(!isRunning){
+        return 1;
+    }
+    return planTimer->getDuration().count();
+}
 
-int PlanRunner::getPlanDurationRunningTime() const { return planTimer->getElapsedTime().count(); }
+int PlanRunner::getPlanDurationRunningTime() const {
+    if(!isRunning){
+        return 1;
+    }
+    return planTimer->getElapsedTime().count();
+}
 
 QString PlanRunner::getDescriptionOfInterval() const {
+    if(!isRunning){
+        return "";
+    }
     Q_ASSERT(iterator != PlanIterator{});
     return iterator->getDescription();
 }
 
 int PlanRunner::getIntervalDuration() const {
+    if(!isRunning){
+        return 1;
+    }
     Q_ASSERT(iterator != PlanIterator{});
     return iterator->getDuration<std::chrono::milliseconds>().count();
 }
 
-int PlanRunner::getIntervalElapsedTime() const { return intervalTimer->getElapsedTime().count(); }
+int PlanRunner::getIntervalElapsedTime() const {
+    if(!isRunning){
+        return 1;
+    }
+    return intervalTimer->getElapsedTime().count();
+}
 
 std::weak_ptr<Plan> PlanRunner::getPlan() const { return plan; }
 
@@ -75,6 +96,10 @@ void PlanRunner::changedInterval() {
     ++iterator;
     if (iterator == plan->end()) {
         stop();
+        emit changedDescriptionOfInterval();
+        emit changedIntervalDurationCompleteTime();
+        emit changedIntervalDurationRunningTime();
+        emit changedPlanDurationRunningTime();
         emit finished();
         return;
     }
