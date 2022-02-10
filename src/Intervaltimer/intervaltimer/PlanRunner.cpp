@@ -5,38 +5,36 @@ PlanRunner* PlanRunner::instance = nullptr;
 PlanRunner::PlanRunner() {}
 
 int PlanRunner::getPlanDurationCompleteTime() const {
-    if(!isRunning){
+    if (!isRunning) {
         return 1;
     }
     return planTimer->getDuration().count();
 }
 
 int PlanRunner::getPlanDurationRunningTime() const {
-    if(!isRunning){
+    if (!isRunning) {
         return 1;
     }
     return planTimer->getElapsedTime().count();
 }
 
 QString PlanRunner::getDescriptionOfInterval() const {
-    if(!isRunning){
+    if (!intervalIsValid()) {
         return "";
     }
-    Q_ASSERT(iterator != PlanIterator{});
     return iterator->getDescription();
 }
 
 int PlanRunner::getIntervalDuration() const {
-    if(!isRunning){
-        return 1;
+    if (!intervalIsValid()) {
+        return -1;
     }
-    Q_ASSERT(iterator != PlanIterator{});
     return iterator->getDuration<std::chrono::milliseconds>().count();
 }
 
 int PlanRunner::getIntervalElapsedTime() const {
-    if(!isRunning){
-        return 1;
+    if (!intervalIsValid()) {
+        return -1;
     }
     return intervalTimer->getElapsedTime().count();
 }
@@ -74,7 +72,7 @@ void PlanRunner::start() {
     planTimer->start(plan->getDuration());
     isRunning = true;
     iterator = plan->begin();
-    startInterval();
+    if (iterator != plan->end()) startInterval();
 }
 
 void PlanRunner::stop() {
@@ -90,6 +88,19 @@ void PlanRunner::stop() {
 void PlanRunner::startInterval() {
     intervalTimer->start(iterator->getDuration<std::chrono::milliseconds>());
     intervalRefreshingTimer->start(refreshingTimeForRunningInterval);
+}
+
+bool PlanRunner::intervalIsValid() const {
+    if (!isRunning) {
+        return false;
+    }
+    if (plan == nullptr) {
+        return false;
+    }
+    if (iterator == plan->end()) {
+        return false;
+    }
+    return true;
 }
 
 void PlanRunner::changedInterval() {
