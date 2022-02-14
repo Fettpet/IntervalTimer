@@ -13,22 +13,25 @@ protected:
         plan->appendInterval();
         plan->appendInterval();
         plan->appendPlan();
-        auto outerFirst = Interval{std::chrono::seconds{1}, "first"};
-        auto outerSecond = Interval{std::chrono::seconds{2}, "second"};
+
         plan->setItemAt(0, outerFirst);
         plan->setItemAt(1, outerSecond);
         nestedPlan->setName("Inner");
         nestedPlan->setNumberRepetitions(12);
         nestedPlan->appendInterval();
         nestedPlan->appendInterval();
-        nestedPlan->setItemAt(0, Interval{std::chrono::seconds{3}, "third"});
-        nestedPlan->setItemAt(1, Interval{std::chrono::seconds{4}, "fourth"});
+        nestedPlan->setItemAt(0, innerFirst);
+        nestedPlan->setItemAt(1, innerSecond);
         plan->setItemAt(2, nestedPlan);
     }
 
 public:
     std::shared_ptr<Plan> nestedPlan{new Plan{}};
     std::shared_ptr<Plan> plan{new Plan{}};
+    Interval outerFirst = Interval{std::chrono::seconds{1}, "first"};
+    Interval outerSecond = Interval{std::chrono::seconds{2}, "second"};
+    Interval innerFirst = Interval{std::chrono::seconds{3}, "third"};
+    Interval innerSecond = Interval{std::chrono::seconds{4}, "fourth"};
 };
 
 TEST_F(PlanTesting, getRow) {
@@ -114,4 +117,26 @@ TEST_F(PlanTesting, numberRepetions) {
 
     plan.setNumberRepetitions(42);
     EXPECT_EQ(plan.getNumberRepetitions(), 42);
+}
+
+TEST_F(PlanTesting, isIntervalAt) {
+    EXPECT_TRUE(plan->isIntervalAt(0));
+    EXPECT_FALSE(plan->isIntervalAt(2));
+}
+
+TEST_F(PlanTesting, isPlanAt) {
+    EXPECT_FALSE(plan->isPlanAt(0));
+    EXPECT_TRUE(plan->isPlanAt(2));
+}
+
+TEST_F(PlanTesting, getIntervalAt) {
+    EXPECT_EQ(plan->getIntervalAt(0), outerFirst);
+
+    EXPECT_ANY_THROW(plan->getIntervalAt(2));
+}
+
+TEST_F(PlanTesting, getPlanAt) {
+    EXPECT_EQ(plan->getPlanAt(2), nestedPlan);
+
+    EXPECT_ANY_THROW(plan->getPlanAt(1));
 }
