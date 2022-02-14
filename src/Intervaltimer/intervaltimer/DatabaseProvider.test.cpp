@@ -14,7 +14,6 @@ struct DatabaseProviderTest : public ::testing::Test {
         provider.setDatabase(database);
         provider.initialize();
 
-        std::shared_ptr<Plan> nestedPlan{new Plan{}};
         plan->setName("Ou'ter");
         plan->setNumberRepetitions(10);
         plan->appendInterval();
@@ -24,6 +23,7 @@ struct DatabaseProviderTest : public ::testing::Test {
         auto outerSecond = Interval{std::chrono::seconds{2}, "second"};
         plan->setItemAt(0, outerFirst);
         plan->setItemAt(1, outerSecond);
+        std::shared_ptr<Plan> nestedPlan{new Plan{}};
         nestedPlan->setName("Inner");
         nestedPlan->setNumberRepetitions(12);
         nestedPlan->appendInterval();
@@ -70,4 +70,30 @@ TEST_F(DatabaseProviderTest, insertAndLoad) {
     provider.storePlan("Test", *plan);
     auto newPlan = provider.loadPlan("Test");
     EXPECT_EQ(newPlan, *plan);
+}
+
+TEST_F(DatabaseProviderTest, LoadCheckOuterPlan) {
+    std::shared_ptr<Plan> planPtr{new Plan{}};
+    provider.storePlan("Test", *plan);
+    (*planPtr) = provider.loadPlan("Test");
+    auto nbItems = planPtr->getNumberItems();
+    planPtr->appendInterval();
+    planPtr->appendInterval();
+    provider.storePlan("Test2", *planPtr);
+    EXPECT_EQ(nbItems + 2, planPtr->getNumberItems());
+    (*planPtr) = provider.loadPlan("Test");
+
+    EXPECT_EQ(nbItems, planPtr->getNumberItems());
+}
+
+TEST_F(DatabaseProviderTest, LoadCheckInnerPlan) {
+    provider.storePlan("Test", *plan);
+    auto innerPlanPtr = *reinterpret_cast<std::shared_ptr<Plan>*>(plan->getItemAt(2).data());
+    auto nbItemsInnerPlan = innerPlanPtr->getNumberItems();
+    innerPlanPtr->appendInterval();
+    std::shared_ptr<Plan> planPtr{new Plan{}};
+    (*planPtr) = provider.loadPlan("Test");
+    auto loadedPlanPtr = *reinterpret_cast<std::shared_ptr<Plan>*>(planPtr->getItemAt(2).data());
+
+    EXPECT_EQ(nbItemsInnerPlan, loadedPlanPtr->getNumberItems());
 }
