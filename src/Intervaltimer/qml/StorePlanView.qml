@@ -17,6 +17,11 @@ Popup {
             TextField {
                 id: nameEdit
                 placeholderText: "Name"
+                selectByMouse: true
+                onFocusChanged: {
+                    if (focus)
+                        selectAll()
+                }
             }
             Button {
                 text: "save"
