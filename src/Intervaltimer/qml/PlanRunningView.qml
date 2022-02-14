@@ -23,7 +23,7 @@ Frame {
         }
 
         Button {
-            text: "stop"
+            text: "Stop"
             onClicked: root.stopRunning()
         }
     }

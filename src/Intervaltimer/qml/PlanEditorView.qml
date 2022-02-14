@@ -35,7 +35,7 @@ Frame {
                 }
             }
             Button {
-                text: "run"
+                text: "Run"
                 onClicked: startRunning()
             }
         }
