@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 
 set(CMAKE_CXX_STANDARD 20)
 
-find_package(Qt6 6.2 COMPONENTS Quick Qml Sql Core REQUIRED)
+find_package(Qt6 COMPONENTS Quick Qml Sql Core REQUIRED)
 
 qt_add_library(Intervaltimer STATIC)
 

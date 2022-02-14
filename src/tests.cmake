@@ -5,8 +5,6 @@ OPTION(BUILD_INTERVAL_TESTS "Build the tests" ON)
 if(${BUILD_INTERVAL_TESTS})
     include(../third_party/googletest.cmake)
 
-    find_package(Qt6 6.2 COMPONENTS Test REQUIRED)
-
     add_executable(UnitTests
         Intervaltimer/intervaltimer/DatabaseProvider.test.cpp
         Intervaltimer/intervaltimer/Interval.test.cpp
@@ -22,6 +20,6 @@ if(${BUILD_INTERVAL_TESTS})
         gtest
         IntervaltimerPlugin
         Intervaltimer
-        Qt::Test)
+        Qt6::Test)
     add_test(UnitTests UnitTests)
 endif()
