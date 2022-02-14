@@ -15,6 +15,11 @@ public:
 
     void setItemAt(size_t const& index, Interval const& interval);
     QVariant getItemAt(size_t const& index);
+    Interval getIntervalAt(size_t const& index);
+    std::shared_ptr<Plan> getPlanAt(size_t const& index);
+    bool isPlanAt(size_t const& index) const;
+    bool isIntervalAt(size_t const& index) const;
+
     QVariant& getReferenceAt(size_t const& index);
     QVariantList getItems() const;
 

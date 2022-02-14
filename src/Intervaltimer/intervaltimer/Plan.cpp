@@ -71,6 +71,28 @@ QVariant Plan::getItemAt(const size_t& index) {
     return items.at(index);
 }
 
+Interval Plan::getIntervalAt(const size_t& index) {
+    if (!isIntervalAt(index)) {
+        throw std::invalid_argument("Item isn't an Interval");
+    }
+    return items.at(index).value<Interval>();
+}
+
+std::shared_ptr<Plan> Plan::getPlanAt(const size_t& index) {
+    QVariant& variant = getReferenceAt(index);
+    if (!isPlanAt(index)) {
+        throw std::invalid_argument("Item isn't an Plan");
+    }
+    return *reinterpret_cast<std::shared_ptr<Plan>*>(variant.data());
+}
+
+bool Plan::isPlanAt(const size_t& index) const {
+    QVariant const& variant = items[index];
+    return variant.userType() == qMetaTypeId<std::shared_ptr<Plan>>();
+}
+
+bool Plan::isIntervalAt(const size_t& index) const { return items.at(index).canConvert<Interval>(); }
+
 QVariant& Plan::getReferenceAt(const size_t& index) {
     if (index >= items.size()) {
         throw std::out_of_range{"not in range"};
