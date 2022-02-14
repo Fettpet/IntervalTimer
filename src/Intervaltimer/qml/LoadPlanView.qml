@@ -19,6 +19,7 @@ Popup {
                     text: nameRole
                     onClicked: {
                         PlanStorageModel.loadPlan(nameRole)
+                        root.close()
                     }
                 }
             }

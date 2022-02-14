@@ -22,6 +22,7 @@ Popup {
                 text: "save"
                 onClicked: {
                     PlanStorageModel.appendPlan(nameEdit.text)
+                    root.close()
                 }
             }
         }
