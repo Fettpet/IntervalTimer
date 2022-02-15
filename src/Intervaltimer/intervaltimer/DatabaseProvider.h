@@ -21,6 +21,8 @@ public:
 
     QList<QString> nameOfAllPlans() const;
 
+    bool containsPlan(QString const& name) const;
+
     Plan loadPlan(QString const& name);
     void deletePlan(QString const& name);
 
