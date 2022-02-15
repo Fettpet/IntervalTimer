@@ -58,6 +58,9 @@ void PlanIterator::gotoNextInterval() {
         }
         if (currentElementIsPlan()) {
             childIterator = std::make_shared<PlanIterator>(getCurrentPlan()->begin());
+            if (*childIterator == getCurrentPlan()->end()) {
+                setToEnd();
+            }
             return;
         }
     }
