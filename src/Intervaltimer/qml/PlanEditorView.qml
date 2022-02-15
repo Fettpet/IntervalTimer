@@ -26,12 +26,14 @@ Frame {
                 text: "Save"
                 onClicked: {
                     loaderStorePlan.open()
+                    loaderLoadPlan.close()
                 }
             }
             Button {
                 text: "Load"
                 onClicked: {
                     loaderLoadPlan.open()
+                    loaderStorePlan.close()
                 }
             }
             Button {
