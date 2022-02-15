@@ -56,6 +56,12 @@ TEST_F(DatabaseProviderTest, storePlan) {
     EXPECT_FALSE(query.next());
 }
 
+TEST_F(DatabaseProviderTest, containsPlan) {
+    provider.storePlan("Test", *plan);
+    EXPECT_TRUE(provider.containsPlan("Test"));
+    EXPECT_FALSE(provider.containsPlan("Test2"));
+}
+
 TEST_F(DatabaseProviderTest, updatePlan) {
     provider.storePlan("Test", *plan);
     auto newPlan = provider.loadPlan("Test");
