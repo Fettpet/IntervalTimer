@@ -34,6 +34,16 @@ public:
     std::shared_ptr<Plan> planForModel{new Plan{}};
 };
 
+TEST_F(PlanIteratorTesting, emptyPlan) {
+    std::shared_ptr<Plan> planForModel{new Plan{}};
+    std::shared_ptr<Plan> emptyPlan{new Plan{}};
+    planForModel->appendPlan();
+    planForModel->setName("Root");
+    planForModel->setItemAt(0, emptyPlan);
+    auto iterator = PlanIterator{planForModel};
+    EXPECT_EQ(iterator, planForModel->end());
+}
+
 TEST_F(PlanIteratorTesting, Initalize) {
     auto iterator = PlanIterator{planForModel};
     EXPECT_EQ((*iterator).getDescription(), "first");
