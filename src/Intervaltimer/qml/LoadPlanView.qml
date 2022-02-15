@@ -8,31 +8,51 @@ Popup {
     id: root
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
 
-    width: 200
-    height: 300
-    RowLayout {
-        ColumnLayout {
-            Repeater {
-                model: PlanStorageModel
+    width: layout.width + 20
+    height: Math.min(300, layout.height + 20)
 
-                Button {
-                    text: nameRole
-                    onClicked: {
-                        PlanStorageModel.loadPlan(nameRole)
-                        root.close()
+    background: Rectangle {
+        id: backRectangle
+        color: "red"
+        width: root.width
+        height: root.height
+
+        radius: 8
+    }
+
+    Flickable {
+        clip: true
+        contentHeight: layout.height
+        contentWidth: layout.width
+        width: root.width
+        height: root.height
+
+        RowLayout {
+            id: layout
+
+            ColumnLayout {
+                Repeater {
+                    model: PlanStorageModel
+
+                    delegate: Button {
+                        text: nameRole
+                        onClicked: {
+                            root.close()
+                            PlanStorageModel.loadPlan(nameRole)
+                        }
                     }
                 }
             }
-        }
 
-        ColumnLayout {
-            Repeater {
-                model: PlanStorageModel
+            ColumnLayout {
+                Repeater {
+                    model: PlanStorageModel
 
-                Button {
-                    text: "X"
-                    onClicked: {
-                        PlanStorageModel.removePlan(nameRole)
+                    Button {
+                        text: "X"
+                        onClicked: {
+                            PlanStorageModel.removePlan(nameRole)
+                        }
                     }
                 }
             }
