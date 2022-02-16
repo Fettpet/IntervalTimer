@@ -9,20 +9,62 @@ Popup {
     id: root
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
 
-    Rectangle {
+    width: 200
+    height: 70
+
+    background: Rectangle {
+        id: backRectangle
         color: "red"
-        width: 200
-        height: 50
+        width: root.width
+        height: root.height
+
+        radius: 8
+    }
+    onOpened: nameEdit.focus = true
+
+    ColumnLayout {
+        id: layout
+        property bool overrideActive: false
         RowLayout {
             TextField {
                 id: nameEdit
-                text: "root.duration"
+                placeholderText: "Name"
+                selectByMouse: true
+                onFocusChanged: {
+                    if (focus)
+                        selectAll()
+                }
             }
             Button {
-                text: "save"
+                text: "Save"
                 onClicked: {
+                    if (nameEdit.text === "") {
+                        nameEdit.focus = true
+                        return
+                    }
+                    if (PlanStorageModel.containsPlan(nameEdit.text)) {
+                        layout.overrideActive = true
+                        return
+                    }
+
                     PlanStorageModel.appendPlan(nameEdit.text)
+                    root.close()
                 }
+            }
+        }
+        Button {
+            Layout.alignment: Qt.AlignCenter
+            text: "Override"
+            visible: layout.overrideActive
+            enabled: visible
+            onClicked: {
+                if (nameEdit.text === "") {
+                    nameEdit.focus = true
+                    return
+                }
+                layout.overrideActive = false
+                PlanStorageModel.appendPlan(nameEdit.text)
+                root.close()
             }
         }
     }

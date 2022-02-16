@@ -8,6 +8,13 @@
 
 class Plan : public std::enable_shared_from_this<Plan> {
 public:
+    Plan() = default;
+    Plan(Plan const&);
+    Plan(Plan&&) = default;
+
+    Plan& operator=(Plan const&);
+    Plan& operator=(Plan&&) = default;
+
     auto operator==(Plan const&) const -> bool;
     auto operator!=(Plan const&) const -> bool;
 
@@ -15,6 +22,11 @@ public:
 
     void setItemAt(size_t const& index, Interval const& interval);
     QVariant getItemAt(size_t const& index);
+    Interval getIntervalAt(size_t const& index);
+    const std::shared_ptr<Plan> getPlanAt(size_t const& index) const;
+    bool isPlanAt(size_t const& index) const;
+    bool isIntervalAt(size_t const& index) const;
+
     QVariant& getReferenceAt(size_t const& index);
     QVariantList getItems() const;
 
@@ -41,9 +53,9 @@ public:
     std::chrono::milliseconds getDuration() const;
 
 protected:
-    std::weak_ptr<Plan> parentItem;
-    QString name;
-    QVariantList items;
+    std::weak_ptr<Plan> parentItem{};
+    QString name{""};
+    QVariantList items{};
     uint32_t numberRepetitions{1};
 };
 

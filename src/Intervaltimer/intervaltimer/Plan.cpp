@@ -17,6 +17,28 @@ void Plan::setItemAt(size_t const& index, Interval const& interval) {
     items[index] = QVariant::fromValue(interval);
 }
 
+Plan::Plan(const Plan& lhs) { *this = lhs; }
+
+Plan& Plan::operator=(const Plan& lhs) {
+    name = lhs.name;
+    numberRepetitions = lhs.numberRepetitions;
+    for (auto i = 0; i < lhs.items.size(); ++i) {
+        auto& lhsItem = lhs.items[i];
+        if (lhs.isIntervalAt(i)) {
+            items.append(lhsItem);
+            continue;
+        }
+        if (lhs.isPlanAt(i)) {
+            auto copyPlan = *(lhs.getPlanAt(i));
+            auto variant = QVariant::fromValue<std::shared_ptr<Plan>>(std::make_shared<Plan>(copyPlan));
+            items.append(variant);
+            continue;
+        }
+        throw std::invalid_argument("Item is neighter a Plan nor an Interval");
+    }
+    return *this;
+}
+
 auto Plan::operator==(Plan const& lhs) const -> bool {
     if (name != lhs.name || numberRepetitions != lhs.numberRepetitions || items.size() != lhs.items.size())
         return false;
@@ -70,6 +92,29 @@ QVariant Plan::getItemAt(const size_t& index) {
     }
     return items.at(index);
 }
+
+Interval Plan::getIntervalAt(const size_t& index) {
+    if (!isIntervalAt(index)) {
+        throw std::invalid_argument("Item isn't an Interval");
+    }
+    return items.at(index).value<Interval>();
+}
+
+const std::shared_ptr<Plan> Plan::getPlanAt(const size_t& index) const {
+
+    if (!isPlanAt(index)) {
+        throw std::invalid_argument("Item isn't an Plan");
+    }
+    QVariant const& variant = items[index];
+    return *reinterpret_cast<const std::shared_ptr<Plan>*>(variant.constData());
+}
+
+bool Plan::isPlanAt(const size_t& index) const {
+    QVariant const& variant = items[index];
+    return variant.userType() == qMetaTypeId<std::shared_ptr<Plan>>();
+}
+
+bool Plan::isIntervalAt(const size_t& index) const { return items.at(index).canConvert<Interval>(); }
 
 QVariant& Plan::getReferenceAt(const size_t& index) {
     if (index >= items.size()) {

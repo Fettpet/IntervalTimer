@@ -54,9 +54,6 @@ public:
     Q_INVOKABLE void appendPlan();
     Q_INVOKABLE void removeItem(int const&);
 
-    Q_INVOKABLE void savePlanToFile(QString const& filename);
-    Q_INVOKABLE void loadPlanFromFile(QString const& filename);
-
 public slots:
     void reset();
 

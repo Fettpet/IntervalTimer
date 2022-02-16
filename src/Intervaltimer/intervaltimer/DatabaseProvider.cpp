@@ -157,3 +157,5 @@ void DatabaseProvider::loadAllPlans() {
         } while (query.next());
     }
 }
+
+bool DatabaseProvider::containsPlan(const QString& name) const { return planBuffer.contains(name); }

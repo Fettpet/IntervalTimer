@@ -29,6 +29,7 @@ public:
     Q_INVOKABLE void appendPlan(QString const& name);
     Q_INVOKABLE void removePlan(QString const& name);
     Q_INVOKABLE void loadPlan(QString const& name);
+    Q_INVOKABLE bool containsPlan(QString const& name) const;
 
     void setDatabaseProvider(DatabaseProvider*);
     void setPlan(std::shared_ptr<Plan> const&);

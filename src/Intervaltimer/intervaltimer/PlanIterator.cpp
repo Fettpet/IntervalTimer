@@ -58,6 +58,9 @@ void PlanIterator::gotoNextInterval() {
         }
         if (currentElementIsPlan()) {
             childIterator = std::make_shared<PlanIterator>(getCurrentPlan()->begin());
+            if (*childIterator == getCurrentPlan()->end()) {
+                setToEnd();
+            }
             return;
         }
     }
@@ -71,16 +74,14 @@ PlanIterator::reference PlanIterator::operator*() {
 }
 
 PlanIterator::pointer PlanIterator::operator->() {
-    // if (!currentElementIsInterval()) {
-    //     throw std::out_of_range{"Doesn't point to an interval"};
-    // }
+    if (plan == nullptr) return nullptr;
+    if (plan->getNumberItems() == 0) return nullptr;
     return &(getCurrentInterval());
 }
 
-Interval const* PlanIterator::operator->() const {
-    // if (!currentElementIsInterval()) {
-    //     throw std::out_of_range{"Doesn't point to an interval"};
-    // }
+const Interval* PlanIterator::operator->() const {
+    if (plan == nullptr) return nullptr;
+    if (plan->getNumberItems() == 0) return nullptr;
     return &(getCurrentInterval());
 }
 

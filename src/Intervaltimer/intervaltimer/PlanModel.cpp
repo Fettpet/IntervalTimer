@@ -224,28 +224,10 @@ void PlanModel::removeItem(const int& index) {
     endRemoveRows();
 }
 
-void PlanModel::savePlanToFile(const QString& filename) {
-    auto json = PlanToJson::transform(*rootPlan);
-    QJsonDocument document(json);
-    QFile file(filename);
-    file.open(QIODevice::WriteOnly);
-    file.write(document.toJson());
-}
-
-void PlanModel::loadPlanFromFile(const QString& filename) {
-    QFile loadFile(filename);
-    if (!loadFile.open(QIODevice::ReadOnly)) {
-        qWarning("Couldn't open save file.");
-        return;
-    }
-    QByteArray saveData = loadFile.readAll();
-    auto loadDoc = QJsonDocument::fromJson(saveData);
-    auto plan = PlanFromJson::transform(loadDoc);
-    setPlan(plan);
-}
-
 void PlanModel::reset() {
     beginResetModel();
+    emit changedRepetitions();
+    emit changedName();
     endResetModel();
 }
 

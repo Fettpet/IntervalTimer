@@ -64,3 +64,5 @@ void PlanStorageModel::loadPlan(const QString& name) {
 void PlanStorageModel::setDatabaseProvider(DatabaseProvider* provider) { databaseProvider = provider; }
 
 void PlanStorageModel::setPlan(const std::shared_ptr<Plan>& newPlan) { plan = newPlan; }
+
+bool PlanStorageModel::containsPlan(const QString& name) const { return databaseProvider->containsPlan(name); }

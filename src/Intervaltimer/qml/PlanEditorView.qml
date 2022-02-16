@@ -8,19 +8,18 @@ Frame {
     id: root
     property QtObject planModel: null
 
+    background: Rectangle {
+        width: root.width
+        height: root.height
+        color: "teal"
+    }
+
     signal startRunning
     ColumnLayout {
+        id: layout
         Loader {
             sourceComponent: planComponent
             onLoaded: item.planModel = planModel
-        }
-
-        StorePlanView {
-            id: loaderStorePlan
-        }
-
-        LoadPlanView {
-            id: loaderLoadPlan
         }
 
         Component {
@@ -30,22 +29,35 @@ Frame {
             }
         }
         RowLayout {
+            Layout.alignment: Qt.AlignHCenter
             Button {
                 text: "Save"
                 onClicked: {
                     loaderStorePlan.open()
+                    loaderLoadPlan.close()
                 }
             }
             Button {
                 text: "Load"
                 onClicked: {
                     loaderLoadPlan.open()
+                    loaderStorePlan.close()
                 }
             }
             Button {
-                text: "run"
+                text: "Run"
                 onClicked: startRunning()
             }
+        }
+
+        StorePlanView {
+            id: loaderStorePlan
+            anchors.centerIn: layout
+        }
+
+        LoadPlanView {
+            id: loaderLoadPlan
+            anchors.centerIn: layout
         }
     }
 }

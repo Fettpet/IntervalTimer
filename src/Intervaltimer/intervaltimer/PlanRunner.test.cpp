@@ -2,17 +2,17 @@
 #include <Plan.h>
 #include <PlanIterator.h>
 #include <PlanRunner.h>
+#include <TimerBase.h>
+#include <gtest/gtest.h>
+
 #include <QCoreApplication>
 #include <QSignalSpy>
 #include <QThread>
 #include <QTimer>
 #include <QtTest/QtTest>
-#include <TimerBase.h>
-#include <gtest/gtest.h>
 #include <memory>
 
 struct TestTimer : public TimerBase {
-
     TestTimer()
         : TimerBase(nullptr) {}
 
@@ -109,4 +109,22 @@ TEST_F(PlanRunnerTesting, changedPlanRunningTime) {
     QSignalSpy spy(runner, SIGNAL(changedPlanDurationRunningTime()));
     planRefreshingTimer->emitTimeout();
     EXPECT_EQ(spy.count(), 1);
+}
+
+TEST_F(PlanRunnerTesting, Restart) {
+    EXPECT_EQ(runner->getDescriptionOfInterval().toStdString(), "first");
+    intervalTimer->emitTimeout();
+    EXPECT_EQ(runner->getDescriptionOfInterval().toStdString(), "second");
+    runner->stop();
+    runner->start();
+    EXPECT_EQ(runner->getDescriptionOfInterval().toStdString(), "first");
+    intervalTimer->emitTimeout();
+    EXPECT_EQ(runner->getDescriptionOfInterval().toStdString(), "second");
+}
+
+TEST_F(PlanRunnerTesting, emptyPlan) {
+    auto plan = std::make_shared<Plan>();
+    runner->setPlan(plan);
+    runner->start();
+    EXPECT_EQ(runner->getIntervalDuration(), -1);
 }

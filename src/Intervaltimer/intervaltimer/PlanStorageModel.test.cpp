@@ -66,6 +66,14 @@ TEST_F(PlanStorageModelTesting, countAfterAppendPlan) { //
     EXPECT_EQ(model->rowCount(), 4);
 }
 
+TEST_F(PlanStorageModelTesting, containsPlan) { //
+    auto plan = createPlan("Test");
+    model->setPlan(plan);
+    model->appendPlan("Test4");
+    EXPECT_TRUE(model->containsPlan("Test4"));
+    EXPECT_FALSE(model->containsPlan("Test6"));
+}
+
 TEST_F(PlanStorageModelTesting, countAfterRemovePlan) { //
     model->removePlan("Test1");
     EXPECT_EQ(model->rowCount(), 2);

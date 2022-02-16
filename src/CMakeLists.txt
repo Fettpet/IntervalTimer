@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.21)
 
-find_package(Qt6 6.2 COMPONENTS Quick Qml Sql Core REQUIRED)
+find_package(Qt6 COMPONENTS Quick Qml Sql Core Test REQUIRED)
 
 OPTION(BUILD_INTERVAL_APPLICATON "Build the Application" ON)
 
