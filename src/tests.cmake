@@ -18,7 +18,6 @@ if(${BUILD_INTERVAL_TESTS})
     )
     target_link_libraries(UnitTests
         gtest
-        IntervaltimerPlugin
         Intervaltimer
         Qt6::Test)
     add_test(UnitTests UnitTests)
