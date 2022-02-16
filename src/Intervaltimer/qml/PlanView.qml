@@ -38,21 +38,35 @@ Frame {
     }
 
     contentItem: RowLayout {
-        TextInput {
+        id: layout
+        TextField {
             id: repetitionEdit
 
             validator: IntValidator {
                 bottom: 1
             }
+            placeholderText: "Repetitions"
             text: planModel ? planModel.repetitions : ""
             onEditingFinished: planModel.repetitions = text
+            selectByMouse: true
+            onFocusChanged: {
+                if (focus)
+                    selectAll()
+            }
         }
 
         ColumnLayout {
+
             RowLayout {
-                TextInput {
+                TextField {
                     text: planModel ? planModel.name : ""
+                    placeholderText: "Name"
                     onEditingFinished: planModel.name = text
+                    selectByMouse: true
+                    onFocusChanged: {
+                        if (focus)
+                            selectAll()
+                    }
                 }
                 Button {
                     text: "Interval"
@@ -73,7 +87,7 @@ Frame {
 
                 clip: true
                 delegate: RowLayout {
-                    id: layout
+                    id: planLayout
                     required property var name
                     required property bool isPlan
                     required property bool isInterval
@@ -84,12 +98,12 @@ Frame {
                     required property var model
 
                     Loader {
-                        active: layout.isInterval
+                        active: planLayout.isInterval
                         visible: active
                         sourceComponent: RowLayout {
                             IntervalView {
-                                description: layout.description
-                                duration: layout.duration
+                                description: planLayout.description
+                                duration: planLayout.duration
                                 onDescriptionChanged: model.description = description
                                 onDurationChanged: model.duration = duration
                             }
@@ -101,15 +115,15 @@ Frame {
                     }
                     Loader {
                         id: planLoader
-                        active: layout.isPlan
+                        active: planLayout.isPlan
                         visible: active
                         sourceComponent: childComponent
                         onLoaded: {
-                            item.planModel = layout.subPlan
+                            item.planModel = planLayout.subPlan
                         }
                     }
                     Connections {
-                        enabled: layout.isPlan
+                        enabled: planLayout.isPlan
                         target: planLoader.item
                         function onDeletePlanModel() {
                             root.planModel.removeItem(index)
