@@ -8,6 +8,12 @@ Frame {
     id: root
     property QtObject planModel: null
 
+    background: Rectangle {
+        width: root.width
+        height: root.height
+        color: "teal"
+    }
+
     signal startRunning
     ColumnLayout {
         Loader {

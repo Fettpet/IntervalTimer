@@ -11,6 +11,32 @@ Frame {
 
     signal deletePlanModel
 
+    background: Rectangle {
+        width: layout.width * 1.1
+        height: layout.height + 20
+        radius: 12
+        gradient: Gradient {
+            orientation: Gradient.Horizontal
+            GradientStop {
+                position: 0.0
+                color: "aqua"
+            }
+            GradientStop {
+                position: 0.1
+                color: "teal"
+            }
+
+            GradientStop {
+                position: 0.9
+                color: "teal"
+            }
+            GradientStop {
+                position: 1.0
+                color: "aqua"
+            }
+        }
+    }
+
     contentItem: RowLayout {
         TextInput {
             id: repetitionEdit
@@ -23,8 +49,6 @@ Frame {
         }
 
         ColumnLayout {
-            implicitWidth: 250
-            implicitHeight: 250
             RowLayout {
                 TextInput {
                     text: planModel ? planModel.name : ""

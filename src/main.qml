@@ -12,6 +12,8 @@ Window {
     title: qsTr("IntervalTimer")
     property bool isRunning: false
 
+    color: "teal"
+
     Flickable {
         id: flickable
 
