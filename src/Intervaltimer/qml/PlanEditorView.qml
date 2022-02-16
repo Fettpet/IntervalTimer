@@ -16,6 +16,7 @@ Frame {
 
     signal startRunning
     ColumnLayout {
+        id: layout
         Loader {
             sourceComponent: planComponent
             onLoaded: item.planModel = planModel
@@ -28,6 +29,7 @@ Frame {
             }
         }
         RowLayout {
+            Layout.alignment: Qt.AlignHCenter
             Button {
                 text: "Save"
                 onClicked: {
@@ -50,12 +52,12 @@ Frame {
 
         StorePlanView {
             id: loaderStorePlan
-            anchors.centerIn: parent
+            anchors.centerIn: layout
         }
 
         LoadPlanView {
             id: loaderLoadPlan
-            anchors.centerIn: parent
+            anchors.centerIn: layout
         }
     }
 }
