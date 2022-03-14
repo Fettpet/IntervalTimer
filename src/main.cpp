@@ -9,7 +9,7 @@
 #include <QTranslator>
 
 QUrl getMainQML() {
-    return QUrl(u"qrc:/IntervalApplication/mainDesctop.qml"_qs);
+    return QUrl(u"qrc:/IntervalApplication/mainAndroid.qml"_qs);
     /*
     if (QSysInfo::productType() == "android") {
 return QUrl(u"qrc:/IntervalApplication/mainAndroid.qml"_qs);
