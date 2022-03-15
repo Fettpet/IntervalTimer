@@ -8,10 +8,10 @@ Frame {
     required property var description
 
     signal deleteInterval()
-
+    implicitWidth: 180
     background: Rectangle {
-        width: parent.width
-        height: parent.height
+        width: parent.implicitWidth + 30
+        height: parent.implicitHeight
         radius: 6
         gradient: Gradient {
             orientation: Gradient.Horizontal
@@ -41,10 +41,10 @@ Frame {
             id: descriptionEdit
             selectByMouse: true
             text: root.description
-            placeholderText: "Interval description"
+            placeholderText: "Description"
             onEditingFinished: root.description = text
             Layout.fillWidth: true
-
+            implicitWidth: root.implicitWidth * 0.4
             onFocusChanged: {
                 if (focus)
                     selectAll()
@@ -58,10 +58,10 @@ Frame {
             validator: IntValidator {
                 bottom: 1
             }
-            placeholderText: "Interval duration in seconds"
+            placeholderText: "Duration"
             text: root.duration
             onEditingFinished: root.duration = text
-
+            implicitWidth: root.implicitWidth * 0.4
             onFocusChanged: {
                 if (focus)
                     selectAll()
@@ -69,6 +69,7 @@ Frame {
         }
         Button {
             text: "X"
+            implicitWidth: root.implicitWidth * 0.2
             onClicked: root.deleteInterval()
         }
     }
