@@ -10,11 +10,13 @@ Frame {
     property QtObject planModel: null
     property Component childComponent: null
 
+    implicitWidth: layout.implicitWidth
+    implicitHeight: layout.implicitHeight
     signal deletePlanModel
 
     background: Rectangle {
-        width: layout.width * 1.1
-        height: layout.height + 20
+        width: root.implicitWidth * 1.1
+        height: root.implicitHeight + 20
         radius: 12
         gradient: Gradient {
             orientation: Gradient.Horizontal
@@ -38,11 +40,17 @@ Frame {
         }
     }
 
-    contentItem: RowLayout {
+    contentItem: Frame {
         id: layout
+
+        implicitWidth: planView.width +repetitionEdit.width
+
+        implicitHeight: planView.height + repetitionEdit.height
         TextField {
             id: repetitionEdit
-
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+            width: 100
             validator: IntValidator {
                 bottom: 1
             }
@@ -56,78 +64,99 @@ Frame {
             }
         }
 
-        ColumnLayout {
-
-            RowLayout {
-                TextField {
-                    text: planModel ? planModel.name : ""
-                    placeholderText: "Name"
-                    onEditingFinished: planModel.name = text
-                    selectByMouse: true
-                    onFocusChanged: {
-                        if (focus)
-                            selectAll()
+        Frame {
+            id: planView
+            anchors.left: repetitionEdit.right
+            anchors.top: parent.top
+            anchors.leftMargin: 10
+            ColumnLayout {
+                id: columnLayout
+                property bool isExtended: true
+                RowLayout {
+                    id: header
+                    TextField {
+                        text: planModel ? planModel.name : ""
+                        placeholderText: "Name"
+                        onEditingFinished: planModel.name = text
+                        selectByMouse: true
+                        onFocusChanged: {
+                            if (focus)
+                                selectAll()
+                        }
+                    }
+                    Button {
+                        text: "E"
+                        onClicked: columnLayout.isExtended = !columnLayout.isExtended
                     }
                 }
                 Button {
-                    text: "Interval"
+                    text: "Add Interval"
+                    Layout.preferredHeight: columnLayout.isExtended? implicitHeight : 0
+                    visible: columnLayout.isExtended
                     onClicked: root.planModel.appendInterval()
                 }
                 Button {
-                    text: "Plan"
+                    text: "Add Plan"
+                    Layout.preferredHeight: columnLayout.isExtended? implicitHeight : 0
+                    visible: columnLayout.isExtended
                     onClicked: root.planModel.appendPlan()
                 }
                 Button {
-                    text: "X"
+                    text: "Delete Plan"
+                    Layout.preferredHeight: columnLayout.isExtended? implicitHeight : 0
+                    visible: columnLayout.isExtended
                     onClicked: root.deletePlanModel()
                 }
-            }
-            Repeater {
-                id: repeater
-                model: root.planModel
+                ListView {
+                    id: repeater
+                    width: 500
 
-                clip: true
-                delegate: RowLayout {
-                    id: planLayout
-                    required property var name
-                    required property bool isPlan
-                    required property bool isInterval
-                    required property var description
-                    required property var duration
-                    required property var subPlan
-                    required property var index
-                    required property var model
+                    Layout.preferredHeight: columnLayout.isExtended? implicitHeight : 0
+                    implicitHeight: 200
+                    model: root.planModel
+                    clip: true
+                    delegate: RowLayout {
+                        id: planLayout
+                        required property var name
+                        required property bool isPlan
+                        required property bool isInterval
+                        required property var description
+                        required property var duration
+                        required property var subPlan
+                        required property var index
+                        required property var model
 
-                    Loader {
-                        active: planLayout.isInterval
-                        visible: active
-                        sourceComponent: RowLayout {
-                            IntervalView {
-                                description: planLayout.description
-                                duration: planLayout.duration
-                                onDescriptionChanged: model.description = description
-                                onDurationChanged: model.duration = duration
-                            }
-                            Button {
-                                text: "X"
-                                onClicked: root.planModel.removeItem(index)
+                        Loader {
+                            active: planLayout.isInterval
+                            visible: active
+                            sourceComponent: RowLayout {
+                                IntervalView {
+                                    description: planLayout.description
+                                    duration: planLayout.duration
+                                    onDescriptionChanged: model.description = description
+                                    onDurationChanged: model.duration = duration
+                                }
+                                Button {
+                                    text: "X"
+                                    onClicked: root.planModel.removeItem(index)
+                                }
                             }
                         }
-                    }
-                    Loader {
-                        id: planLoader
-                        active: planLayout.isPlan
-                        visible: active
-                        sourceComponent: childComponent
-                        onLoaded: {
-                            item.planModel = planLayout.subPlan
+                        Loader {
+                            id: planLoader
+                            active: planLayout.isPlan
+                            visible: active
+                            sourceComponent: childComponent
+                            onLoaded: {
+                                item.planModel = planLayout.subPlan
+                            }
                         }
-                    }
-                    Connections {
-                        enabled: planLayout.isPlan
-                        target: planLoader.item
-                        function onDeletePlanModel() {
-                            root.planModel.removeItem(index)
+                        Connections {
+                            enabled: planLayout.isPlan
+                            target: planLoader.item
+                            function onDeletePlanModel() {
+                                root.planModel.removeItem(index)
+                            }
                         }
                     }
                 }
