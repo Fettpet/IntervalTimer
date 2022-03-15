@@ -7,6 +7,8 @@ Frame {
     required property var duration
     required property var description
 
+    signal deleteInterval()
+
     background: Rectangle {
         width: parent.width
         height: parent.height
@@ -64,6 +66,10 @@ Frame {
                 if (focus)
                     selectAll()
             }
+        }
+        Button {
+            text: "X"
+            onClicked: root.deleteInterval()
         }
     }
 }

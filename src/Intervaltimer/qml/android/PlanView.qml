@@ -135,10 +135,7 @@ Frame {
                                     duration: planLayout.duration
                                     onDescriptionChanged: model.description = description
                                     onDurationChanged: model.duration = duration
-                                }
-                                Button {
-                                    text: "X"
-                                    onClicked: root.planModel.removeItem(index)
+                                    onDeleteInterval: root.planModel.removeItem(index)
                                 }
                             }
                         }
