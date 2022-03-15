@@ -7,7 +7,7 @@ import Intervaltimer.Android 1.0
 
 Popup {
     id: root
-    closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
+    closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
     width: layout.width + 20
     height: Math.min(300, layout.height + 20)
