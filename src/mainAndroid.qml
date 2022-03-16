@@ -7,22 +7,23 @@ import Intervaltimer.Android 1.0
 
 Window {
     id: root
+
+    property bool isRunning: false
+
+    title: qsTr("IntervalTimer")
     width: 640
     height: 480
     visible: true
-    title: qsTr("IntervalTimer")
-    property bool isRunning: false
 
-    color: "teal"
 
-    Flickable {
+
+    Pane {
         id: flickable
 
         width: root.width
         height: root.height
-        contentHeight: root.isRunning ? runnerLoader.height : editorLoader.height
-        contentWidth: root.isRunning ? runnerLoader.width : editorLoader.width
         clip: true
+        padding: 0
 
         Loader {
             id: editorLoader
@@ -30,6 +31,8 @@ Window {
             sourceComponent: PlanEditorView {
                 id: planEditorView
                 planModel: PlanModel
+                width: root.width
+                height: root.height
                 onStartRunning: {
                     PlanRunner.start()
                     root.isRunning = true

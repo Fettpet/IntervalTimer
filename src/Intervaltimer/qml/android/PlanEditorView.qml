@@ -16,9 +16,17 @@ Pane {
     }
 
     signal startRunning
-    ColumnLayout {
-        id: layout
+
+    Flickable {
+        id: main
+        anchors.top: parent.top
+        anchors.bottom: footerView.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        contentHeight: loader.implicitHeight
+        contentWidth: loader.implicitWidth
         Loader {
+            id: loader
             sourceComponent: planComponent
             onLoaded: item.planModel = planModel
         }
@@ -29,6 +37,7 @@ Pane {
                 childComponent: planComponent
             }
         }
+    }
 
     Rectangle {
         id: footerView
@@ -62,14 +71,15 @@ Pane {
         }
     }
 
-        StorePlanView {
-            id: loaderStorePlan
-            anchors.centerIn: layout
-        }
 
-        LoadPlanView {
-            id: loaderLoadPlan
-            anchors.centerIn: layout
-        }
+    StorePlanView {
+        id: loaderStorePlan
+        anchors.centerIn: parent
+    }
+
+    LoadPlanView {
+        id: loaderLoadPlan
+        anchors.centerIn: parent
     }
 }
+

@@ -10,7 +10,7 @@ Pane {
     property QtObject planModel: null
     property Component childComponent: null
 
-    implicitWidth: layout.implicitWidth
+    implicitWidth: layout.implicitWidth + 10
     implicitHeight: layout.implicitHeight
     signal deletePlanModel
 
@@ -43,14 +43,15 @@ Pane {
     contentItem: Pane {
         id: layout
 
-        implicitWidth: planView.width +repetitionEdit.width
+        implicitWidth: planView.implicitWidth  + repetitionEdit.implicitWidth
+        implicitHeight: planView.implicitHeight + repetitionEdit.implicitHeight
+        background: Rectangle {color: "transparent"}
 
-        implicitHeight: planView.height + repetitionEdit.height
         TextField {
             id: repetitionEdit
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
-            width: 100
+            implicitWidth: 50
             validator: IntValidator {
                 bottom: 1
             }
@@ -66,9 +67,12 @@ Pane {
 
         Pane {
             id: planView
+
             anchors.left: repetitionEdit.right
             anchors.top: parent.top
-            anchors.leftMargin: 10
+
+            background: Rectangle {color: "transparent"}
+
             ColumnLayout {
                 id: columnLayout
                 property bool isExtended: true
@@ -107,14 +111,13 @@ Pane {
                     visible: columnLayout.isExtended
                     onClicked: root.deletePlanModel()
                 }
-                ListView {
+                Repeater {
                     id: repeater
-                    width: 500
 
-                    Layout.preferredHeight: columnLayout.isExtended? implicitHeight : 0
-                    implicitHeight: 200
+                    Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
+                    visible: columnLayout.isExtended
                     model: root.planModel
-                    clip: true
+                    clip: false
                     delegate: RowLayout {
                         id: planLayout
                         required property var name
@@ -125,7 +128,7 @@ Pane {
                         required property var subPlan
                         required property var index
                         required property var model
-
+                        visible: columnLayout.isExtended
                         Loader {
                             active: planLayout.isInterval
                             visible: active
