@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
 
-Frame {
+Pane {
     id: root
     required property var duration
     required property var description

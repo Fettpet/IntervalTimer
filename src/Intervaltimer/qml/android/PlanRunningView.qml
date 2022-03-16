@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.0
 import Intervaltimer 1.0
 import Intervaltimer.Android 1.0
 
-Frame {
+Pane {
     id: root
 
     signal stopRunning

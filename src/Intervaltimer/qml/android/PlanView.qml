@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.0
 import Intervaltimer 1.0
 import Intervaltimer.Android 1.0
 
-Frame {
+Pane {
     id: root
     property QtObject planModel: null
     property Component childComponent: null
@@ -40,7 +40,7 @@ Frame {
         }
     }
 
-    contentItem: Frame {
+    contentItem: Pane {
         id: layout
 
         implicitWidth: planView.width +repetitionEdit.width
@@ -64,7 +64,7 @@ Frame {
             }
         }
 
-        Frame {
+        Pane {
             id: planView
             anchors.left: repetitionEdit.right
             anchors.top: parent.top
