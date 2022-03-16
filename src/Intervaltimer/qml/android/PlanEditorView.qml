@@ -29,6 +29,15 @@ Pane {
                 childComponent: planComponent
             }
         }
+
+    Rectangle {
+        id: footerView
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        height: footer.implicitHeight
+        anchors.right: parent.right
+
+        color: "red"
         RowLayout {
             id: footer
             anchors.horizontalCenter: parent.horizontalCenter
@@ -51,6 +60,7 @@ Pane {
                 onClicked: startRunning()
             }
         }
+    }
 
         StorePlanView {
             id: loaderStorePlan
