@@ -7,11 +7,11 @@ import Intervaltimer.Android 1.0
 
 Pane {
     id: root
+
     property QtObject planModel: null
 
     background: Rectangle {
-        width: root.width
-        height: root.height
+        anchors.fill: parent
         color: "teal"
     }
 
@@ -30,7 +30,8 @@ Pane {
             }
         }
         RowLayout {
-            Layout.alignment: Qt.AlignHCenter
+            id: footer
+            anchors.horizontalCenter: parent.horizontalCenter
             Button {
                 text: "Save"
                 onClicked: {
