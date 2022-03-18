@@ -25,6 +25,7 @@ Pane {
         anchors.right: parent.right
         contentHeight: loader.implicitHeight
         contentWidth: loader.implicitWidth
+        clip: true
         Loader {
             id: loader
             sourceComponent: planComponent
