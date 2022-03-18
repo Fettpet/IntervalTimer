@@ -43,32 +43,14 @@ Pane {
     contentItem: Pane {
         id: layout
 
-        implicitWidth: planView.implicitWidth  + repetitionEdit.implicitWidth
-        implicitHeight: planView.implicitHeight + repetitionEdit.implicitHeight
+        implicitWidth: planView.implicitWidth
+        implicitHeight: planView.implicitHeight
         background: Rectangle {color: "transparent"}
 
-        TextField {
-            id: repetitionEdit
-            anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-            implicitWidth: 50
-            validator: IntValidator {
-                bottom: 1
-            }
-            placeholderText: "Repetitions"
-            text: planModel ? planModel.repetitions : ""
-            onEditingFinished: planModel.repetitions = text
-            selectByMouse: true
-            onFocusChanged: {
-                if (focus)
-                    selectAll()
-            }
-        }
+
 
         Pane {
             id: planView
-
-            anchors.left: repetitionEdit.right
             anchors.top: parent.top
 
             background: Rectangle {color: "transparent"}
@@ -91,6 +73,23 @@ Pane {
                     Button {
                         text: "E"
                         onClicked: columnLayout.isExtended = !columnLayout.isExtended
+                    }
+                }
+                TextField {
+                    id: repetitionEdit
+                    implicitWidth: 50
+                    Layout.preferredHeight: columnLayout.isExtended? implicitHeight : 0
+                    visible: columnLayout.isExtended
+                    validator: IntValidator {
+                        bottom: 1
+                    }
+                    placeholderText: "Repetitions"
+                    text: planModel ? planModel.repetitions : ""
+                    onEditingFinished: planModel.repetitions = text
+                    selectByMouse: true
+                    onFocusChanged: {
+                        if (focus)
+                            selectAll()
                     }
                 }
                 Button {
