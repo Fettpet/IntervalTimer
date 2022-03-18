@@ -9,6 +9,7 @@ Canvas {
     property color primaryColor: "orange"
     property color secondaryColor: "lightblue"
     property color textColor: "black"
+    property color backgroundColor: "teal"
     width: 240
     height: 240
     property string text: "Text"
@@ -43,7 +44,8 @@ Canvas {
         ctx.save()
 
         ctx.clearRect(0, 0, root.width, root.height)
-
+        ctx.fillStyle = root.backgroundColor
+        ctx.rect(0, 0, root.width, root.height)
         // First, thinner arc
         // From angle to 2*PI
         ctx.beginPath()

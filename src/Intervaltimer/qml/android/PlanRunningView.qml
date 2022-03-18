@@ -9,7 +9,10 @@ Pane {
     id: root
 
     signal stopRunning
-
+    background: Rectangle {
+        anchors.fill: parent
+        color: "teal"
+    }
     ColumnLayout {
 
         ProgressView {
