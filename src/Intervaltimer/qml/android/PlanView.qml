@@ -119,7 +119,6 @@ Pane {
                     clip: false
                     delegate: RowLayout {
                         id: planLayout
-                        required property var name
                         required property bool isPlan
                         required property bool isInterval
                         required property var description
