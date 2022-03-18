@@ -11,7 +11,7 @@ Pane {
     property Component childComponent: null
 
     implicitWidth: layout.implicitWidth + 10
-    implicitHeight: layout.implicitHeight
+    implicitHeight: layout.implicitHeight + 10
     signal deletePlanModel
 
     background: Rectangle {
