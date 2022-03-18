@@ -20,12 +20,12 @@ Pane {
                 color: "aqua"
             }
             GradientStop {
-                position: 0.1
+                position: 0.3
                 color: "teal"
             }
 
             GradientStop {
-                position: 0.9
+                position: 0.7
                 color: "teal"
             }
             GradientStop {
