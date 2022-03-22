@@ -136,8 +136,7 @@ Pane {
                         Loader {
                             active: planLayout.isInterval
                             visible: active
-                            sourceComponent: RowLayout {
-                                IntervalView {
+                            sourceComponent: IntervalView {
                                     defaultDescription: planLayout.description
                                     defaultDuration: planLayout.duration
                                     onDescriptionChanged: (description) => {
@@ -147,7 +146,7 @@ Pane {
                                     onDurationChanged: (duration) => model.duration = duration
                                     onDeleteInterval: root.planModel.removeItem(index)
                                 }
-                            }
+
                         }
                         Loader {
                             id: planLoader
