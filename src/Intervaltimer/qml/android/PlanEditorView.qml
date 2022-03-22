@@ -9,10 +9,13 @@ Pane {
     id: root
 
     property QtObject planModel: null
-
+    property color backgroundColor: "#111111"
+    property color gradientColor: "#333333"
+    property color footerColor: "#333333"
+    property color popupColor: "#555555"
     background: Rectangle {
         anchors.fill: parent
-        color: "teal"
+        color: root.backgroundColor
     }
 
     signal startRunning
@@ -35,6 +38,8 @@ Pane {
         Component {
             id: planComponent
             PlanView {
+                backgroundColor: root.backgroundColor
+                gradientColor: root.gradientColor
                 childComponent: planComponent
             }
         }
@@ -47,7 +52,7 @@ Pane {
         height: footer.implicitHeight
         anchors.right: parent.right
 
-        color: "red"
+        color: root.footerColor
         RowLayout {
             id: footer
             anchors.horizontalCenter: parent.horizontalCenter
@@ -75,11 +80,13 @@ Pane {
 
     StorePlanView {
         id: loaderStorePlan
+        backgroundColor: root.popupColor
         anchors.centerIn: parent
     }
 
     LoadPlanView {
         id: loaderLoadPlan
+        backgroundColor: root.popupColor
         anchors.centerIn: parent
     }
 }

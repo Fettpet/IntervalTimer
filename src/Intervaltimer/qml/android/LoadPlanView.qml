@@ -7,17 +7,17 @@ import Intervaltimer.Android 1.0
 
 Popup {
     id: root
-    closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
+    required property color backgroundColor
+
+    closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
     width: layout.width + 20
     height: Math.min(300, layout.height + 20)
-
     background: Rectangle {
         id: backRectangle
-        color: "red"
+        color: root.backgroundColor
         width: root.width
         height: root.height
-
         radius: 8
     }
 

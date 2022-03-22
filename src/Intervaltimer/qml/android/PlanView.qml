@@ -9,6 +9,8 @@ Pane {
     id: root
     property QtObject planModel: null
     property Component childComponent: null
+    property color backgroundColor: "#222222"
+    property color gradientColor: "#666666"
 
     implicitWidth: layout.implicitWidth + 10
     implicitHeight: layout.implicitHeight + 10
@@ -22,20 +24,20 @@ Pane {
             orientation: Gradient.Horizontal
             GradientStop {
                 position: 0.0
-                color: "aqua"
+                color: root.backgroundColor
             }
             GradientStop {
                 position: 0.3
-                color: "teal"
+                color: root.gradientColor
             }
 
             GradientStop {
                 position: 0.7
-                color: "teal"
+                color: root.gradientColor
             }
             GradientStop {
                 position: 1.0
-                color: "aqua"
+                color: root.backgroundColor
             }
         }
     }
@@ -46,8 +48,6 @@ Pane {
         implicitWidth: planView.implicitWidth
         implicitHeight: planView.implicitHeight
         background: Rectangle {color: "transparent"}
-
-
 
         Pane {
             id: planView

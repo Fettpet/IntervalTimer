@@ -10,32 +10,8 @@ Pane {
     signal deleteInterval()
     signal durationChanged(int duration)
     signal descriptionChanged(string description)
-    implicitWidth: 180
-    background: Rectangle {
-        width: parent.implicitWidth + 30
-        height: parent.implicitHeight
-        radius: 6
-        gradient: Gradient {
-            orientation: Gradient.Horizontal
-            GradientStop {
-                position: 0.0
-                color: "aqua"
-            }
-            GradientStop {
-                position: 0.3
-                color: "teal"
-            }
-
-            GradientStop {
-                position: 0.7
-                color: "teal"
-            }
-            GradientStop {
-                position: 1.0
-                color: "aqua"
-            }
-        }
-    }
+    anchors.left: parent.left
+    anchors.right: parent.right
 
     RowLayout {
 
