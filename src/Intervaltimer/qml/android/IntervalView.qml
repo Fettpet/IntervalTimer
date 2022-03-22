@@ -5,10 +5,11 @@ import QtQuick.Layouts 1.0
 Pane {
     id: root
     required property var defaultDuration
-    required property var description
+    required property var defaultDescription
 
     signal deleteInterval()
     signal durationChanged(int duration)
+    signal descriptionChanged(string description)
     implicitWidth: 180
     background: Rectangle {
         width: parent.implicitWidth + 30
@@ -41,9 +42,9 @@ Pane {
         TextField {
             id: descriptionEdit
             selectByMouse: true
-            text: root.description
+            text: root.defaultDescription
             placeholderText: "Description"
-            onEditingFinished: root.description = text
+            onEditingFinished: descriptionChanged(text)
             Layout.fillWidth: true
             implicitWidth: root.implicitWidth * 0.4
             onFocusChanged: {
