@@ -35,6 +35,19 @@ Popup {
                     if (focus)
                         selectAll()
                 }
+                onEditingFinished: () => {
+                    focus = false
+                    if (text === "") {
+                        focus = true
+                        return
+                    }
+                    if (PlanStorageModel.containsPlan(text)) {
+                        layout.overrideActive = true
+                        return
+                    }
+                    PlanStorageModel.appendPlan(text)
+                    root.close()
+                }
             }
             Button {
                 text: "Save"

@@ -63,7 +63,10 @@ Pane {
                     TextField {
                         text: planModel ? planModel.name : ""
                         placeholderText: "Name"
-                        onEditingFinished: planModel.name = text
+                        onEditingFinished: () => {
+                            focus = false
+                            planModel.name = text
+                        }
                         selectByMouse: true
                         onFocusChanged: {
                             if (focus)
@@ -85,7 +88,10 @@ Pane {
                     }
                     placeholderText: "Repetitions"
                     text: planModel ? planModel.repetitions : ""
-                    onEditingFinished: planModel.repetitions = text
+                    onEditingFinished: () => {
+                        focus = false
+                        planModel.repetitions = text
+                                       }
                     selectByMouse: true
                     onFocusChanged: {
                         if (focus)

@@ -44,7 +44,10 @@ Pane {
             selectByMouse: true
             text: root.defaultDescription
             placeholderText: "Description"
-            onEditingFinished: descriptionChanged(text)
+            onEditingFinished: () => {
+                focus = false
+                descriptionChanged(text)
+            }
             Layout.fillWidth: true
             implicitWidth: root.implicitWidth * 0.4
             onFocusChanged: {
