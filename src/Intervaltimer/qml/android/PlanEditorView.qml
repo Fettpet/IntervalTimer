@@ -29,6 +29,8 @@ Pane {
         contentHeight: loader.implicitHeight
         contentWidth: loader.implicitWidth
         clip: true
+        boundsBehavior: Flickable.StopAtBounds
+
         Loader {
             id: loader
             sourceComponent: planComponent
