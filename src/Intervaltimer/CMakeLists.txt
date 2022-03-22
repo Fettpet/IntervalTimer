@@ -93,6 +93,7 @@ qt_add_qml_module(IntervaltimerAndroid
     VERSION 1.0
     PLUGIN_TARGET IntervaltimerAndroidPlugin
     QML_FILES
+        qml/android/DurationControl.qml
         qml/android/IntervalView.qml
         qml/android/LoadPlanView.qml
         qml/android/PlanView.qml
@@ -100,6 +101,7 @@ qt_add_qml_module(IntervaltimerAndroid
         qml/android/PlanRunningView.qml
         qml/android/StorePlanView.qml
         qml/android/ProgressView.qml
+        qml/android/DurationTumbler.qml
 )
 
 target_link_libraries(IntervaltimerAndroid PUBLIC

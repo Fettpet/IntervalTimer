@@ -4,10 +4,11 @@ import QtQuick.Layouts 1.0
 
 Pane {
     id: root
-    required property var duration
+    required property var defaultDuration
     required property var description
 
     signal deleteInterval()
+    signal durationChanged(int duration)
     implicitWidth: 180
     background: Rectangle {
         width: parent.implicitWidth + 30
@@ -51,22 +52,14 @@ Pane {
             }
         }
 
-        TextField {
-            id: durationEdit
-
-            selectByMouse: true
-            validator: IntValidator {
-                bottom: 1
-            }
-            placeholderText: "Duration"
-            text: root.duration
-            onEditingFinished: root.duration = text
-            implicitWidth: root.implicitWidth * 0.4
-            onFocusChanged: {
-                if (focus)
-                    selectAll()
-            }
+        DurationControl {
+            id: durationController
+            duration: root.defaultDuration
+            onDurationChanged: {
+                root.durationChanged(durationController.duration)
+           }
         }
+
         Button {
             text: "X"
             implicitWidth: root.implicitWidth * 0.2

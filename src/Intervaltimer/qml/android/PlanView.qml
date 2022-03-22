@@ -133,9 +133,9 @@ Pane {
                             sourceComponent: RowLayout {
                                 IntervalView {
                                     description: planLayout.description
-                                    duration: planLayout.duration
-                                    onDescriptionChanged: model.description = description
-                                    onDurationChanged: model.duration = duration
+                                    defaultDuration: planLayout.duration
+                                    onDescriptionChanged: (description) => model.description = description
+                                    onDurationChanged: (duration) => model.duration = duration
                                     onDeleteInterval: root.planModel.removeItem(index)
                                 }
                             }
