@@ -143,9 +143,13 @@ TEST_F(PlanTesting, getPlanAt) {
 
 TEST_F(PlanTesting, operatorCopy) {
     auto copiedPlan = *plan;
+    auto secondPlan = *plan;
+    copiedPlan = secondPlan;
     EXPECT_EQ(copiedPlan.getName(), QString("Outer"));
     EXPECT_EQ(copiedPlan.getNumberRepetitions(), 10);
     EXPECT_EQ(copiedPlan.getIntervalAt(0), plan->getIntervalAt(0));
     EXPECT_EQ(copiedPlan.getIntervalAt(1), plan->getIntervalAt(1));
     EXPECT_EQ(*copiedPlan.getPlanAt(2), *(plan->getPlanAt(2)));
+    EXPECT_EQ(copiedPlan.getNumberItems(), 3);
+    EXPECT_EQ(copiedPlan.getPlanAt(2)->getNumberItems(), 2);
 }
