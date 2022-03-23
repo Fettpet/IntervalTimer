@@ -19,6 +19,9 @@ if(${BUILD_INTERVAL_APPLICATON})
             mainDesctop.qml
             mainAndroid.qml
         IMPORT_PATH "${QML_IMPORT_PATH}/src"
+        RESOURCES
+            ../ressources/image/closed.png
+            ../ressources/image/expanded.png
     )
 
     target_compile_definitions(IntervaltimerApplication

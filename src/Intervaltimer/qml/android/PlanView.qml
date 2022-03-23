@@ -73,8 +73,8 @@ Pane {
                                 selectAll()
                         }
                     }
-                    Button {
-                        text: "E"
+                    ToolButton {
+                        icon.source: columnLayout.isExtended ? "qrc:/IntervalApplication/ressources/image/expanded.png" : "qrc:/IntervalApplication/ressources/image/closed.png"
                         onClicked: columnLayout.isExtended = !columnLayout.isExtended
                     }
                 }
