@@ -11,6 +11,8 @@ Pane {
     property Component childComponent: null
     property color backgroundColor: "#222222"
     property color gradientColor: "#666666"
+    property color placeHolderTextColor: "#aaaaaa"
+    property color textColor: "#bbbbbb"
 
     implicitWidth: layout.implicitWidth + 10
     implicitHeight: layout.implicitHeight + 10
@@ -62,7 +64,9 @@ Pane {
                     id: header
                     TextField {
                         text: planModel ? planModel.name : ""
+                        color: root.textColor
                         placeholderText: "Name"
+                        placeholderTextColor: root.placeHolderTextColor
                         onEditingFinished: () => {
                             focus = false
                             planModel.name = text
@@ -86,8 +90,10 @@ Pane {
                     validator: IntValidator {
                         bottom: 1
                     }
+                    placeholderTextColor: root.placeHolderTextColor
                     placeholderText: "Repetitions"
                     text: planModel ? planModel.repetitions : ""
+                    color: root.textColor
                     onEditingFinished: () => {
                         focus = false
                         planModel.repetitions = text
@@ -139,8 +145,8 @@ Pane {
                             sourceComponent: IntervalView {
                                     defaultDescription: planLayout.description
                                     defaultDuration: planLayout.duration
+                                    width: 200
                                     onDescriptionChanged: (description) => {
-                                                           console.error("Test", description)
                                                               model.description = description
                                                           }
                                     onDurationChanged: (duration) => model.duration = duration

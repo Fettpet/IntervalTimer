@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.15
 Control {
     id: root
     required property int duration
+    property color textColor: "#aaaaaa"
     readonly property int seconds: duration % 60
     readonly property int minutes: (duration / 60) % 60
     readonly property int hours: (duration / 3600)
@@ -17,6 +18,7 @@ Control {
             id: displayTime
 
             text: hours + ":" + zeroPad(minutes, 2) + ":" + zeroPad(seconds, 2)
+            color: root.textColor
             MouseArea {
                 anchors.fill: parent
                 onClicked: {

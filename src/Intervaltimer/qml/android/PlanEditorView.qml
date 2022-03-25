@@ -13,6 +13,7 @@ Pane {
     property color gradientColor: "#333333"
     property color footerColor: "#333333"
     property color popupColor: "#555555"
+    property color textColor: "#bbbbbb"
     background: Rectangle {
         anchors.fill: parent
         color: root.backgroundColor
