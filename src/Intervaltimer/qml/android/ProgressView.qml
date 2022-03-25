@@ -1,6 +1,6 @@
 // Source https://stackoverflow.com/a/22903361
-import QtQml 2.2
-import QtQuick 2.0
+import QtQml
+import QtQuick
 
 Canvas {
     id: root
