@@ -16,7 +16,6 @@ Window {
     visible: true
 
 
-
     Pane {
         id: flickable
 
@@ -43,6 +42,8 @@ Window {
             id: runnerLoader
             active: root.isRunning
             sourceComponent: PlanRunningView {
+                backgroundColor: "#111111"
+                textColor: "#bbbbbb"
                 width: root.width
                 height: root.height
                 onStopRunning: {
