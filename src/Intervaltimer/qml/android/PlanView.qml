@@ -49,13 +49,17 @@ Pane {
 
         implicitWidth: planView.implicitWidth
         implicitHeight: planView.implicitHeight
-        background: Rectangle {color: "transparent"}
+        background: Rectangle {
+            color: "transparent"
+        }
 
         Pane {
             id: planView
             anchors.top: parent.top
 
-            background: Rectangle {color: "transparent"}
+            background: Rectangle {
+                color: "transparent"
+            }
 
             ColumnLayout {
                 id: columnLayout
@@ -85,7 +89,7 @@ Pane {
                 TextField {
                     id: repetitionEdit
                     implicitWidth: 50
-                    Layout.preferredHeight: columnLayout.isExtended? implicitHeight : 0
+                    Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
                     visible: columnLayout.isExtended
                     validator: IntValidator {
                         bottom: 1
@@ -106,19 +110,19 @@ Pane {
                 }
                 Button {
                     text: "Add Interval"
-                    Layout.preferredHeight: columnLayout.isExtended? implicitHeight : 0
+                    Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
                     visible: columnLayout.isExtended
                     onClicked: root.planModel.appendInterval()
                 }
                 Button {
                     text: "Add Plan"
-                    Layout.preferredHeight: columnLayout.isExtended? implicitHeight : 0
+                    Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
                     visible: columnLayout.isExtended
                     onClicked: root.planModel.appendPlan()
                 }
                 Button {
                     text: "Delete Plan"
-                    Layout.preferredHeight: columnLayout.isExtended? implicitHeight : 0
+                    Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
                     visible: columnLayout.isExtended
                     onClicked: root.deletePlanModel()
                 }
