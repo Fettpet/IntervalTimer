@@ -72,9 +72,9 @@ Pane {
                         placeholderText: "Name"
                         placeholderTextColor: root.placeHolderTextColor
                         onEditingFinished: () => {
-                            focus = false
-                            planModel.name = text
-                        }
+                                               focus = false
+                                               planModel.name = text
+                                           }
                         selectByMouse: true
                         onFocusChanged: {
                             if (focus)
@@ -102,8 +102,8 @@ Pane {
                     text: planModel ? planModel.repetitions : ""
                     color: root.textColor
                     onEditingFinished: () => {
-                        focus = false
-                        planModel.repetitions = text
+                                           focus = false
+                                           planModel.repetitions = text
                                        }
                     selectByMouse: true
                     onFocusChanged: {
@@ -150,16 +150,16 @@ Pane {
                             active: planLayout.isInterval
                             visible: active
                             sourceComponent: IntervalView {
-                                    defaultDescription: planLayout.description
-                                    defaultDuration: planLayout.duration
-                                    width: 200
-                                    onDescriptionChanged: (description) => {
-                                                              model.description = description
-                                                          }
-                                    onDurationChanged: (duration) => model.duration = duration
-                                    onDeleteInterval: root.planModel.removeItem(index)
-                                }
-
+                                defaultDescription: planLayout.description
+                                defaultDuration: planLayout.duration
+                                width: 200
+                                onDescriptionChanged: description => {
+                                                          model.description = description
+                                                      }
+                                onDurationChanged: duration => model.duration = duration
+                                onDeleteInterval: root.planModel.removeItem(
+                                                      index)
+                            }
                         }
                         Loader {
                             id: planLoader
