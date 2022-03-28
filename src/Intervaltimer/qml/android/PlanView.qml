@@ -82,7 +82,10 @@ Pane {
                         }
                     }
                     ToolButton {
-                        icon.source: columnLayout.isExtended ? "qrc:/IntervalApplication/ressources/image/expanded.png" : "qrc:/IntervalApplication/ressources/image/closed.png"
+                        icon {
+                            color: root.textColor
+                            source: columnLayout.isExtended ? "qrc:/IntervalApplication/ressources/image/expanded.png" : "qrc:/IntervalApplication/ressources/image/closed.png"
+                        }
                         onClicked: columnLayout.isExtended = !columnLayout.isExtended
                     }
                 }
