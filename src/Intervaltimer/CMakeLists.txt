@@ -71,7 +71,7 @@ qt_add_qml_module(IntervaltimerDesctop
         qml/desctop/PlanRunningView.qml
         qml/desctop/StorePlanView.qml
         qml/desctop/ProgressView.qml
-    OUTPUT_DIRECTORY Intervaltimer
+    OUTPUT_DIRECTORY Intervaltimer/Desctop
 )
 
 target_link_libraries(IntervaltimerDesctop PUBLIC
@@ -92,6 +92,7 @@ qt_add_qml_module(IntervaltimerAndroid
     URI Intervaltimer.Android
     VERSION 1.0
     PLUGIN_TARGET IntervaltimerAndroidPlugin
+    OUTPUT_DIRECTORY Intervaltimer/Android
     QML_FILES
         qml/android/DurationControl.qml
         qml/android/IntervalView.qml
