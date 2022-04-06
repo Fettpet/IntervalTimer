@@ -86,6 +86,7 @@ signals:
     void finished();
     void changedIntervalDurationCompleteTime();
     void changedIntervalDurationRunningTime();
+    void startRunning();
     // void changedCurrentDurationOfIntervalMilliseconds();
     // void changedCurrentDurationOfAllPlansMilliseconds();
     // void changedPlan();
