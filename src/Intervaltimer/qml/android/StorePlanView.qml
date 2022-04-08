@@ -32,8 +32,11 @@ Popup {
                 placeholderText: "Name"
                 selectByMouse: true
                 onFocusChanged: {
-                    if (focus)
+                    if (focus) {
                         selectAll()
+                        return
+                    }
+                    Qt.inputMethod.hide();
                 }
                 onEditingFinished: () => {
                     focus = false

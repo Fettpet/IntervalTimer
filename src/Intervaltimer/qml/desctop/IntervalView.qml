@@ -44,8 +44,11 @@ Frame {
             Layout.fillWidth: true
 
             onFocusChanged: {
-                if (focus)
+                if (focus) {
                     selectAll()
+                    return
+                }
+                Qt.inputMethod.hide();
             }
         }
 
@@ -61,8 +64,11 @@ Frame {
             onEditingFinished: root.duration = text
 
             onFocusChanged: {
-                if (focus)
+                if (focus) {
                     selectAll()
+                    return
+                }
+                Qt.inputMethod.hide();
             }
         }
     }

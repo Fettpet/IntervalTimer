@@ -73,8 +73,11 @@ Pane {
                                            }
                         selectByMouse: true
                         onFocusChanged: {
-                            if (focus)
+                            if (focus) {
                                 selectAll()
+                                return
+                            }
+                            Qt.inputMethod.hide();
                         }
                     }
                     ToolButton {

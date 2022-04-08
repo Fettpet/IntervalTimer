@@ -35,8 +35,11 @@ Pane {
 
             implicitWidth: root.width * 0.4
             onFocusChanged: {
-                if (focus)
+                if (focus) {
                     selectAll()
+                    return
+                }
+                Qt.inputMethod.hide();
             }
         }
 
@@ -47,6 +50,11 @@ Pane {
             implicitWidth: root.width * 0.4
             onDurationChanged: {
                 root.durationChanged(durationController.duration)
+            }
+            onFocusChanged: {
+                if(focus) {
+                    Qt.inputMethod.hide();
+                }
             }
         }
 
