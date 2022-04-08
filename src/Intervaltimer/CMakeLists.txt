@@ -87,6 +87,9 @@ target_include_directories(IntervaltimerAndroid PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/intervaltimer>
 )
 
+set_source_files_properties(qml/android/Style.qml PROPERTIES
+    QT_QML_SINGLETON_TYPE TRUE
+)
 
 qt_add_qml_module(IntervaltimerAndroid
     URI Intervaltimer.Android
@@ -103,6 +106,7 @@ qt_add_qml_module(IntervaltimerAndroid
         qml/android/StorePlanView.qml
         qml/android/ProgressView.qml
         qml/android/DurationTumbler.qml
+        qml/android/Style.qml
 )
 
 target_link_libraries(IntervaltimerAndroid PUBLIC

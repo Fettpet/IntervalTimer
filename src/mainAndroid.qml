@@ -15,7 +15,6 @@ Window {
     height: 480
     visible: true
 
-
     Pane {
         id: flickable
 
@@ -32,11 +31,6 @@ Window {
                 planModel: PlanModel
                 width: root.width
                 height: root.height
-                backgroundColor: "#111111"
-                gradientColor: "#333333"
-                footerColor: "#333333"
-                popupColor: "#555555"
-                textColor: "#bbbbbb"
                 onStartRunning: {
                     PlanRunner.start()
                     root.isRunning = true

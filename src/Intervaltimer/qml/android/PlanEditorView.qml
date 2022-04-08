@@ -41,8 +41,6 @@ Pane {
         Component {
             id: planComponent
             PlanView {
-                backgroundColor: root.backgroundColor
-                gradientColor: root.gradientColor
                 childComponent: planComponent
             }
         }
@@ -80,7 +78,6 @@ Pane {
         }
     }
 
-
     StorePlanView {
         id: loaderStorePlan
         backgroundColor: root.popupColor
@@ -93,4 +90,3 @@ Pane {
         anchors.centerIn: parent
     }
 }
-

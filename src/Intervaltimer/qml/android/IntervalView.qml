@@ -2,14 +2,16 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import Intervaltimer.Android
+
 Pane {
     id: root
     required property var defaultDuration
     required property var defaultDescription
-    property color textColor: "#aaaaaa"
-    property color placeholderTextColor: "#bbbbbb"
+    property color textColor: Style.textColor
+    property color placeHolderTextColor: Style.placeHolderTextColor
 
-    signal deleteInterval()
+    signal deleteInterval
     signal durationChanged(int duration)
     signal descriptionChanged(string description)
     background: Rectangle {
@@ -25,11 +27,11 @@ Pane {
             text: root.defaultDescription
             color: root.textColor
             placeholderText: "Description"
-            placeholderTextColor: root.placeholderTextColor
+            placeholderTextColor: root.placeHolderTextColor
             onEditingFinished: () => {
-                focus = false
-                descriptionChanged(text)
-            }
+                                   focus = false
+                                   descriptionChanged(text)
+                               }
 
             implicitWidth: root.width * 0.4
             onFocusChanged: {
@@ -45,7 +47,7 @@ Pane {
             implicitWidth: root.width * 0.4
             onDurationChanged: {
                 root.durationChanged(durationController.duration)
-           }
+            }
         }
 
         Button {

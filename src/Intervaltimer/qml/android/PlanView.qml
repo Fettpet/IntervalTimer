@@ -9,10 +9,6 @@ Pane {
     id: root
     property QtObject planModel: null
     property Component childComponent: null
-    property color backgroundColor: "#222222"
-    property color gradientColor: "#666666"
-    property color placeHolderTextColor: "#aaaaaa"
-    property color textColor: "#bbbbbb"
 
     implicitWidth: layout.implicitWidth + 10
     implicitHeight: layout.implicitHeight + 10
@@ -26,20 +22,20 @@ Pane {
             orientation: Gradient.Horizontal
             GradientStop {
                 position: 0.0
-                color: root.backgroundColor
+                color: Style.backgroundColor
             }
             GradientStop {
                 position: 0.3
-                color: root.gradientColor
+                color: Style.gradientColor
             }
 
             GradientStop {
                 position: 0.7
-                color: root.gradientColor
+                color: Style.gradientColor
             }
             GradientStop {
                 position: 1.0
-                color: root.backgroundColor
+                color: Style.backgroundColor
             }
         }
     }
@@ -68,9 +64,9 @@ Pane {
                     id: header
                     TextField {
                         text: planModel ? planModel.name : ""
-                        color: root.textColor
+                        color: Style.textColor
                         placeholderText: "Name"
-                        placeholderTextColor: root.placeHolderTextColor
+                        placeholderTextColor: Style.placeHolderTextColor
                         onEditingFinished: () => {
                                                focus = false
                                                planModel.name = text
@@ -83,7 +79,7 @@ Pane {
                     }
                     ToolButton {
                         icon {
-                            color: root.textColor
+                            color: Style.textColor
                             source: columnLayout.isExtended ? "qrc:/IntervalApplication/ressources/image/expanded.png" : "qrc:/IntervalApplication/ressources/image/closed.png"
                         }
                         onClicked: columnLayout.isExtended = !columnLayout.isExtended
@@ -97,10 +93,10 @@ Pane {
                     validator: IntValidator {
                         bottom: 1
                     }
-                    placeholderTextColor: root.placeHolderTextColor
+                    placeholderTextColor: Style.placeHolderTextColor
                     placeholderText: "Repetitions"
                     text: planModel ? planModel.repetitions : ""
-                    color: root.textColor
+                    color: Style.textColor
                     onEditingFinished: () => {
                                            focus = false
                                            planModel.repetitions = text
