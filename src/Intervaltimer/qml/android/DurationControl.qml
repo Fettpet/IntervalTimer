@@ -29,7 +29,7 @@ Control {
         Popup {
             id: designer
             closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-            parent: Overlay.overlay
+            parent: Overlay ? Overlay.overlay : undefined
             anchors.centerIn: parent
             RowLayout {
                 DurationTumbler {
@@ -49,9 +49,9 @@ Control {
                 }
             }
             onClosed: {
-                root.duration = hoursTumbler.currentIndex * 3600 + minutesTumbler.currentIndex * 60 + secondTumbler.currentIndex
+                root.duration = hoursTumbler.currentIndex * 3600
+                        + minutesTumbler.currentIndex * 60 + secondTumbler.currentIndex
             }
         }
     }
-
 }
