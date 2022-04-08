@@ -23,6 +23,7 @@ Control {
                 anchors.fill: parent
                 onClicked: {
                     designer.open()
+                    focus = true
                 }
             }
         }
