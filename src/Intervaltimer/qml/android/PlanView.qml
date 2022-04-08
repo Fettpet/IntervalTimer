@@ -80,6 +80,31 @@ Pane {
                             Qt.inputMethod.hide();
                         }
                     }
+                    TextField {
+                        id: repetitionEdit
+                        implicitWidth: 50
+                        Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
+                        visible: columnLayout.isExtended
+                        validator: IntValidator {
+                            bottom: 1
+                        }
+                        placeholderTextColor: Style.placeHolderTextColor
+                        placeholderText: "Repetitions"
+                        text: planModel ? planModel.repetitions : ""
+                        color: Style.textColor
+                        onEditingFinished: () => {
+                                               focus = false
+                                               planModel.repetitions = text
+                                           }
+                        selectByMouse: true
+                        onFocusChanged: {
+                            if (focus) {
+                                selectAll()
+                                return
+                            }
+                            Qt.inputMethod.hide();
+                        }
+                    }
                     ToolButton {
                         icon {
                             color: Style.textColor
@@ -88,28 +113,7 @@ Pane {
                         onClicked: columnLayout.isExtended = !columnLayout.isExtended
                     }
                 }
-                TextField {
-                    id: repetitionEdit
-                    implicitWidth: 50
-                    Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
-                    visible: columnLayout.isExtended
-                    validator: IntValidator {
-                        bottom: 1
-                    }
-                    placeholderTextColor: Style.placeHolderTextColor
-                    placeholderText: "Repetitions"
-                    text: planModel ? planModel.repetitions : ""
-                    color: Style.textColor
-                    onEditingFinished: () => {
-                                           focus = false
-                                           planModel.repetitions = text
-                                       }
-                    selectByMouse: true
-                    onFocusChanged: {
-                        if (focus)
-                            selectAll()
-                    }
-                }
+
                 RowLayout {
                     Button {
                         text: "Add Interval"
