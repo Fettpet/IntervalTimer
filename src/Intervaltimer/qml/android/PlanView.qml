@@ -107,23 +107,25 @@ Pane {
                             selectAll()
                     }
                 }
-                Button {
-                    text: "Add Interval"
-                    Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
-                    visible: columnLayout.isExtended
-                    onClicked: root.planModel.appendInterval()
-                }
-                Button {
-                    text: "Add Plan"
-                    Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
-                    visible: columnLayout.isExtended
-                    onClicked: root.planModel.appendPlan()
-                }
-                Button {
-                    text: "Delete Plan"
-                    Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
-                    visible: columnLayout.isExtended
-                    onClicked: root.deletePlanModel()
+                RowLayout {
+                    Button {
+                        text: "Add Interval"
+                        Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
+                        visible: columnLayout.isExtended
+                        onClicked: root.planModel.appendInterval()
+                    }
+                    Button {
+                        text: "Add Plan"
+                        Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
+                        visible: columnLayout.isExtended
+                        onClicked: root.planModel.appendPlan()
+                    }
+                    Button {
+                        text: "X"
+                        Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
+                        visible: columnLayout.isExtended
+                        onClicked: root.deletePlanModel()
+                    }
                 }
                 Repeater {
                     id: repeater
