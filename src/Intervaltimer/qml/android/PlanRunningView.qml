@@ -53,6 +53,7 @@ Pane {
             target: PlanRunner
             function onFinished() {
                 rerunButton.visible = true
+                progress.text = "Finished"
             }
         }
 
