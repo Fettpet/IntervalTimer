@@ -32,21 +32,39 @@ Control {
             closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
             parent: Overlay ? Overlay.overlay : undefined
             anchors.centerIn: parent
-            RowLayout {
-                DurationTumbler {
-                    id: hoursTumbler
-                    model: 24
-                    currentIndex: root.hours
+            ColumnLayout {
+                RowLayout {
+                    DurationTumbler {
+                        id: hoursTumbler
+                        model: 24
+                        currentIndex: root.hours
+                    }
+                    DurationTumbler {
+                        id: minutesTumbler
+                        model: 60
+                        currentIndex: root.minutes
+                    }
+                    DurationTumbler {
+                        id: secondTumbler
+                        model: 60
+                        currentIndex: root.seconds
+                    }
                 }
-                DurationTumbler {
-                    id: minutesTumbler
-                    model: 60
-                    currentIndex: root.minutes
-                }
-                DurationTumbler {
-                    id: secondTumbler
-                    model: 60
-                    currentIndex: root.seconds
+                RowLayout {
+                    Layout.alignment: Qt.AlignHCenter
+                    Button {
+                        text: "OK"
+                        onClicked: designer.close()
+                    }
+                    Button {
+                        text: "Cancel"
+                        onClicked: {
+                            hoursTumbler.currentIndex = root.hours
+                            minutesTumbler.currentIndex = root.minutes
+                            secondTumbler.currentIndex = root.seconds
+                            designer.close()
+                        }
+                    }
                 }
             }
             onClosed: {
