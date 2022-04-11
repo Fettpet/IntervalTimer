@@ -207,6 +207,8 @@ void PlanModel::setName(const QString& name) { rootPlan->setName(name); }
 void PlanModel::setRepetitionCount(const int& counter) { rootPlan->setNumberRepetitions(counter); }
 int PlanModel::getRepetitionCount() const { return rootPlan->getNumberRepetitions(); }
 
+bool PlanModel::getIsRoot() const { return rootPlan->getParentPlan().expired(); }
+
 void PlanModel::appendInterval() {
     beginInsertRows(QModelIndex(), rootPlan->getNumberItems(), rootPlan->getNumberItems());
     rootPlan->appendInterval();
