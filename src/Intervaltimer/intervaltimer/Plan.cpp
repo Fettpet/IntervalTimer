@@ -22,6 +22,7 @@ Plan::Plan(const Plan& lhs) { *this = lhs; }
 Plan& Plan::operator=(const Plan& lhs) {
     name = lhs.name;
     numberRepetitions = lhs.numberRepetitions;
+    items.clear();
     for (auto i = 0; i < lhs.items.size(); ++i) {
         auto& lhsItem = lhs.items[i];
         if (lhs.isIntervalAt(i)) {

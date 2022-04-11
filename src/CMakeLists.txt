@@ -16,15 +16,18 @@ if(${BUILD_INTERVAL_APPLICATON})
         URI IntervalApplication
         VERSION 1.0
         QML_FILES 
-            main.qml
+            mainDesctop.qml
+            mainAndroid.qml
         IMPORT_PATH "${QML_IMPORT_PATH}/src"
+        RESOURCES
+            ../ressources/image/closed.png
+            ../ressources/image/expanded.png
     )
 
     target_compile_definitions(IntervaltimerApplication
         PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
     target_link_libraries(IntervaltimerApplication
         PRIVATE Qt6::Quick
-        PRIVATE IntervaltimerPlugin
         PRIVATE Intervaltimer
         )
 endif()

@@ -1,6 +1,6 @@
 import QtQuick
-import QtQuick.Controls 2.0
-import QtQuick.Layouts 1.0
+import QtQuick.Controls
+import QtQuick.Layouts
 
 Frame {
     id: root
@@ -44,8 +44,11 @@ Frame {
             Layout.fillWidth: true
 
             onFocusChanged: {
-                if (focus)
+                if (focus) {
                     selectAll()
+                    return
+                }
+                Qt.inputMethod.hide();
             }
         }
 
@@ -61,8 +64,11 @@ Frame {
             onEditingFinished: root.duration = text
 
             onFocusChanged: {
-                if (focus)
+                if (focus) {
                     selectAll()
+                    return
+                }
+                Qt.inputMethod.hide();
             }
         }
     }

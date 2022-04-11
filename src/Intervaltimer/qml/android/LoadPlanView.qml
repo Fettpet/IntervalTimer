@@ -1,22 +1,23 @@
 import QtQuick
-import QtQuick.Controls 2.0
-import QtQuick.Window 2.2
-import QtQuick.Layouts 1.0
-import Intervaltimer 1.0
+import QtQuick.Controls
+import QtQuick.Window
+import QtQuick.Layouts
+import Intervaltimer
+import Intervaltimer.Android
 
 Popup {
     id: root
-    closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
 
+    required property color backgroundColor
+
+    closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
     width: layout.width + 20
     height: Math.min(300, layout.height + 20)
-
     background: Rectangle {
         id: backRectangle
-        color: "red"
+        color: root.backgroundColor
         width: root.width
         height: root.height
-
         radius: 8
     }
 

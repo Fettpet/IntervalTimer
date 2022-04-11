@@ -8,6 +8,21 @@
 #include <QQmlContext>
 #include <QTranslator>
 
+QUrl getMainQML() {
+    return QUrl(u"qrc:/IntervalApplication/mainAndroid.qml"_qs);
+    /*
+    if (QSysInfo::productType() == "android") {
+return QUrl(u"qrc:/IntervalApplication/mainAndroid.qml"_qs);
+    }
+    if (QSysInfo::productType() == "windows" || QSysInfo::productType() == "winrt" ||
+        QSysInfo::kernelType() == "linux") {
+        return QUrl(u"qrc:/IntervalApplication/mainDesctop.qml"_qs);
+    }
+
+    return QUrl{};
+*/
+}
+
 int main(int argc, char* argv[]) {
     QGuiApplication app(argc, argv);
 
@@ -36,7 +51,8 @@ int main(int argc, char* argv[]) {
         PlanModel::create(nullptr, nullptr),
         SLOT(reset()));
 
-    const QUrl url(u"qrc:/IntervalApplication/main.qml"_qs);
+    auto url = getMainQML();
+    qDebug() << url;
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreated,

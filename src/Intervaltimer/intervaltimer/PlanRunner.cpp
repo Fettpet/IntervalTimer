@@ -73,6 +73,11 @@ void PlanRunner::start() {
     isRunning = true;
     iterator = plan->begin();
     if (iterator != plan->end()) startInterval();
+    emit startRunning();
+    emit changedDescriptionOfInterval();
+    emit changedIntervalDurationCompleteTime();
+    emit changedIntervalDurationRunningTime();
+    emit changedPlanDurationRunningTime();
 }
 
 void PlanRunner::stop() {
