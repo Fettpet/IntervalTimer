@@ -130,6 +130,7 @@ Pane {
                         text: "X"
                         Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
                         visible: columnLayout.isExtended
+                                 && !root.planModel.isRoot
                         onClicked: root.deletePlanModel()
                     }
                 }
