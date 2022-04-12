@@ -72,6 +72,7 @@ Pane {
                 }
             }
             Button {
+                enabled: planModel ? !planModel.hasZeroDuration : false
                 text: "Run"
                 onClicked: startRunning()
             }
