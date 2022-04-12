@@ -53,9 +53,9 @@ public:
     void setRepetitionCount(int const&);
     [[nodiscard]] int getRepetitionCount() const;
 
-    bool getHasZeroDuration() const;
+    [[nodiscard]] bool getHasZeroDuration() const;
 
-    bool getIsRoot() const;
+    [[nodiscard]] bool getIsRoot() const;
 
     Q_INVOKABLE void appendInterval();
     Q_INVOKABLE void appendPlan();
