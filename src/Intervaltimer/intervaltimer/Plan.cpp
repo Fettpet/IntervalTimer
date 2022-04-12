@@ -89,7 +89,7 @@ std::chrono::milliseconds Plan::getDuration() const {
 
 QVariant Plan::getItemAt(const size_t& index) {
     if (index >= items.size()) {
-        return QVariant();
+        return {};
     }
     return items.at(index);
 }
