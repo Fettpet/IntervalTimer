@@ -42,7 +42,7 @@ public:
     virtual QHash<int, QByteArray> roleNames() const override;
 
     std::weak_ptr<Plan> getPlan() const;
-    void setPlan(std::shared_ptr<Plan>);
+    void setPlan(std::shared_ptr<Plan> const&);
 
     QString getName() const;
     void setName(QString const&);
