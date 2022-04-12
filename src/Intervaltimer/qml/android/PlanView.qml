@@ -7,12 +7,26 @@ import Intervaltimer.Android
 
 Pane {
     id: root
+
     property QtObject planModel: null
     property Component childComponent: null
 
     implicitWidth: layout.implicitWidth + 10
     implicitHeight: layout.implicitHeight + 10
+
     signal deletePlanModel
+    signal deleteItem(int index)
+
+    Connections {
+        target: root
+
+        function onDeleteItem(index) {
+            if (root.planModel != null) {
+                root.planModel.removeItem(index)
+                root.planModel.reset()
+            }
+        }
+    }
 
     background: Rectangle {
         width: root.implicitWidth * 1.1
@@ -162,8 +176,9 @@ Pane {
                                                           model.description = description
                                                       }
                                 onDurationChanged: duration => model.duration = duration
-                                onDeleteInterval: root.planModel.removeItem(
-                                                      index)
+                                onDeleteInterval: {
+                                    root.deleteItem(index)
+                                }
                             }
                         }
                         Loader {
@@ -179,7 +194,15 @@ Pane {
                             enabled: planLayout.isPlan
                             target: planLoader.item
                             function onDeletePlanModel() {
-                                root.planModel.removeItem(index)
+                                root.deleteItem(index)
+                            }
+                        }
+                        Connections {
+                            enabled: planLayout.isPlan
+                            ignoreUnknownSignals: true
+                            target: planLayout.subPlan !== undefined ? planLayout.subPlan : null
+                            function onDataChanged() {
+                                root.planModel.reset()
                             }
                         }
                     }
