@@ -138,7 +138,8 @@ bool PlanModel::setData(const QModelIndex& index, const QVariant& value, int rol
             break;
         }
         default: {
-            auto roleName = roleNames()[role];
+            auto names = roleNames();
+            auto roleName = names[role];
             qWarning() << "Role " << roleName << " is not useable in Interval";
             return false;
         }
@@ -231,8 +232,8 @@ void PlanModel::reset() {
     endResetModel();
 }
 
-PlanModel* PlanModel::create(QQmlEngine*, QJSEngine* engine) {
-    if (!instance) {
+PlanModel* PlanModel::create(QQmlEngine* /* unused */, QJSEngine* engine) {
+    if (instance == nullptr) {
         instance = new PlanModel{};
     }
     return instance;
