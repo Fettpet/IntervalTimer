@@ -132,13 +132,13 @@ TEST_F(PlanTesting, isPlanAt) {
 TEST_F(PlanTesting, getIntervalAt) {
     EXPECT_EQ(plan->getIntervalAt(0), outerFirst);
 
-    EXPECT_ANY_THROW(plan->getIntervalAt(2));
+    EXPECT_ANY_THROW((void)plan->getIntervalAt(2));
 }
 
 TEST_F(PlanTesting, getPlanAt) {
     EXPECT_EQ(plan->getPlanAt(2), nestedPlan);
 
-    EXPECT_ANY_THROW(plan->getPlanAt(1));
+    EXPECT_ANY_THROW((void)plan->getPlanAt(1));
 }
 
 TEST_F(PlanTesting, operatorCopy) {

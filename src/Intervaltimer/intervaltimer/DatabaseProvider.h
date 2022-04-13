@@ -19,17 +19,17 @@ public:
 
     void storePlan(QString const& name, Plan const&);
 
-    QList<QString> nameOfAllPlans() const;
+    [[nodiscard]] QList<QString> nameOfAllPlans() const;
 
-    bool containsPlan(QString const& name) const;
+    [[nodiscard]] bool containsPlan(QString const& name) const;
 
-    Plan loadPlan(QString const& name);
+    [[nodiscard]] Plan loadPlan(QString const& name);
     void deletePlan(QString const& name);
 
     void initialize();
 
-    QMap<QString, Plan>::const_iterator beginPlans() const;
-    QMap<QString, Plan>::const_iterator endPlans() const;
+    [[nodiscard]] QMap<QString, Plan>::const_iterator beginPlans() const;
+    [[nodiscard]] QMap<QString, Plan>::const_iterator endPlans() const;
 
 protected:
     static QString getDatabaseDefaultPath();

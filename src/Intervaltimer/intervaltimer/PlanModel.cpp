@@ -31,7 +31,7 @@ int PlanModel::columnCount(const QModelIndex& parent) const { return 2; }
 
 QModelIndex PlanModel::index(int row, int column, const QModelIndex& parent) const {
     if (!hasIndex(row, column, parent)) {
-        return QModelIndex();
+        return {};
     }
     std::shared_ptr<Plan> parentItem;
 
@@ -42,11 +42,11 @@ QModelIndex PlanModel::index(int row, int column, const QModelIndex& parent) con
     }
     else {
         qWarning() << "Should not happen";
-        return QModelIndex();
+        return {};
     }
     QVariant childItem = parentItem->getItemAt(row);
     if (childItem.isNull()) {
-        return QModelIndex();
+        return {};
     }
     if (containsPlan(childItem)) {
         auto newIndex = createIndex(row, planColumn, childItem.value<std::shared_ptr<Plan>>().get());
@@ -56,15 +56,15 @@ QModelIndex PlanModel::index(int row, int column, const QModelIndex& parent) con
         auto newIndex = createIndex(row, intervalColumn, parentItem.get());
         return newIndex;
     }
-    return QModelIndex();
+    return {};
 }
 
 QVariant PlanModel::data(const QModelIndex& index, int role) const {
-    if (!index.isValid()) return QVariant();
+    if (!index.isValid()) return {};
 
     switch (role) {
-    case isIntervalRole: return QVariant(containsInterval(index));
-    case isPlanRole: return QVariant(containsPlan(index));
+    case isIntervalRole: return {containsInterval(index)};
+    case isPlanRole: return {containsPlan(index)};
     }
 
     auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
@@ -73,7 +73,7 @@ QVariant PlanModel::data(const QModelIndex& index, int role) const {
         switch (role) {
         case nameRole: return QVariant::fromValue(itemPtr->getName());
         case subPlanRole: {
-            auto result = new PlanModel(const_cast<PlanModel*>(this));
+            auto* result = new PlanModel(const_cast<PlanModel*>(this));
             result->setPlan(itemPtr);
             return QVariant::fromValue(result);
         }
@@ -138,7 +138,8 @@ bool PlanModel::setData(const QModelIndex& index, const QVariant& value, int rol
             break;
         }
         default: {
-            auto roleName = roleNames()[role];
+            auto names = roleNames();
+            auto roleName = names[role];
             qWarning() << "Role " << roleName << " is not useable in Interval";
             return false;
         }
@@ -157,23 +158,23 @@ Qt::ItemFlags PlanModel::flags(const QModelIndex& index) const {
 }
 
 QModelIndex PlanModel::parent(const QModelIndex& index) const {
-    if (!index.isValid()) return QModelIndex();
+    if (!index.isValid()) return {};
     auto* currentPlan = static_cast<Plan*>(index.internalPointer());
 
     if (containsPlan(index)) {
         auto parentItem = currentPlan->getParentPlan();
         if (parentItem.expired()) {
-            return QModelIndex();
+            return {};
         }
         auto parentPtr = parentItem.lock();
-        if (parentPtr == rootPlan || parentPtr == nullptr) return QModelIndex();
+        if (parentPtr == rootPlan || parentPtr == nullptr) return {};
 
         return createIndex(parentPtr->getRow(), planColumn, parentPtr.get());
     }
     if (containsInterval(index)) {
         return createIndex(currentPlan->getRow(), planColumn, currentPlan);
     }
-    return QModelIndex();
+    return {};
 }
 
 QHash<int, QByteArray> PlanModel::roleNames() const {
@@ -190,7 +191,7 @@ QHash<int, QByteArray> PlanModel::roleNames() const {
 
 std::weak_ptr<Plan> PlanModel::getPlan() const { return rootPlan; }
 
-void PlanModel::setPlan(std::shared_ptr<Plan> newPlan) {
+void PlanModel::setPlan(std::shared_ptr<Plan> const& newPlan) {
     if (newPlan.use_count() == 0) {
         throw std::invalid_argument("setPlan must contain a plan");
     }
@@ -231,8 +232,8 @@ void PlanModel::reset() {
     endResetModel();
 }
 
-PlanModel* PlanModel::create(QQmlEngine*, QJSEngine* engine) {
-    if (!instance) {
+PlanModel* PlanModel::create(QQmlEngine* /* unused */, QJSEngine* engine) {
+    if (instance == nullptr) {
         instance = new PlanModel{};
     }
     return instance;

@@ -17,13 +17,13 @@ struct TestTimer : public TimerBase {
         : TimerBase(nullptr) {}
 
 public:
-    virtual void start(const std::chrono::milliseconds& dur) override { duration = dur; }
+    void start(const std::chrono::milliseconds& dur) override { duration = dur; }
     void emitTimeout() { emit timeout(); }
 
-    virtual std::chrono::milliseconds getElapsedTime() const override { return elapsedTime; }
+    [[nodiscard]] std::chrono::milliseconds getElapsedTime() const override { return elapsedTime; }
     void setElapsedTime(std::chrono::milliseconds time) { elapsedTime = time; }
-    virtual std::chrono::milliseconds getDuration() const override { return duration; }
-    virtual void stop() override { elapsedTime = std::chrono::milliseconds{0}; }
+    [[nodiscard]] std::chrono::milliseconds getDuration() const override { return duration; }
+    void stop() override { elapsedTime = std::chrono::milliseconds{0}; }
 
     std::chrono::milliseconds elapsedTime, duration;
 };

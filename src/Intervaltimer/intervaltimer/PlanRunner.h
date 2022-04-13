@@ -21,34 +21,35 @@ class PlanRunner : public QObject {
     Q_PROPERTY(QString intervalDescription READ getDescriptionOfInterval NOTIFY changedDescriptionOfInterval);
     Q_PROPERTY(int intervalDurationCompleteTime READ getIntervalDuration NOTIFY changedIntervalDurationCompleteTime);
     Q_PROPERTY(int intervalDurationRunningTime READ getIntervalElapsedTime NOTIFY changedIntervalDurationRunningTime);
-    Q_PROPERTY(int refreshingTimeForInterval READ getRefreshingTimeInterval WRITE setRefreshingTimeInterval);
+    Q_PROPERTY(int refreshingTimeForInterval READ getRefreshingTimeInterval WRITE setRefreshingTimeInterval NOTIFY
+                   changedRefreshingTimeForInterval);
     Q_PROPERTY(int planDurationCompleteTime READ getPlanDurationCompleteTime CONSTANT)
     Q_PROPERTY(int planDurationRunningTime READ getPlanDurationRunningTime NOTIFY changedPlanDurationRunningTime)
-    Q_PROPERTY(int refreshingTimeForPlan READ getRefreshingTimePlan WRITE setRefreshingTimePlan);
+    Q_PROPERTY(int refreshingTimeForPlan READ getRefreshingTimePlan WRITE setRefreshingTimePlan NOTIFY
+                   changedRefreshingTimeForPlan);
 
-    PlanRunner();
+    PlanRunner() = default;
     static PlanRunner* instance;
 
 public:
     static PlanRunner* create(QQmlEngine*, QJSEngine* engine);
-    ~PlanRunner() {}
 
-    int getPlanDurationCompleteTime() const;
-    int getPlanDurationRunningTime() const;
+    [[nodiscard]] int getPlanDurationCompleteTime() const;
+    [[nodiscard]] int getPlanDurationRunningTime() const;
 
-    QString getDescriptionOfInterval() const;
+    [[nodiscard]] QString getDescriptionOfInterval() const;
 
-    int getIntervalDuration() const;
-    int getIntervalElapsedTime() const;
+    [[nodiscard]] int getIntervalDuration() const;
+    [[nodiscard]] int getIntervalElapsedTime() const;
 
-    std::weak_ptr<Plan> getPlan() const;
-    void setPlan(std::shared_ptr<Plan>);
+    [[nodiscard]] std::weak_ptr<Plan> getPlan() const;
+    void setPlan(std::shared_ptr<Plan> newPlan);
 
-    int getRefreshingTimeInterval() const;
-    void setRefreshingTimeInterval(int const&);
+    [[nodiscard]] int getRefreshingTimeInterval() const;
+    void setRefreshingTimeInterval(int const& newTimeMilliseconds);
 
-    int getRefreshingTimePlan() const;
-    void setRefreshingTimePlan(int const&);
+    [[nodiscard]] int getRefreshingTimePlan() const;
+    void setRefreshingTimePlan(int const& newTimeMilliseconds);
 
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
@@ -74,7 +75,7 @@ protected:
 
 private:
     void startInterval();
-    bool intervalIsValid() const;
+    [[nodiscard]] bool intervalIsValid() const;
 private slots:
     void changedInterval();
     void changedIntervalRunningTime();
@@ -87,6 +88,8 @@ signals:
     void changedIntervalDurationCompleteTime();
     void changedIntervalDurationRunningTime();
     void startRunning();
+    void changedRefreshingTimeForPlan();
+    void changedRefreshingTimeForInterval();
     // void changedCurrentDurationOfIntervalMilliseconds();
     // void changedCurrentDurationOfAllPlansMilliseconds();
     // void changedPlan();

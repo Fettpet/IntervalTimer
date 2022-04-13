@@ -1,14 +1,13 @@
 #include "Interval.h"
+#include <utility>
 
-Interval::Interval() {}
-
-Interval::Interval(std::chrono::milliseconds const& duration, QString const& description)
+Interval::Interval(std::chrono::milliseconds duration, QString description)
     : duration(duration)
-    , description(description) {}
+    , description(std::move(description)) {}
 
-void Interval::setDuration(std::chrono::milliseconds const& dur) { duration = dur; }
+void Interval::setDuration(std::chrono::milliseconds newDuration) { duration = newDuration; }
 
-void Interval::setDescripton(QString const& descr) { description = descr; }
+void Interval::setDescripton(QString newDescription) { description = std::move(newDescription); }
 QString Interval::getDescription() const { return description; }
 
 QDebug operator<<(QDebug debug, const Interval& interval) {

@@ -6,8 +6,8 @@
 
 struct Interval {
 public:
-    Interval();
-    Interval(std::chrono::milliseconds const&, QString const&);
+    Interval() = default;
+    Interval(std::chrono::milliseconds, QString);
     Interval(Interval const&) = default;
     Interval(Interval&&) = default;
 
@@ -17,15 +17,15 @@ public:
     auto operator==(Interval const&) const -> bool;
     auto operator!=(Interval const&) const -> bool;
 
-    void setDuration(std::chrono::milliseconds const& dur);
+    void setDuration(std::chrono::milliseconds);
 
     template<typename Duration>
-    Duration getDuration() const {
+    [[nodiscard]] Duration getDuration() const {
         return std::chrono::duration_cast<Duration>(duration);
     }
 
-    void setDescripton(QString const&);
-    QString getDescription() const;
+    void setDescripton(QString);
+    [[nodiscard]] QString getDescription() const;
 
 protected:
     std::chrono::milliseconds duration{0};

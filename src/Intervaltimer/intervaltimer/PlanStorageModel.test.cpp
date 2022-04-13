@@ -22,7 +22,7 @@ protected:
         model->setDatabaseProvider(&provider);
     }
 
-    std::shared_ptr<Plan> createPlan(QString const& name) {
+    static std::shared_ptr<Plan> createPlan(QString const& name) {
         std::shared_ptr<Plan> nestedPlan{new Plan{}};
         std::shared_ptr<Plan> plan{new Plan{}};
         std::shared_ptr<Plan> planForModel{new Plan{}};

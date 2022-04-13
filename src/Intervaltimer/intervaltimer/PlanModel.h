@@ -25,30 +25,30 @@ public:
     enum { durationRole = Qt::UserRole, descriptionRole, subPlanRole, nameRole, isIntervalRole, isPlanRole };
 
     // Basic functionality:
-    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+    [[nodiscard]] int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    [[nodiscard]] int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
-    QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
+    [[nodiscard]] QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
 
-    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    [[nodiscard]] QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 
     // Editable:
     bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
 
-    Qt::ItemFlags flags(const QModelIndex& index) const override;
+    [[nodiscard]] Qt::ItemFlags flags(const QModelIndex& index) const override;
 
-    QModelIndex parent(const QModelIndex& index) const override;
+    [[nodiscard]] QModelIndex parent(const QModelIndex& index) const override;
 
-    virtual QHash<int, QByteArray> roleNames() const override;
+    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
-    std::weak_ptr<Plan> getPlan() const;
-    void setPlan(std::shared_ptr<Plan>);
+    [[nodiscard]] std::weak_ptr<Plan> getPlan() const;
+    void setPlan(std::shared_ptr<Plan> const&);
 
-    QString getName() const;
+    [[nodiscard]] QString getName() const;
     void setName(QString const&);
 
     void setRepetitionCount(int const&);
-    int getRepetitionCount() const;
+    [[nodiscard]] int getRepetitionCount() const;
 
     Q_INVOKABLE void appendInterval();
     Q_INVOKABLE void appendPlan();
@@ -58,12 +58,12 @@ public slots:
     void reset();
 
 protected:
-    static bool containsPlan(QModelIndex const&);
-    static bool containsInterval(QModelIndex const&);
-    static bool containsPlan(QVariant const&);
-    static bool containsInterval(QVariant const&);
+    [[nodiscard]] static bool containsPlan(QModelIndex const&);
+    [[nodiscard]] static bool containsInterval(QModelIndex const&);
+    [[nodiscard]] static bool containsPlan(QVariant const&);
+    [[nodiscard]] static bool containsInterval(QVariant const&);
 
-    bool isDataSetable(const QModelIndex& index, const QVariant& value, int role) const;
+    [[nodiscard]] bool isDataSetable(const QModelIndex& index, const QVariant& value, int role) const;
 
 signals:
     void changedName();

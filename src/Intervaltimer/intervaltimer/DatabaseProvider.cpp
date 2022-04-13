@@ -11,6 +11,7 @@
 #include <QString>
 #include <QSysInfo>
 #include <exception>
+#include <utility>
 
 DatabaseProvider::DatabaseProvider()
     : database(new QSqlDatabase{})
@@ -18,7 +19,7 @@ DatabaseProvider::DatabaseProvider()
 
 void DatabaseProvider::setDatabasePath(const QString& path) { databasePath = path; }
 
-void DatabaseProvider::setDatabase(std::shared_ptr<QSqlDatabase> newDatabase) { database = newDatabase; }
+void DatabaseProvider::setDatabase(std::shared_ptr<QSqlDatabase> newDatabase) { database = std::move(newDatabase); }
 
 void DatabaseProvider::storePlan(QString const& name, const Plan& plan) {
     QSqlQuery query;
@@ -113,7 +114,7 @@ QString DatabaseProvider::planToString(const Plan& plan) {
     auto jsonObject = PlanToJson::transform(plan);
     QJsonDocument document(jsonObject);
     auto string = document.toJson();
-    return QString(string);
+    return string;
 }
 
 QSqlQuery DatabaseProvider::transformToWriteQuery(const QString& name, const Plan& plan) {

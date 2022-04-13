@@ -7,7 +7,7 @@ PlanStorageModel::PlanStorageModel(QObject* parent)
     databaseProvider->initialize();
 }
 
-PlanStorageModel* PlanStorageModel::create(QQmlEngine*, QJSEngine* engine) {
+PlanStorageModel* PlanStorageModel::create(QQmlEngine* /* unused */, QJSEngine* engine) {
     if (instance == nullptr) {
         instance = new PlanStorageModel{};
     }

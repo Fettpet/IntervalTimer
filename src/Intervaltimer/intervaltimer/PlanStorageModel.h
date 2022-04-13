@@ -20,16 +20,16 @@ public:
     enum { nameRole = Qt::UserRole, planRole };
 
     // Basic functionality:
-    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    [[nodiscard]] int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 
-    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    [[nodiscard]] QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 
-    virtual QHash<int, QByteArray> roleNames() const override;
+    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE void appendPlan(QString const& name);
     Q_INVOKABLE void removePlan(QString const& name);
     Q_INVOKABLE void loadPlan(QString const& name);
-    Q_INVOKABLE bool containsPlan(QString const& name) const;
+    [[nodiscard]] Q_INVOKABLE bool containsPlan(QString const& name) const;
 
     void setDatabaseProvider(DatabaseProvider*);
     void setPlan(std::shared_ptr<Plan> const&);

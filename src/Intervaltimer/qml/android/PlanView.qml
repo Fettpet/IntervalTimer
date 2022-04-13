@@ -77,7 +77,7 @@ Pane {
                                 selectAll()
                                 return
                             }
-                            Qt.inputMethod.hide();
+                            Qt.inputMethod.hide()
                         }
                     }
                     TextField {
@@ -101,7 +101,7 @@ Pane {
                                 selectAll()
                                 return
                             }
-                            Qt.inputMethod.hide();
+                            Qt.inputMethod.hide()
                         }
                     }
                     ToolButton {

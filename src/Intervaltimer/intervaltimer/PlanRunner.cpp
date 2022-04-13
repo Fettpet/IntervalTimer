@@ -2,8 +2,6 @@
 
 PlanRunner* PlanRunner::instance = nullptr;
 
-PlanRunner::PlanRunner() {}
-
 int PlanRunner::getPlanDurationCompleteTime() const {
     if (!isRunning) {
         return 1;
@@ -41,22 +39,30 @@ int PlanRunner::getIntervalElapsedTime() const {
 
 std::weak_ptr<Plan> PlanRunner::getPlan() const { return plan; }
 
-void PlanRunner::setPlan(std::shared_ptr<Plan> newPlan) { plan = newPlan; }
+void PlanRunner::setPlan(std::shared_ptr<Plan> newPlan) { plan = std::move(newPlan); }
 
 int PlanRunner::getRefreshingTimeInterval() const { return refreshingTimeForRunningInterval.count(); }
 
-void PlanRunner::setRefreshingTimeInterval(const int& newTime) {
-    refreshingTimeForRunningInterval = std::chrono::milliseconds{newTime};
+void PlanRunner::setRefreshingTimeInterval(const int& newTimeMilliseconds) {
+    auto newTime = std::chrono::milliseconds{newTimeMilliseconds};
+    if (newTime != refreshingTimeForRunningInterval) {
+        refreshingTimeForRunningInterval = newTime;
+        emit changedRefreshingTimeForInterval();
+    }
 }
 
 int PlanRunner::getRefreshingTimePlan() const { return refreshingTimeForRunningPlan.count(); }
 
-void PlanRunner::setRefreshingTimePlan(const int& newTime) {
-    refreshingTimeForRunningPlan = std::chrono::milliseconds{newTime};
+void PlanRunner::setRefreshingTimePlan(const int& newTimeMilliseconds) {
+    auto newTime = std::chrono::milliseconds{newTimeMilliseconds};
+    if (newTime != refreshingTimeForRunningPlan) {
+        refreshingTimeForRunningPlan = newTime;
+        emit changedRefreshingTimeForPlan();
+    }
 }
 
-PlanRunner* PlanRunner::create(QQmlEngine*, QJSEngine* engine) {
-    if (!instance) {
+PlanRunner* PlanRunner::create(QQmlEngine* /*unused*/, QJSEngine* engine) {
+    if (instance == nullptr) {
         instance = new PlanRunner{};
     }
     return instance;
