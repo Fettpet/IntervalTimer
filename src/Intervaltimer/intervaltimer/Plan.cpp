@@ -101,7 +101,7 @@ Interval Plan::getIntervalAt(const size_t& index) {
     return items.at(index).value<Interval>();
 }
 
-const std::shared_ptr<Plan> Plan::getPlanAt(const size_t& index) const {
+std::shared_ptr<Plan> Plan::getPlanAt(const size_t& index) const {
 
     if (!isPlanAt(index)) {
         throw std::invalid_argument("Item isn't an Plan");
