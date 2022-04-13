@@ -13,11 +13,10 @@ public:
     using pointer = value_type*;
     using reference = value_type&;
 
-public:
-    PlanIterator();
+    PlanIterator() = default;
     PlanIterator(PlanIterator const&) = default;
-    PlanIterator(PlanIterator &&) = default;
-    PlanIterator(std::shared_ptr<Plan> const&);
+    PlanIterator(PlanIterator&&) = default;
+    PlanIterator(std::shared_ptr<Plan>);
 
     PlanIterator& operator=(PlanIterator const&) = default;
     PlanIterator& operator=(PlanIterator&&) = default;
@@ -45,7 +44,6 @@ private:
     [[nodiscard]] bool childIsAtEnd() const;
     [[nodiscard]] std::shared_ptr<Plan> getCurrentPlan();
 
-private:
     std::shared_ptr<Plan> plan{nullptr};
     std::shared_ptr<PlanIterator> childIterator{nullptr};
     int32_t currentRepetition{1}, currentIndex{-1};

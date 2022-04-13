@@ -2,10 +2,8 @@
 #include "Plan.h"
 #include <exception>
 
-PlanIterator::PlanIterator() {}
-
-PlanIterator::PlanIterator(const std::shared_ptr<Plan>& newPlan)
-    : plan(newPlan) {
+PlanIterator::PlanIterator(std::shared_ptr<Plan> newPlan)
+    : plan(std::move(newPlan)) {
     setToBegin();
 }
 
