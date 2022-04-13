@@ -66,6 +66,8 @@ protected:
     [[nodiscard]] static bool containsPlan(QVariant const&);
     [[nodiscard]] static bool containsInterval(QVariant const&);
 
+    [[nodiscard]] std::shared_ptr<Plan> extractParentPlan(const QModelIndex& parent) const;
+
     [[nodiscard]] bool isDataSetable(const QModelIndex& index, const QVariant& value, int role) const;
 
 signals:

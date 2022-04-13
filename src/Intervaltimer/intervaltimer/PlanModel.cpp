@@ -27,6 +27,13 @@ int PlanModel::rowCount(const QModelIndex& parent) const {
 
 int PlanModel::columnCount(const QModelIndex& parent) const { return 2; }
 
+std::shared_ptr<Plan> PlanModel::extractParentPlan(const QModelIndex& parent) const {
+    if (parent.isValid() && parent.internalPointer() != nullptr) {
+        return static_cast<Plan*>(parent.internalPointer())->shared_from_this();
+    }
+    return rootPlan;
+}
+
 QModelIndex PlanModel::index(int row, int column, const QModelIndex& parent) const {
     if (!hasIndex(row, column, parent)) {
         return {};
