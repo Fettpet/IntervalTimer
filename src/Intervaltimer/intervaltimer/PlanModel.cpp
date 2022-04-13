@@ -71,7 +71,8 @@ QVariant PlanModel::getDataForPlan(const QModelIndex& index, int role) const {
     switch (role) {
     case nameRole: return QVariant::fromValue(itemPtr->getName());
     case subPlanRole: {
-        auto* result = new PlanModel(const_cast<PlanModel*>(this));
+        auto* parent = const_cast<PlanModel*>(this);
+        auto* result = new PlanModel(parent);
         connect(result, &PlanModel::changeHasZeroDuration, this, &PlanModel::changeHasZeroDuration);
         result->setPlan(itemPtr);
         return QVariant::fromValue(result);
