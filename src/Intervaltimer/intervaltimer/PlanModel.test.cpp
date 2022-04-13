@@ -62,10 +62,6 @@ TEST_F(PlanModelTesting, indexRootSubplan) {
     EXPECT_EQ(index.internalPointer(), static_cast<void*>(nestedPlan.get()));
 }
 
-TEST_F(PlanModelTesting, rowCountOuter) { //
-    EXPECT_EQ(model->rowCount(), plan->getNumberItems());
-}
-
 TEST_F(PlanModelTesting, rowCountInner) { //
     QModelIndex index = model->index(2, 0);
     EXPECT_EQ(model->rowCount(index), nestedPlan->getNumberItems());
