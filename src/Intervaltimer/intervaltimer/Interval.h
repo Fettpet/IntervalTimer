@@ -20,12 +20,12 @@ public:
     void setDuration(std::chrono::milliseconds const& dur);
 
     template<typename Duration>
-    Duration getDuration() const {
+    [[nodiscard]] Duration getDuration() const {
         return std::chrono::duration_cast<Duration>(duration);
     }
 
     void setDescripton(QString const&);
-    QString getDescription() const;
+    [[nodiscard]] QString getDescription() const;
 
 protected:
     std::chrono::milliseconds duration{0};

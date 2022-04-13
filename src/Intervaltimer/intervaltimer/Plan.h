@@ -21,25 +21,25 @@ public:
     void setItemAt(size_t const& index, std::shared_ptr<Plan> plan);
 
     void setItemAt(size_t const& index, Interval const& interval);
-    QVariant getItemAt(size_t const& index);
-    Interval getIntervalAt(size_t const& index);
-    const std::shared_ptr<Plan> getPlanAt(size_t const& index) const;
-    bool isPlanAt(size_t const& index) const;
-    bool isIntervalAt(size_t const& index) const;
+    [[nodiscard]] QVariant getItemAt(size_t const& index);
+    [[nodiscard]] Interval getIntervalAt(size_t const& index);
+    [[nodiscard]] std::shared_ptr<Plan> getPlanAt(size_t const& index) const;
+    [[nodiscard]] bool isPlanAt(size_t const& index) const;
+    [[nodiscard]] bool isIntervalAt(size_t const& index) const;
 
-    QVariant& getReferenceAt(size_t const& index);
-    QVariantList getItems() const;
+    [[nodiscard]] QVariant& getReferenceAt(size_t const& index);
+    [[nodiscard]] QVariantList getItems() const;
 
-    uint32_t getNumberRepetitions() const;
+    [[nodiscard]] uint32_t getNumberRepetitions() const;
 
-    QString getName() const;
+    [[nodiscard]] QString getName() const;
 
     void setParentPlan(std::shared_ptr<Plan>);
-    std::weak_ptr<Plan> getParentPlan() const;
+    [[nodiscard]] std::weak_ptr<Plan> getParentPlan() const;
 
-    uint32_t getRow() const;
+    [[nodiscard]] uint32_t getRow() const;
 
-    uint32_t getNumberItems() const;
+    [[nodiscard]] uint32_t getNumberItems() const;
 
     void setNumberRepetitions(uint32_t const&);
     void appendInterval();
@@ -47,10 +47,10 @@ public:
     void setName(QString const&);
     void removeItem(int const&);
 
-    PlanIterator begin() const;
-    PlanIterator end() const;
+    [[nodiscard]] PlanIterator begin() const;
+    [[nodiscard]] PlanIterator end() const;
 
-    std::chrono::milliseconds getDuration() const;
+    [[nodiscard]] std::chrono::milliseconds getDuration() const;
 
 protected:
     std::weak_ptr<Plan> parentItem{};

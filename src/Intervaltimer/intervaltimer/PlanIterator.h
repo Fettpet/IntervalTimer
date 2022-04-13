@@ -22,9 +22,9 @@ public:
     PlanIterator& operator=(PlanIterator const&) = default;
     PlanIterator& operator=(PlanIterator&&) = default;
 
-    reference operator*();
-    pointer operator->();
-    Interval const* operator->() const;
+    [[nodiscard]] reference operator*();
+    [[nodiscard]] pointer operator->();
+    [[nodiscard]] Interval const* operator->() const;
 
     PlanIterator& operator++();
 
@@ -40,10 +40,10 @@ private:
     [[nodiscard]] bool currentElementIsInterval() const;
     [[nodiscard]] bool currentElementIsPlan() const;
     [[nodiscard]] bool indexIsValid() const;
-    Interval& getCurrentInterval();
-    Interval const& getCurrentInterval() const;
-    bool childIsAtEnd() const;
-    std::shared_ptr<Plan> getCurrentPlan();
+    [[nodiscard]] Interval& getCurrentInterval();
+    [[nodiscard]] Interval const& getCurrentInterval() const;
+    [[nodiscard]] bool childIsAtEnd() const;
+    [[nodiscard]] std::shared_ptr<Plan> getCurrentPlan();
 
 private:
     std::shared_ptr<Plan> plan{nullptr};

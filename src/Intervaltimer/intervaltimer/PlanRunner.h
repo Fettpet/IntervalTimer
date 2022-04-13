@@ -33,21 +33,21 @@ public:
     static PlanRunner* create(QQmlEngine*, QJSEngine* engine);
     ~PlanRunner() {}
 
-    int getPlanDurationCompleteTime() const;
-    int getPlanDurationRunningTime() const;
+    [[nodiscard]] int getPlanDurationCompleteTime() const;
+    [[nodiscard]] int getPlanDurationRunningTime() const;
 
-    QString getDescriptionOfInterval() const;
+    [[nodiscard]] QString getDescriptionOfInterval() const;
 
-    int getIntervalDuration() const;
-    int getIntervalElapsedTime() const;
+    [[nodiscard]] int getIntervalDuration() const;
+    [[nodiscard]] int getIntervalElapsedTime() const;
 
-    std::weak_ptr<Plan> getPlan() const;
+    [[nodiscard]] std::weak_ptr<Plan> getPlan() const;
     void setPlan(std::shared_ptr<Plan>);
 
-    int getRefreshingTimeInterval() const;
+    [[nodiscard]] int getRefreshingTimeInterval() const;
     void setRefreshingTimeInterval(int const&);
 
-    int getRefreshingTimePlan() const;
+    [[nodiscard]] int getRefreshingTimePlan() const;
     void setRefreshingTimePlan(int const&);
 
     Q_INVOKABLE void start();
