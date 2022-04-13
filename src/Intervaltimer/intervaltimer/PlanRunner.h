@@ -74,7 +74,7 @@ protected:
 
 private:
     void startInterval();
-    bool intervalIsValid() const;
+    [[nodiscard]] bool intervalIsValid() const;
 private slots:
     void changedInterval();
     void changedIntervalRunningTime();
