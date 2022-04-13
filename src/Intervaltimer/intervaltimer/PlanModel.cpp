@@ -30,17 +30,8 @@ QModelIndex PlanModel::index(int row, int column, const QModelIndex& parent) con
     if (!hasIndex(row, column, parent)) {
         return {};
     }
-    std::shared_ptr<Plan> parentItem;
+    auto parentItem = extractParentPlan(parent);
 
-    if (!parent.isValid())
-        parentItem = rootPlan;
-    else if (parent.internalPointer() != nullptr) {
-        parentItem = static_cast<Plan*>(parent.internalPointer())->shared_from_this();
-    }
-    else {
-        qWarning() << "Should not happen";
-        return {};
-    }
     QVariant childItem = parentItem->getItemAt(row);
     if (childItem.isNull()) {
         return {};
