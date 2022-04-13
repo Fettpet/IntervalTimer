@@ -9,9 +9,9 @@ class Timer : public TimerBase {
     Q_OBJECT
 public:
     explicit Timer(QObject* parent = nullptr);
-    ~Timer();
+    ~Timer() override;
 
-    void start(const std::chrono::milliseconds&) override;
+    void start(const std::chrono::milliseconds& duration) override;
     [[nodiscard]] std::chrono::milliseconds getElapsedTime() const override;
     [[nodiscard]] std::chrono::milliseconds getDuration() const override;
     void stop() override;

@@ -4,7 +4,7 @@ Timer::Timer(QObject* parent)
     : TimerBase{parent} {
     thread->start(QThread::LowPriority);
 
-    QObject::connect(timer.get(), &QTimer::timeout, [&]() { emit timeout(); });
+    QObject::connect(timer.get(), &QTimer::timeout, this, [&]() { emit timeout(); });
 }
 
 Timer::~Timer() {
