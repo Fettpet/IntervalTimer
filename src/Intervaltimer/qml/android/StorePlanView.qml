@@ -15,7 +15,6 @@ Popup {
     width: 200
     height: 70
     background: Rectangle {
-        id: backRectangle
         color: root.backgroundColor
         width: root.width
         height: root.height

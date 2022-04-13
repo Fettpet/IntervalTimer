@@ -14,7 +14,6 @@ Popup {
     width: layout.width + 20
     height: Math.min(300, layout.height + 20)
     background: Rectangle {
-        id: backRectangle
         color: root.backgroundColor
         width: root.width
         height: root.height
