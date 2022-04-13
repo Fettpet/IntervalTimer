@@ -70,3 +70,10 @@ TEST_F(PlanModelTesting, rowCountInner) { //
     QModelIndex index = model->index(2, 0);
     EXPECT_EQ(model->rowCount(index), nestedPlan->getNumberItems());
 }
+
+TEST_F(PlanModelTesting, isRoot) { //
+    model->setPlan(planForModel);
+    EXPECT_TRUE(model->getIsRoot());
+    model->setPlan(nestedPlan);
+    EXPECT_FALSE(model->getIsRoot());
+}

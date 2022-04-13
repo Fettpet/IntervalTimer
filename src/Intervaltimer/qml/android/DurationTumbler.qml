@@ -37,6 +37,8 @@ Rectangle {
             anchors.left: parent.left
             anchors.right: parent.right
             height: parent.height / 5
+            scale: PathView.iconScale ? PathView.iconScale : 1
+            opacity: PathView.iconOpacity ? PathView.iconOpacity : 0
 
             Text {
                 text: modelData

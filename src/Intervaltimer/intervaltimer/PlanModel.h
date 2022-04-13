@@ -13,6 +13,9 @@ class PlanModel : public QAbstractItemModel {
 
     Q_PROPERTY(QString name READ getName WRITE setName NOTIFY changedName);
     Q_PROPERTY(int repetitions READ getRepetitionCount WRITE setRepetitionCount NOTIFY changedRepetitions);
+    Q_PROPERTY(bool isRoot READ getIsRoot CONSTANT);
+    Q_PROPERTY(bool hasZeroDuration READ getHasZeroDuration NOTIFY changeHasZeroDuration);
+
     static constexpr int planColumn = 0;
     static constexpr int intervalColumn = 1;
 
@@ -50,6 +53,10 @@ public:
     void setRepetitionCount(int const&);
     [[nodiscard]] int getRepetitionCount() const;
 
+    [[nodiscard]] bool getHasZeroDuration() const;
+
+    [[nodiscard]] bool getIsRoot() const;
+
     Q_INVOKABLE void appendInterval();
     Q_INVOKABLE void appendPlan();
     Q_INVOKABLE void removeItem(int const&);
@@ -68,6 +75,7 @@ protected:
 signals:
     void changedName();
     void changedRepetitions();
+    void changeHasZeroDuration();
 
 private:
     std::shared_ptr<Plan> rootPlan;

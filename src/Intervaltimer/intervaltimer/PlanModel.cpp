@@ -74,6 +74,7 @@ QVariant PlanModel::data(const QModelIndex& index, int role) const {
         case nameRole: return QVariant::fromValue(itemPtr->getName());
         case subPlanRole: {
             auto* result = new PlanModel(const_cast<PlanModel*>(this));
+            connect(result, &PlanModel::changeHasZeroDuration, this, &PlanModel::changeHasZeroDuration);
             result->setPlan(itemPtr);
             return QVariant::fromValue(result);
         }
@@ -146,6 +147,7 @@ bool PlanModel::setData(const QModelIndex& index, const QVariant& value, int rol
         }
         rootPlan->setItemAt(index.row(), interval);
         emit dataChanged(index, index, QVector<int>() << role);
+        emit changeHasZeroDuration();
         return true;
     }
     return false;
@@ -207,10 +209,15 @@ void PlanModel::setName(const QString& name) { rootPlan->setName(name); }
 void PlanModel::setRepetitionCount(const int& counter) { rootPlan->setNumberRepetitions(counter); }
 int PlanModel::getRepetitionCount() const { return rootPlan->getNumberRepetitions(); }
 
+bool PlanModel::getHasZeroDuration() const { return rootPlan->getDuration().count() == 0; }
+
+bool PlanModel::getIsRoot() const { return rootPlan->getParentPlan().expired(); }
+
 void PlanModel::appendInterval() {
     beginInsertRows(QModelIndex(), rootPlan->getNumberItems(), rootPlan->getNumberItems());
     rootPlan->appendInterval();
     endInsertRows();
+    emit changeHasZeroDuration();
 }
 
 void PlanModel::appendPlan() {
@@ -223,12 +230,14 @@ void PlanModel::removeItem(const int& index) {
     beginRemoveRows(QModelIndex(), index, index);
     rootPlan->removeItem(index);
     endRemoveRows();
+    emit changeHasZeroDuration();
 }
 
 void PlanModel::reset() {
     beginResetModel();
     emit changedRepetitions();
     emit changedName();
+    emit changeHasZeroDuration();
     endResetModel();
 }
 
