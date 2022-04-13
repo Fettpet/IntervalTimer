@@ -9,7 +9,7 @@ Window {
     id: root
 
     property bool isRunning: false
-
+    required property var rootPlanModel
     title: qsTr("IntervalTimer")
     width: 640
     height: 480
@@ -28,7 +28,7 @@ Window {
             active: !root.isRunning
             sourceComponent: PlanEditorView {
                 id: planEditorView
-                planModel: PlanModel
+                planModel: rootPlanModel
                 width: root.width
                 height: root.height
                 onStartRunning: {

@@ -8,7 +8,6 @@
 
 class PlanModel : public QAbstractItemModel {
     Q_OBJECT
-    QML_SINGLETON
     QML_NAMED_ELEMENT(PlanModel)
 
     Q_PROPERTY(QString name READ getName WRITE setName NOTIFY changedName);
@@ -19,11 +18,8 @@ class PlanModel : public QAbstractItemModel {
     static constexpr int planColumn = 0;
     static constexpr int intervalColumn = 1;
 
-    explicit PlanModel(QObject* parent = nullptr);
-    static PlanModel* instance;
-
 public:
-    static PlanModel* create(QQmlEngine*, QJSEngine* engine);
+    explicit PlanModel(QObject* parent = nullptr);
 
     enum { durationRole = Qt::UserRole, descriptionRole, subPlanRole, nameRole, isIntervalRole, isPlanRole };
 

@@ -5,8 +5,6 @@
 #include <QJsonDocument>
 #include <stdexcept>
 
-PlanModel* PlanModel::instance = nullptr;
-
 PlanModel::PlanModel(QObject* parent)
     : QAbstractItemModel(parent)
     , rootPlan(new Plan{}) {}
@@ -239,13 +237,6 @@ void PlanModel::reset() {
     emit changedName();
     emit changeHasZeroDuration();
     endResetModel();
-}
-
-PlanModel* PlanModel::create(QQmlEngine* /* unused */, QJSEngine* engine) {
-    if (instance == nullptr) {
-        instance = new PlanModel{};
-    }
-    return instance;
 }
 
 bool PlanModel::containsPlan(const QModelIndex& index) { return index.column() == planColumn; }

@@ -40,16 +40,14 @@ int main(int argc, char* argv[]) {
 
     auto plan = std::make_shared<Plan>();
 
-    PlanModel::create(nullptr, nullptr)->setPlan(plan);
+    auto rootPlanModel = PlanModel();
+    rootPlanModel.setPlan(plan);
 
     engine.addImportPath(QStringLiteral("qrc:/"));
+    engine.setInitialProperties({{"rootPlanModel", QVariant::fromValue(&rootPlanModel)}});
     PlanRunner::create(nullptr, nullptr)->setPlan(plan);
     PlanStorageModel::create(nullptr, nullptr)->setPlan(plan);
-    QObject::connect(
-        PlanStorageModel::create(nullptr, nullptr),
-        SIGNAL(planChanged()),
-        PlanModel::create(nullptr, nullptr),
-        SLOT(reset()));
+    QObject::connect(PlanStorageModel::create(nullptr, nullptr), SIGNAL(planChanged()), &rootPlanModel, SLOT(reset()));
 
     auto url = getMainQML();
     qDebug() << url;
