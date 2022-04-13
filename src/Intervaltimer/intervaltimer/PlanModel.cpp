@@ -13,15 +13,7 @@ int PlanModel::rowCount(const QModelIndex& parent) const {
     if (parent.column() > 0) {
         return 0;
     }
-    std::shared_ptr<Plan> parentItem;
-    if (!parent.isValid()) {
-        parentItem = rootPlan;
-    }
-    else if (parent.internalPointer() != nullptr)
-        parentItem = static_cast<Plan*>(parent.internalPointer())->shared_from_this();
-    else {
-        return 0;
-    }
+    auto parentItem = extractParentPlan(parent);
     return parentItem->getNumberItems();
 }
 
