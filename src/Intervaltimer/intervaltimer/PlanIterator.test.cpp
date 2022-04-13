@@ -96,7 +96,7 @@ TEST_F(PlanIteratorTesting, simpleBeginEnd) {
 TEST_F(PlanIteratorTesting, beginEnd) {
     QVector<QString> elements = {"first", "second", "third", "second", "third", "fourth"};
     auto counter = 0;
-    for (auto interval : *plan) {
+    for (auto const& interval : *plan) {
         EXPECT_EQ(elements[counter++], interval.getDescription());
     }
 }
