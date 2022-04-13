@@ -67,18 +67,28 @@ QVariant PlanModel::data(const QModelIndex& index, int role) const {
 
 QVariant PlanModel::getDataForPlan(const QModelIndex& index, int role) const {
     Q_ASSERT(containsPlan(index));
-    auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
+
     switch (role) {
-    case nameRole: return QVariant::fromValue(itemPtr->getName());
+    case nameRole: {
+        auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
+        return QVariant::fromValue(itemPtr->getName());
+    }
     case subPlanRole: {
-        auto* parent = const_cast<PlanModel*>(this);
-        auto* result = new PlanModel(parent);
-        connect(result, &PlanModel::changeHasZeroDuration, this, &PlanModel::changeHasZeroDuration);
-        result->setPlan(itemPtr);
-        return QVariant::fromValue(result);
+        return getDataForSubPlan(index, role);
     }
     default: return QVariant{};
     }
+}
+
+QVariant PlanModel::getDataForSubPlan(const QModelIndex& index, int role) const {
+    Q_ASSERT(containsPlan(index));
+    Q_ASSERT(role == subPlanRole);
+    auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
+    auto* parent = const_cast<PlanModel*>(this);
+    auto* result = new PlanModel(parent);
+    connect(result, &PlanModel::changeHasZeroDuration, this, &PlanModel::changeHasZeroDuration);
+    result->setPlan(itemPtr);
+    return QVariant::fromValue(result);
 }
 
 QVariant PlanModel::getDataForInterval(const QModelIndex& index, int role) const {
