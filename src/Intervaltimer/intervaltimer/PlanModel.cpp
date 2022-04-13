@@ -55,30 +55,40 @@ QVariant PlanModel::data(const QModelIndex& index, int role) const {
     case isPlanRole: return {containsPlan(index)};
     }
 
-    auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
-
     if (containsPlan(index)) {
-        switch (role) {
-        case nameRole: return QVariant::fromValue(itemPtr->getName());
-        case subPlanRole: {
-            auto* result = new PlanModel(const_cast<PlanModel*>(this));
-            connect(result, &PlanModel::changeHasZeroDuration, this, &PlanModel::changeHasZeroDuration);
-            result->setPlan(itemPtr);
-            return QVariant::fromValue(result);
-        }
-        default: return QVariant{};
-        }
+        return getDataForPlan(index, role);
     }
     if (containsInterval(index)) {
-        auto item = itemPtr->getItemAt(index.row()).value<Interval>();
-        switch (role) {
-        case descriptionRole: return QVariant::fromValue(item.getDescription());
-        case durationRole: return QVariant::fromValue(item.getDuration<std::chrono::seconds>().count());
-        default: return QVariant{};
-        }
+        return getDataForInterval(index, role);
     }
 
     return QVariant{};
+}
+
+QVariant PlanModel::getDataForPlan(const QModelIndex& index, int role) const {
+    Q_ASSERT(containsPlan(index));
+    auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
+    switch (role) {
+    case nameRole: return QVariant::fromValue(itemPtr->getName());
+    case subPlanRole: {
+        auto* result = new PlanModel(const_cast<PlanModel*>(this));
+        connect(result, &PlanModel::changeHasZeroDuration, this, &PlanModel::changeHasZeroDuration);
+        result->setPlan(itemPtr);
+        return QVariant::fromValue(result);
+    }
+    default: return QVariant{};
+    }
+}
+
+QVariant PlanModel::getDataForInterval(const QModelIndex& index, int role) const {
+    Q_ASSERT(containsInterval(index));
+    auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
+    auto item = itemPtr->getItemAt(index.row()).value<Interval>();
+    switch (role) {
+    case descriptionRole: return QVariant::fromValue(item.getDescription());
+    case durationRole: return QVariant::fromValue(item.getDuration<std::chrono::seconds>().count());
+    default: return QVariant{};
+    }
 }
 
 bool PlanModel::isDataSetable(const QModelIndex& index, const QVariant& value, int role) const {

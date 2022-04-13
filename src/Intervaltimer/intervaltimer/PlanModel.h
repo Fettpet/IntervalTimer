@@ -67,6 +67,8 @@ protected:
     [[nodiscard]] static bool containsInterval(QVariant const&);
 
     [[nodiscard]] std::shared_ptr<Plan> extractParentPlan(const QModelIndex& parent) const;
+    [[nodiscard]] QVariant getDataForPlan(const QModelIndex& index, int role) const;
+    [[nodiscard]] QVariant getDataForInterval(const QModelIndex& index, int role) const;
 
     [[nodiscard]] bool isDataSetable(const QModelIndex& index, const QVariant& value, int role) const;
 
