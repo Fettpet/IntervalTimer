@@ -27,7 +27,7 @@ protected:
         planForModel->setName("Root");
         planForModel->setItemAt(0, plan);
 
-        model = PlanModel::create(nullptr, nullptr);
+        model = new PlanModel();
         model->setPlan(plan);
     }
 
