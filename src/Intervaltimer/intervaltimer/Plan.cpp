@@ -2,7 +2,7 @@
 #include "PlanIterator.h"
 #include <exception>
 
-void Plan::setItemAt(size_t const& index, std::shared_ptr<Plan> plan) {
+void Plan::setItemAt(size_t const& index, std::shared_ptr<Plan> const& plan) {
     if (index >= items.size()) {
         throw std::range_error{"index out of range"};
     }
@@ -24,7 +24,7 @@ Plan& Plan::operator=(const Plan& lhs) {
     numberRepetitions = lhs.numberRepetitions;
     items.clear();
     for (auto i = 0; i < lhs.items.size(); ++i) {
-        auto& lhsItem = lhs.items[i];
+        auto const& lhsItem = lhs.items[i];
         if (lhs.isIntervalAt(i)) {
             items.append(lhsItem);
             continue;
@@ -44,8 +44,8 @@ auto Plan::operator==(Plan const& lhs) const -> bool {
     if (name != lhs.name || numberRepetitions != lhs.numberRepetitions || items.size() != lhs.items.size())
         return false;
     for (auto i = 0; i < items.size(); ++i) {
-        auto& item = items.at(i);
-        auto& lhsItem = lhs.items.at(i);
+        auto const& item = items.at(i);
+        auto const& lhsItem = lhs.items.at(i);
         if (item.typeId() != lhsItem.typeId()) {
             return false;
         }
@@ -81,7 +81,7 @@ PlanIterator Plan::end() const { return PlanIterator{}; }
 
 std::chrono::milliseconds Plan::getDuration() const {
     auto result = std::chrono::milliseconds{0};
-    for (auto interval : *this) {
+    for (auto const& interval : *this) {
         result += interval.getDuration<std::chrono::milliseconds>();
     }
     return result;
@@ -131,7 +131,7 @@ uint32_t Plan::getNumberRepetitions() const { return numberRepetitions; }
 QString Plan::getName() const { return name; }
 
 std::weak_ptr<Plan> Plan::getParentPlan() const { return parentItem; }
-void Plan::setParentPlan(std::shared_ptr<Plan> parent) { parentItem = parent; }
+void Plan::setParentPlan(std::shared_ptr<Plan> parent) { parentItem = std::move(parent); }
 
 uint32_t Plan::getRow() const {
     if (parentItem.expired()) {
@@ -147,7 +147,7 @@ void Plan::setNumberRepetitions(uint32_t const& repetitions) { numberRepetitions
 
 QDebug operator<<(QDebug debug, const Plan& plan) {
     debug.nospace() << plan.getName() << " " << plan.getNumberRepetitions();
-    for (auto item : plan.getItems()) {
+    for (auto const& item : plan.getItems()) {
         if (item.canConvert<Interval>()) {
             debug.nospace() << item.value<Interval>();
         }

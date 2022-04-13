@@ -18,7 +18,7 @@ public:
     auto operator==(Plan const&) const -> bool;
     auto operator!=(Plan const&) const -> bool;
 
-    void setItemAt(size_t const& index, std::shared_ptr<Plan> plan);
+    void setItemAt(size_t const& index, std::shared_ptr<Plan> const& plan);
 
     void setItemAt(size_t const& index, Interval const& interval);
     [[nodiscard]] QVariant getItemAt(size_t const& index);
@@ -34,7 +34,7 @@ public:
 
     [[nodiscard]] QString getName() const;
 
-    void setParentPlan(std::shared_ptr<Plan>);
+    void setParentPlan(std::shared_ptr<Plan> parentPlan);
     [[nodiscard]] std::weak_ptr<Plan> getParentPlan() const;
 
     [[nodiscard]] uint32_t getRow() const;
