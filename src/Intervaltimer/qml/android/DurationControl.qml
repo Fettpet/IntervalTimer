@@ -52,11 +52,11 @@ Control {
                 }
                 RowLayout {
                     Layout.alignment: Qt.AlignHCenter
-                    Button {
+                    RoundButton {
                         text: "OK"
                         onClicked: designer.close()
                     }
-                    Button {
+                    RoundButton {
                         text: "Cancel"
                         onClicked: {
                             hoursTumbler.currentIndex = root.hours

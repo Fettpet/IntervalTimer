@@ -36,7 +36,7 @@ Popup {
                         selectAll()
                 }
             }
-            Button {
+            RoundButton {
                 text: "Save"
                 onClicked: {
                     if (nameEdit.text === "") {
@@ -53,7 +53,7 @@ Popup {
                 }
             }
         }
-        Button {
+        RoundButton {
             Layout.alignment: Qt.AlignCenter
             text: "Override"
             visible: layout.overrideActive

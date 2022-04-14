@@ -35,7 +35,7 @@ Popup {
                 Repeater {
                     model: PlanStorageModel
 
-                    delegate: Button {
+                    delegate: RoundButton {
                         text: nameRole
                         onClicked: {
                             root.close()
@@ -49,7 +49,7 @@ Popup {
                 Repeater {
                     model: PlanStorageModel
 
-                    Button {
+                    RoundButton {
                         text: "X"
                         onClicked: {
                             PlanStorageModel.removePlan(nameRole)

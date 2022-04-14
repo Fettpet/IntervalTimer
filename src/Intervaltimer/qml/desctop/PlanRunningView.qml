@@ -23,7 +23,7 @@ Frame {
             text: PlanRunner.intervalDescription
         }
 
-        Button {
+        RoundButton {
             text: "Stop"
             onClicked: root.stopRunning()
         }
