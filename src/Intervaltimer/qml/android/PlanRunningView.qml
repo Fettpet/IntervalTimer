@@ -42,7 +42,7 @@ Pane {
         anchors.horizontalCenter: progress.horizontalCenter
         color: root.textColor
         anchors.margins: 20
-        text: formatedText
+        text: "Remaining Time: " + formatedText
     }
 
     ProgressView {
