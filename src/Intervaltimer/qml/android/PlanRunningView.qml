@@ -15,6 +15,36 @@ Pane {
         color: root.backgroundColor
     }
 
+    Text {
+        id: textRunningTime
+
+        readonly property int value: (PlanRunner.planDurationCompleteTime
+                                      - PlanRunner.planDurationRunningTime) / 1000
+        readonly property bool showMinutes: PlanRunner.planDurationCompleteTime > (60 * 1000)
+        readonly property bool showHours: PlanRunner.planDurationCompleteTime > (60 * 60 * 1000)
+        readonly property int seconds: value % 60
+        readonly property int minutes: (value / 60) % 60
+        readonly property int hours: (value / 3600)
+        readonly property string formatedText: {
+            if (showHours)
+                return hours + ":" + zeroPad(minutes,
+                                             2) + ":" + zeroPad(seconds, 2)
+            if (showMinutes)
+                return minutes + ":" + zeroPad(seconds, 2)
+            return seconds
+        }
+
+        function zeroPad(num, places) {
+            return String(num).padStart(places, '0')
+        }
+
+        anchors.bottom: progress.top
+        anchors.horizontalCenter: progress.horizontalCenter
+        color: root.textColor
+        anchors.margins: 20
+        text: formatedText
+    }
+
     ProgressView {
         id: progress
         textColor: root.textColor
