@@ -69,8 +69,8 @@ protected:
     std::shared_ptr<TimerBase> planRefreshingTimer{new Timer{}};
     std::shared_ptr<TimerBase> planTimer{new Timer{}};
     std::shared_ptr<TimerBase> intervalRefreshingTimer{new Timer{}};
-    std::chrono::milliseconds refreshingTimeForRunningInterval{500};
-    std::chrono::milliseconds refreshingTimeForRunningPlan{500};
+    std::chrono::milliseconds refreshingTimeForRunningInterval{100};
+    std::chrono::milliseconds refreshingTimeForRunningPlan{100};
     std::chrono::milliseconds totalDurationOfAllPlans{};
 
 private:
