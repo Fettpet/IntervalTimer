@@ -57,21 +57,21 @@ Pane {
         RowLayout {
             id: footer
             anchors.horizontalCenter: parent.horizontalCenter
-            Button {
+            RoundButton {
                 text: "Save"
                 onClicked: {
                     loaderStorePlan.open()
                     loaderLoadPlan.close()
                 }
             }
-            Button {
+            RoundButton {
                 text: "Load"
                 onClicked: {
                     loaderLoadPlan.open()
                     loaderStorePlan.close()
                 }
             }
-            Button {
+            RoundButton {
                 enabled: planModel ? !planModel.hasZeroDuration : false
                 text: "Run"
                 onClicked: startRunning()

@@ -128,19 +128,19 @@ Pane {
                 }
 
                 RowLayout {
-                    Button {
+                    RoundButton {
                         text: "Add Interval"
                         Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
                         visible: columnLayout.isExtended
                         onClicked: root.planModel.appendInterval()
                     }
-                    Button {
+                    RoundButton {
                         text: "Add Plan"
                         Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
                         visible: columnLayout.isExtended
                         onClicked: root.planModel.appendPlan()
                     }
-                    Button {
+                    RoundButton {
                         text: "X"
                         Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
                         visible: columnLayout.isExtended

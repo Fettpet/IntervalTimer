@@ -69,15 +69,15 @@ Frame {
                             selectAll()
                     }
                 }
-                Button {
+                RoundButton {
                     text: "Interval"
                     onClicked: root.planModel.appendInterval()
                 }
-                Button {
+                RoundButton {
                     text: "Plan"
                     onClicked: root.planModel.appendPlan()
                 }
-                Button {
+                RoundButton {
                     text: "X"
                     onClicked: root.deletePlanModel()
                 }
@@ -108,7 +108,7 @@ Frame {
                                 onDescriptionChanged: model.description = description
                                 onDurationChanged: model.duration = duration
                             }
-                            Button {
+                            RoundButton {
                                 text: "X"
                                 onClicked: root.planModel.removeItem(index)
                             }

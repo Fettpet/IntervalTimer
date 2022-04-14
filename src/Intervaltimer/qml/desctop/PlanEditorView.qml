@@ -31,21 +31,21 @@ Frame {
         }
         RowLayout {
             Layout.alignment: Qt.AlignHCenter
-            Button {
+            RoundButton {
                 text: "Save"
                 onClicked: {
                     loaderStorePlan.open()
                     loaderLoadPlan.close()
                 }
             }
-            Button {
+            RoundButton {
                 text: "Load"
                 onClicked: {
                     loaderLoadPlan.open()
                     loaderStorePlan.close()
                 }
             }
-            Button {
+            RoundButton {
                 text: "Run"
                 onClicked: startRunning()
             }
