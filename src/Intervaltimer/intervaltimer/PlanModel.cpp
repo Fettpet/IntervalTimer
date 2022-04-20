@@ -76,6 +76,10 @@ QVariant PlanModel::getDataForPlan(const QModelIndex& index, int role) const {
     case subPlanRole: {
         return getDataForSubPlan(index, role);
     }
+    case repetitionCountRole: {
+        auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
+        return QVariant::fromValue(itemPtr->getNumberRepetitions());
+    }
     default: return QVariant{};
     }
 }
@@ -138,6 +142,10 @@ bool PlanModel::setDataForPlan(const QModelIndex& index, const QVariant& value, 
     switch (role) {
     case nameRole: //
         itemPtr->setName(value.toString());
+        emit dataChanged(index, index, QVector<int>() << role);
+        return true;
+    case repetitionCountRole:
+        itemPtr->setNumberRepetitions(value.toUInt());
         emit dataChanged(index, index, QVector<int>() << role);
         return true;
     case subPlanRole: {
@@ -210,6 +218,7 @@ QHash<int, QByteArray> PlanModel::roleNames() const {
     names[nameRole] = "name";
     names[isIntervalRole] = "isInterval";
     names[isPlanRole] = "isPlan";
+    names[repetitionCountRole] = "repetionCount";
 
     return names;
 }
