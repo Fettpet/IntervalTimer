@@ -38,6 +38,12 @@ public:
     PlanModel* model;
 };
 
+TEST_F(PlanModelTesting, PlansName) {
+    QModelIndex index = model->index(2, 0);
+    auto name = model->data(index, PlanModel::nameRole);
+    EXPECT_EQ(name.toString(), QString("Inner"));
+}
+
 TEST_F(PlanModelTesting, numberColumns) { //
     EXPECT_EQ(model->columnCount(), 2);
 }
