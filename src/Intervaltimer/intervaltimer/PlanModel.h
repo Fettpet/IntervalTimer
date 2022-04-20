@@ -21,7 +21,7 @@ class PlanModel : public QAbstractItemModel {
 public:
     explicit PlanModel(QObject* parent = nullptr);
 
-    enum { durationRole = Qt::UserRole, descriptionRole, subPlanRole, nameRole, isIntervalRole, isPlanRole };
+    enum { durationRole = Qt::UserRole, descriptionRole, subPlanRole, nameRole, repetitionCountRole, isIntervalRole, isPlanRole };
 
     // Basic functionality:
     [[nodiscard]] int rowCount(const QModelIndex& parent = QModelIndex()) const override;
