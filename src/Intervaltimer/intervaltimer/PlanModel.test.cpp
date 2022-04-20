@@ -44,6 +44,12 @@ TEST_F(PlanModelTesting, PlansName) {
     EXPECT_EQ(name.toString(), QString("Inner"));
 }
 
+TEST_F(PlanModelTesting, PlanRepetitionCount) {
+    QModelIndex index = model->index(2, 0);
+    auto name = model->data(index, PlanModel::repetitionCountRole);
+    EXPECT_EQ(name.toUInt(), 12);
+}
+
 TEST_F(PlanModelTesting, numberColumns) { //
     EXPECT_EQ(model->columnCount(), 2);
 }
