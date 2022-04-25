@@ -34,6 +34,17 @@ public:
     Interval innerSecond = Interval{std::chrono::seconds{4}, "fourth"};
 };
 
+TEST_F(PlanTesting, equals) {
+    EXPECT_TRUE(*plan == *plan);
+    EXPECT_FALSE(*plan == *nestedPlan);
+
+    auto secondPlan = *plan;
+    EXPECT_TRUE(secondPlan == *plan);
+
+    secondPlan.getPlanAt(2)->setItemAt(0, innerSecond);
+    EXPECT_FALSE(secondPlan == *plan);
+}
+
 TEST_F(PlanTesting, getRow) {
     EXPECT_EQ(plan->getRow(), 0);
     EXPECT_EQ(nestedPlan->getRow(), 2);
