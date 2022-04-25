@@ -54,10 +54,13 @@ auto Plan::operator==(Plan const& lhs) const -> bool {
                 return false;
             }
         }
-        else if (item.canConvert<Plan*>()) {
-            if (*(item.value<Plan*>()) != *(lhsItem.value<Plan*>())) {
+        else if (item.canConvert<std::shared_ptr<Plan>>()) {
+            if (*(item.value<std::shared_ptr<Plan>>()) != *(lhsItem.value<std::shared_ptr<Plan>>())) {
                 return false;
             }
+        }
+        else {
+            throw std::invalid_argument("is neighter a plan nor an interval");
         }
     }
     return true;
@@ -151,8 +154,8 @@ QDebug operator<<(QDebug debug, const Plan& plan) {
         if (item.canConvert<Interval>()) {
             debug.nospace() << item.value<Interval>();
         }
-        if (item.canConvert<Plan*>()) {
-            debug.nospace() << *(item.value<Plan*>());
+        if (item.canConvert<std::shared_ptr<Plan>>()) {
+            debug.nospace() << *(item.value<std::shared_ptr<Plan>>());
         }
     }
 
