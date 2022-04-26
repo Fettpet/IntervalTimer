@@ -3,11 +3,15 @@
 #include <QMetaType>
 #include <QString>
 #include <chrono>
+#include <memory>
+
+struct Plan;
 
 struct Interval {
 public:
     Interval() = default;
     Interval(std::chrono::milliseconds, QString);
+    Interval(std::chrono::milliseconds, QString, std::weak_ptr<Plan>);
     Interval(Interval const&) = default;
     Interval(Interval&&) = default;
 
@@ -27,9 +31,13 @@ public:
     void setDescripton(QString);
     [[nodiscard]] QString getDescription() const;
 
+    void setParent(std::weak_ptr<Plan>);
+    [[nodiscard]] std::weak_ptr<Plan> getParent() const;
+
 protected:
     std::chrono::milliseconds duration{0};
-    QString description;
+    QString description{};
+    std::weak_ptr<Plan> parent{};
 };
 
 QDebug operator<<(QDebug debug, const Interval& interval);
