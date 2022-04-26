@@ -20,7 +20,7 @@ public:
 
     void setItemAt(size_t const& index, std::shared_ptr<Plan> const& plan);
 
-    void setItemAt(size_t const& index, Interval const& interval);
+    void setItemAt(size_t const& index, Interval interval);
     [[nodiscard]] QVariant getItemAt(size_t const& index);
     [[nodiscard]] Interval getIntervalAt(size_t const& index);
     [[nodiscard]] std::shared_ptr<Plan> getPlanAt(size_t const& index) const;

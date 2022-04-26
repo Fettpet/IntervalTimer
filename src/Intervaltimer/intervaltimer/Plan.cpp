@@ -10,10 +10,11 @@ void Plan::setItemAt(size_t const& index, std::shared_ptr<Plan> const& plan) {
     items[index] = QVariant::fromValue<std::shared_ptr<Plan>>(plan);
 }
 
-void Plan::setItemAt(size_t const& index, Interval const& interval) {
+void Plan::setItemAt(size_t const& index, Interval interval) {
     if (index >= items.size()) {
         throw std::range_error{"index out of range"};
     }
+    interval.setParent(this->shared_from_this());
     items[index] = QVariant::fromValue(interval);
 }
 
@@ -67,7 +68,11 @@ auto Plan::operator==(Plan const& lhs) const -> bool {
 }
 auto Plan::operator!=(Plan const& lhs) const -> bool { return !(*this == lhs); }
 
-void Plan::appendInterval() { items.push_back(QVariant::fromValue(Interval{})); }
+void Plan::appendInterval() {
+    auto interval = Interval{};
+    interval.setParent(this->shared_from_this());
+    items.push_back(QVariant::fromValue(interval));
+}
 void Plan::appendPlan() {
     auto newPlan = std::make_shared<Plan>();
     newPlan->setParentPlan(this->shared_from_this());

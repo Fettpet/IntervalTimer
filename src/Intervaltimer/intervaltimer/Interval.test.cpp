@@ -1,6 +1,7 @@
 #include <Interval.h>
 #include <IntervalFromJson.h>
 #include <IntervalToJson.h>
+#include <Plan.h>
 #include <gtest/gtest.h>
 
 TEST(Interval, duration) {
@@ -15,6 +16,14 @@ TEST(Interval, description) {
     interval.setDescripton("Hello World");
 
     EXPECT_EQ(interval.getDescription(), QString{"Hello World"});
+}
+
+TEST(Interval, parent) {
+    auto interval = Interval{};
+    EXPECT_TRUE(interval.getParent().expired());
+    auto parent = std::make_shared<Plan>();
+    interval.setParent(parent);
+    EXPECT_FALSE(interval.getParent().expired());
 }
 
 TEST(Interval, toJson) {

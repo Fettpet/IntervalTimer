@@ -57,6 +57,12 @@ TEST_F(PlanTesting, appendInterval) {
     EXPECT_FALSE(intervalItem.canConvert<std::shared_ptr<Plan>>());
 }
 
+TEST_F(PlanTesting, parentOfInterval) {
+    auto interval = plan->getItemAt(0).value<Interval>();
+    EXPECT_FALSE(interval.getParent().expired());
+    EXPECT_EQ(interval.getParent().lock(), plan);
+}
+
 TEST_F(PlanTesting, appendPlan) {
     auto planItem = plan->getItemAt(2);
     EXPECT_FALSE(planItem.canConvert<Interval>());
