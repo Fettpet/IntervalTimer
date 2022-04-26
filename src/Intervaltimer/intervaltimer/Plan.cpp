@@ -23,6 +23,7 @@ Plan::Plan(const Plan& lhs) { *this = lhs; }
 Plan& Plan::operator=(const Plan& lhs) {
     name = lhs.name;
     numberRepetitions = lhs.numberRepetitions;
+    parentItem = lhs.parentItem;
     items.clear();
     for (auto i = 0; i < lhs.items.size(); ++i) {
         auto const& lhsItem = lhs.items[i];
