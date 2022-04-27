@@ -77,6 +77,7 @@ Pane {
                 visible: enabled
                 enabled: itemDelegate.isPlan && itemDelegate.isTreeNode
                 expanded: itemDelegate.expanded
+                isRoot: itemDelegate.depth == 0
                 x: padding + (itemDelegate.isTreeNode ? (itemDelegate.depth + 1)
                                                         * itemDelegate.indent : 0)
                 width: itemDelegate.width - itemDelegate.padding - x

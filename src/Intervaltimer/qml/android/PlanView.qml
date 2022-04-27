@@ -11,6 +11,7 @@ Pane {
     required property string name
     required property int repetitionCount
     required property bool expanded
+    required property bool isRoot
     implicitWidth: layout.implicitWidth + 10
     implicitHeight: layout.implicitHeight + 10
 
@@ -130,20 +131,17 @@ Pane {
                         text: "Add Interval"
                         onClicked: root.planModel.appendInterval()
                         Layout.preferredHeight: root.expanded ? implicitHeight : 0
-                        //                        visible: root.expanded
                     }
                     RoundButton {
                         text: "Add Plan"
                         onClicked: root.planModel.appendPlan()
                         Layout.preferredHeight: root.expanded ? implicitHeight : 0
-                        //                        visible: root.expanded
                     }
                     RoundButton {
                         text: "X"
                         onClicked: root.deletePlanModel()
                         Layout.preferredHeight: root.expanded ? implicitHeight : 0
-                        //                        visible: root.expanded
-                        //                                 && !root.planModel.isRoot
+                        visible: root.expanded && !root.isRoot
                     }
                 }
             }
