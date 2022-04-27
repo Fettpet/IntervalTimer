@@ -77,7 +77,7 @@ void Plan::appendInterval() {
     items.push_back(QVariant::fromValue(interval));
 }
 void Plan::appendPlan() {
-    auto newPlan = std::make_shared<Plan>();
+    auto newPlan = create();
     newPlan->setParentPlan(this->shared_from_this());
     items.push_back(QVariant::fromValue<std::shared_ptr<Plan>>(newPlan));
 }

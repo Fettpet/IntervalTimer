@@ -83,8 +83,8 @@ TEST_F(PlanTesting, checkParent) {
 }
 
 TEST_F(PlanTesting, setPlan) {
-    auto plan = std::make_shared<Plan>();
-    auto planItem = std::make_shared<Plan>();
+    auto plan = Plan::create();
+    auto planItem = Plan::create();
     planItem->setNumberRepetitions(42);
     plan->appendPlan();
     plan->setItemAt(0, planItem);

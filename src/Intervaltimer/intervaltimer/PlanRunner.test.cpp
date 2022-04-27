@@ -123,7 +123,7 @@ TEST_F(PlanRunnerTesting, Restart) {
 }
 
 TEST_F(PlanRunnerTesting, emptyPlan) {
-    auto plan = std::make_shared<Plan>();
+    auto plan = Plan::create();
     runner->setPlan(plan);
     runner->start();
     EXPECT_EQ(runner->getIntervalDuration(), -1);

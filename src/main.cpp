@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
 
     QQmlApplicationEngine engine;
 
-    auto plan = std::make_shared<Plan>();
+    auto plan = Plan::create();
 
     auto rootPlanModel = PlanModel();
     rootPlanModel.setPlan(plan);

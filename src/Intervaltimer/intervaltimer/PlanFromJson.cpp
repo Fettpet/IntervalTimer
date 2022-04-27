@@ -2,7 +2,7 @@
 #include "IntervalFromJson.h"
 
 std::shared_ptr<Plan> PlanFromJson::transform(const QJsonArray& array) {
-    auto result = std::make_shared<Plan>();
+    auto result = Plan::create();
 
     result->setName(array.at(0).toString());
     result->setNumberRepetitions(array.at(1).toInt());

@@ -21,7 +21,7 @@ TEST(Interval, description) {
 TEST(Interval, parent) {
     auto interval = Interval{};
     EXPECT_TRUE(interval.getParent().expired());
-    auto parent = std::make_shared<Plan>();
+    auto parent = Plan::create();
     interval.setParent(parent);
     EXPECT_FALSE(interval.getParent().expired());
 }
