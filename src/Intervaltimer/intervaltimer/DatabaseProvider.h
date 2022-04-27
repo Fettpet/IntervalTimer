@@ -17,28 +17,28 @@ public:
     void setDatabasePath(QString const&);
     void setDatabase(std::shared_ptr<QSqlDatabase> database);
 
-    void storePlan(QString const& name, Plan const&);
+    void storePlan(QString const& name, std::shared_ptr<Plan> const&);
 
     [[nodiscard]] QList<QString> nameOfAllPlans() const;
 
     [[nodiscard]] bool containsPlan(QString const& name) const;
 
-    [[nodiscard]] Plan loadPlan(QString const& name);
+    [[nodiscard]] std::shared_ptr<Plan> loadPlan(QString const& name);
     void deletePlan(QString const& name);
 
     void initialize();
 
-    [[nodiscard]] QMap<QString, Plan>::const_iterator beginPlans() const;
-    [[nodiscard]] QMap<QString, Plan>::const_iterator endPlans() const;
+    [[nodiscard]] QMap<QString, std::shared_ptr<Plan>>::const_iterator beginPlans() const;
+    [[nodiscard]] QMap<QString, std::shared_ptr<Plan>>::const_iterator endPlans() const;
 
 protected:
     static QString getDatabaseDefaultPath();
     bool databaseExists();
     void createDatabase();
 
-    static QString planToString(Plan const&);
-    QSqlQuery transformToWriteQuery(QString const& name, Plan const& plan);
-    QSqlQuery transformToUpdateQuery(QString const& name, Plan const& plan);
+    static QString planToString(std::shared_ptr<Plan> const&);
+    QSqlQuery transformToWriteQuery(QString const& name, std::shared_ptr<Plan> const& plan);
+    QSqlQuery transformToUpdateQuery(QString const& name, std::shared_ptr<Plan> const& plan);
     QSqlQuery transformToReadQuery(QString const& name);
 
     void loadAllPlans();
@@ -49,5 +49,5 @@ protected:
     void createDatabaseFolder();
 
 private:
-    QMap<QString, Plan> planBuffer;
+    QMap<QString, std::shared_ptr<Plan>> planBuffer;
 };

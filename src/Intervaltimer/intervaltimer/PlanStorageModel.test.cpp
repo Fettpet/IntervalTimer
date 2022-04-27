@@ -15,9 +15,9 @@ protected:
         provider.setDatabasePath(":memory:");
         provider.setDatabase(database);
         provider.initialize();
-        provider.storePlan("Test1", *(createPlan("Test1")));
-        provider.storePlan("Test2", *(createPlan("Test2")));
-        provider.storePlan("Test3", *(createPlan("Test3")));
+        provider.storePlan("Test1", createPlan("Test1"));
+        provider.storePlan("Test2", createPlan("Test2"));
+        provider.storePlan("Test3", createPlan("Test3"));
         model = PlanStorageModel::create(nullptr, nullptr);
         model->setDatabaseProvider(&provider);
     }
