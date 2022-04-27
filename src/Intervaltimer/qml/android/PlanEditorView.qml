@@ -51,17 +51,6 @@ Pane {
             readonly property real indent: 20
             readonly property real padding: 5
 
-            TapHandler {
-                onTapped: treeView.toggleExpanded(row)
-            }
-
-            Text {
-                id: indicator
-                visible: itemDelegate.isTreeNode && itemDelegate.hasChildren
-                x: padding + (itemDelegate.depth * itemDelegate.indent)
-                text: itemDelegate.expanded ? "U" : "L"
-            }
-
             IntervalView {
                 id: labelInterval
 
