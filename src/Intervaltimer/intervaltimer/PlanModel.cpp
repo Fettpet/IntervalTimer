@@ -255,9 +255,12 @@ void PlanModel::appendInterval(const QModelIndex& parent) {
     emit changeHasZeroDuration();
 }
 
-void PlanModel::appendPlan() {
-    beginInsertRows(QModelIndex(), rootPlan->getNumberItems(), rootPlan->getNumberItems());
-    rootPlan->appendPlan();
+void PlanModel::appendPlan(const QModelIndex& parent) {
+    if (containsInterval(parent)) return;
+    auto plan = extractParentPlan(parent);
+
+    beginInsertRows(parent, plan->getNumberItems(), plan->getNumberItems());
+    plan->appendPlan();
     endInsertRows();
 }
 

@@ -90,6 +90,9 @@ Pane {
 
                 onAppendInterval: root.planModel.appendInterval(
                                       treeView.modelIndex(row, column))
+
+                onAppendPlan: root.planModel.appendPlan(treeView.modelIndex(
+                                                            row, column))
             }
         }
     }

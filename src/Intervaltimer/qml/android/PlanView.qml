@@ -18,6 +18,7 @@ Pane {
     signal deletePlanModel
     signal deleteItem(int index)
     signal appendInterval
+    signal appendPlan
     signal toggleExtended
 
     Connections {
@@ -136,7 +137,7 @@ Pane {
                     RoundButton {
                         text: "Add Plan"
                         Layout.preferredHeight: root.expanded ? implicitHeight : 0
-                        //                        onClicked: root.planModel.appendPlan()
+                        onClicked: root.appendPlan()
                     }
                     RoundButton {
                         text: "X"
