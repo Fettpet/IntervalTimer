@@ -18,8 +18,6 @@ void Plan::setItemAt(size_t const& index, Interval interval) {
     items[index] = QVariant::fromValue(interval);
 }
 
-Plan::Plan(const Plan& lhs) { *this = lhs; }
-
 Plan& Plan::operator=(const std::shared_ptr<Plan>& lhs) {
     auto copylhs = copy(lhs);
     name = copylhs->name;

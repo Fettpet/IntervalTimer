@@ -9,7 +9,6 @@
 class Plan : public std::enable_shared_from_this<Plan> {
 public:
     Plan() = default;
-    Plan(Plan const&);
     Plan(Plan&&) = default;
 
     Plan& operator=(std::shared_ptr<Plan> const&);
