@@ -129,6 +129,16 @@ TEST_F(PlanTesting, fromJson_nestedPlan) {
     EXPECT_EQ(*transformedPlan, *plan);
 }
 
+TEST_F(PlanTesting, fromJson_parent) {
+    auto json = PlanToJson::transform(*plan);
+
+    auto transformedPlan = PlanFromJson::transform(json);
+    auto transformedNestedPlan = transformedPlan->getPlanAt(2);
+    auto parent = transformedNestedPlan->getParentPlan();
+    EXPECT_FALSE(parent.expired());
+    EXPECT_EQ(*(parent.lock()), *plan);
+}
+
 TEST_F(PlanTesting, numberRepetions) {
     auto plan = Plan::create();
     EXPECT_EQ(plan->getNumberRepetitions(), 1);
