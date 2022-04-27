@@ -20,25 +20,12 @@ void Plan::setItemAt(size_t const& index, Interval interval) {
 
 Plan::Plan(const Plan& lhs) { *this = lhs; }
 
-Plan& Plan::operator=(const Plan& lhs) {
-    name = lhs.name;
-    numberRepetitions = lhs.numberRepetitions;
-    parentItem = lhs.parentItem;
-    items.clear();
-    for (auto i = 0; i < lhs.items.size(); ++i) {
-        auto const& lhsItem = lhs.items[i];
-        if (lhs.isIntervalAt(i)) {
-            items.append(lhsItem);
-            continue;
-        }
-        if (lhs.isPlanAt(i)) {
-            auto copyPlan = *(lhs.getPlanAt(i));
-            auto variant = QVariant::fromValue<std::shared_ptr<Plan>>(std::make_shared<Plan>(copyPlan));
-            items.append(variant);
-            continue;
-        }
-        throw std::invalid_argument("Item is neighter a Plan nor an Interval");
-    }
+Plan& Plan::operator=(const std::shared_ptr<Plan>& lhs) {
+    auto copylhs = copy(lhs);
+    name = copylhs->name;
+    numberRepetitions = copylhs->numberRepetitions;
+    parentItem = copylhs->parentItem;
+    items = copylhs->items;
     return *this;
 }
 

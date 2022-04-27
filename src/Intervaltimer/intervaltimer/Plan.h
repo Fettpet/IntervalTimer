@@ -12,7 +12,7 @@ public:
     Plan(Plan const&);
     Plan(Plan&&) = default;
 
-    Plan& operator=(Plan const&);
+    Plan& operator=(std::shared_ptr<Plan> const&);
     Plan& operator=(Plan&&) = default;
 
     auto operator==(Plan const&) const -> bool;
