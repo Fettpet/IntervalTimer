@@ -69,6 +69,8 @@ auto Plan::operator==(Plan const& lhs) const -> bool {
 }
 auto Plan::operator!=(Plan const& lhs) const -> bool { return !(*this == lhs); }
 
+std::shared_ptr<Plan> Plan::create() { return std::make_shared<Plan>(Plan{}); }
+
 void Plan::appendInterval() {
     auto interval = Interval{};
     interval.setParent(this->shared_from_this());

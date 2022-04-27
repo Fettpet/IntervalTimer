@@ -18,6 +18,8 @@ public:
     auto operator==(Plan const&) const -> bool;
     auto operator!=(Plan const&) const -> bool;
 
+    static std::shared_ptr<Plan> create();
+
     void setItemAt(size_t const& index, std::shared_ptr<Plan> const& plan);
 
     void setItemAt(size_t const& index, Interval interval);
