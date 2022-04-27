@@ -8,7 +8,7 @@ import Intervaltimer.Android
 Pane {
     id: root
 
-    property QtObject planModel: null
+    required property QtObject planModel
     property color backgroundColor: "#111111"
     property color gradientColor: "#333333"
     property color footerColor: "#333333"
