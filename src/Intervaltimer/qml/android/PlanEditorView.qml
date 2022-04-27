@@ -87,11 +87,16 @@ Pane {
                 id: labelPlan
                 visible: enabled
                 enabled: itemDelegate.isPlan && itemDelegate.isTreeNode
+                expanded: itemDelegate.expanded
                 x: padding + (itemDelegate.isTreeNode ? (itemDelegate.depth + 1)
                                                         * itemDelegate.indent : 0)
                 width: itemDelegate.width - itemDelegate.padding - x
                 name: itemDelegate.name ? itemDelegate.name : ""
                 repetitionCount: itemDelegate.repetionCount ? itemDelegate.repetionCount : 0
+
+                onToggleExtended: {
+                    treeView.toggleExpanded(row)
+                }
             }
         }
     }

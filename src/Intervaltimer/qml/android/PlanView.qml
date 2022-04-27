@@ -10,11 +10,13 @@ Pane {
 
     required property string name
     required property int repetitionCount
+    required property bool expanded
     implicitWidth: layout.implicitWidth + 10
     implicitHeight: layout.implicitHeight + 10
 
     signal deletePlanModel
     signal deleteItem(int index)
+    signal toggleExtended
 
     Connections {
         target: root
@@ -72,7 +74,6 @@ Pane {
 
             ColumnLayout {
                 id: columnLayout
-                property bool isExtended: true
                 RowLayout {
                     id: header
                     TextField {
@@ -118,31 +119,31 @@ Pane {
                     ToolButton {
                         icon {
                             color: Style.textColor
-                            source: columnLayout.isExtended ? "qrc:/IntervalApplication/ressources/image/expanded.png" : "qrc:/IntervalApplication/ressources/image/closed.png"
+                            source: root.expanded ? "qrc:/IntervalApplication/ressources/image/expanded.png" : "qrc:/IntervalApplication/ressources/image/closed.png"
                         }
-                        onClicked: columnLayout.isExtended = !columnLayout.isExtended
+                        onClicked: root.toggleExtended()
                     }
                 }
 
                 RowLayout {
                     RoundButton {
                         text: "Add Interval"
-                        Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
-                        visible: columnLayout.isExtended
                         onClicked: root.planModel.appendInterval()
+                        Layout.preferredHeight: root.expanded ? implicitHeight : 0
+                        //                        visible: root.expanded
                     }
                     RoundButton {
                         text: "Add Plan"
-                        Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
-                        visible: columnLayout.isExtended
                         onClicked: root.planModel.appendPlan()
+                        Layout.preferredHeight: root.expanded ? implicitHeight : 0
+                        //                        visible: root.expanded
                     }
                     RoundButton {
                         text: "X"
-                        Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
-                        visible: columnLayout.isExtended
-                                 && !root.planModel.isRoot
                         onClicked: root.deletePlanModel()
+                        Layout.preferredHeight: root.expanded ? implicitHeight : 0
+                        //                        visible: root.expanded
+                        //                                 && !root.planModel.isRoot
                     }
                 }
             }
