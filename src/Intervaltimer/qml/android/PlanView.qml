@@ -148,65 +148,6 @@ Pane {
                         onClicked: root.deletePlanModel()
                     }
                 }
-                Repeater {
-                    id: repeater
-
-                    Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
-                    visible: columnLayout.isExtended
-                    model: root.planModel
-                    clip: false
-                    delegate: RowLayout {
-                        id: planLayout
-                        required property bool isPlan
-                        required property bool isInterval
-                        required property var description
-                        required property var duration
-                        required property var subPlan
-                        required property var index
-                        required property var model
-                        visible: columnLayout.isExtended
-                        Loader {
-                            active: planLayout.isInterval
-                            visible: active
-                            sourceComponent: IntervalView {
-                                defaultDescription: planLayout.description
-                                defaultDuration: planLayout.duration
-                                width: 200
-                                onDescriptionChanged: description => {
-                                                          model.description = description
-                                                      }
-                                onDurationChanged: duration => model.duration = duration
-                                onDeleteInterval: {
-                                    root.deleteItem(index)
-                                }
-                            }
-                        }
-                        Loader {
-                            id: planLoader
-                            active: planLayout.isPlan
-                            visible: active
-                            sourceComponent: childComponent
-                            onLoaded: {
-                                item.planModel = planLayout.subPlan
-                            }
-                        }
-                        Connections {
-                            enabled: planLayout.isPlan
-                            target: planLoader.item
-                            function onDeletePlanModel() {
-                                root.deleteItem(index)
-                            }
-                        }
-                        Connections {
-                            enabled: planLayout.isPlan
-                            ignoreUnknownSignals: true
-                            target: planLayout.subPlan !== undefined ? planLayout.subPlan : null
-                            function onDataChanged() {
-                                root.planModel.reset()
-                            }
-                        }
-                    }
-                }
             }
         }
     }
