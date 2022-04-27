@@ -245,9 +245,12 @@ bool PlanModel::getHasZeroDuration() const { return rootPlan->getDuration().coun
 
 bool PlanModel::getIsRoot() const { return rootPlan->getParentPlan().expired(); }
 
-void PlanModel::appendInterval() {
-    beginInsertRows(QModelIndex(), rootPlan->getNumberItems(), rootPlan->getNumberItems());
-    rootPlan->appendInterval();
+void PlanModel::appendInterval(const QModelIndex& parent) {
+    if (containsInterval(parent)) return;
+
+    auto plan = extractParentPlan(parent);
+    beginInsertRows(parent, plan->getNumberItems(), plan->getNumberItems());
+    plan->appendInterval();
     endInsertRows();
     emit changeHasZeroDuration();
 }

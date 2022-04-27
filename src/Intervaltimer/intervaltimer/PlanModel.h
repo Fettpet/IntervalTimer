@@ -53,7 +53,7 @@ public:
 
     [[nodiscard]] bool getIsRoot() const;
 
-    Q_INVOKABLE void appendInterval();
+    Q_INVOKABLE void appendInterval(const QModelIndex& parent = QModelIndex());
     Q_INVOKABLE void appendPlan();
     Q_INVOKABLE void removeItem(int const&);
 

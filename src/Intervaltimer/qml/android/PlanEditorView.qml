@@ -87,6 +87,9 @@ Pane {
                 onToggleExtended: {
                     treeView.toggleExpanded(row)
                 }
+
+                onAppendInterval: root.planModel.appendInterval(
+                                      treeView.modelIndex(row, column))
             }
         }
     }

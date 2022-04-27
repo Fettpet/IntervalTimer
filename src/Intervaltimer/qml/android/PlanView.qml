@@ -17,6 +17,7 @@ Pane {
 
     signal deletePlanModel
     signal deleteItem(int index)
+    signal appendInterval
     signal toggleExtended
 
     Connections {
@@ -129,19 +130,19 @@ Pane {
                 RowLayout {
                     RoundButton {
                         text: "Add Interval"
-                        onClicked: root.planModel.appendInterval()
                         Layout.preferredHeight: root.expanded ? implicitHeight : 0
+                        onClicked: root.appendInterval()
                     }
                     RoundButton {
                         text: "Add Plan"
-                        onClicked: root.planModel.appendPlan()
                         Layout.preferredHeight: root.expanded ? implicitHeight : 0
+                        //                        onClicked: root.planModel.appendPlan()
                     }
                     RoundButton {
                         text: "X"
-                        onClicked: root.deletePlanModel()
                         Layout.preferredHeight: root.expanded ? implicitHeight : 0
                         visible: root.expanded && !root.isRoot
+                        //                        onClicked: root.deletePlanModel()
                     }
                 }
             }
