@@ -19,6 +19,7 @@ public:
     auto operator!=(Plan const&) const -> bool;
 
     static std::shared_ptr<Plan> create();
+    static std::shared_ptr<Plan> copy(std::shared_ptr<Plan> const&);
 
     void setItemAt(size_t const& index, std::shared_ptr<Plan> const& plan);
 

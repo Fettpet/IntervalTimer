@@ -71,6 +71,30 @@ auto Plan::operator!=(Plan const& lhs) const -> bool { return !(*this == lhs); }
 
 std::shared_ptr<Plan> Plan::create() { return std::make_shared<Plan>(Plan{}); }
 
+std::shared_ptr<Plan> Plan::copy(std::shared_ptr<Plan> const& lhs) {
+    auto result = create();
+    result->name = lhs->name;
+    result->numberRepetitions = lhs->numberRepetitions;
+
+    for (auto i = 0; i < lhs->items.size(); ++i) {
+        if (lhs->isIntervalAt(i)) {
+            Interval copy = lhs->items[i].value<Interval>();
+            copy.setParent(result);
+            result->items.append(QVariant::fromValue(copy));
+            continue;
+        }
+        if (lhs->isPlanAt(i)) {
+            auto copyPlan = copy(lhs->getPlanAt(i));
+            copyPlan->setParentPlan(result);
+            auto variant = QVariant::fromValue(copyPlan);
+            result->items.append(variant);
+            continue;
+        }
+        throw std::invalid_argument("Item is neighter a Plan nor an Interval");
+    }
+    return result;
+}
+
 void Plan::appendInterval() {
     auto interval = Interval{};
     interval.setParent(this->shared_from_this());
