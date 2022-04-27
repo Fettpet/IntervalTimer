@@ -7,7 +7,7 @@ void Plan::setItemAt(size_t const& index, std::shared_ptr<Plan> const& plan) {
         throw std::range_error{"index out of range"};
     }
     plan->setParentPlan(this->shared_from_this());
-    items[index] = QVariant::fromValue<std::shared_ptr<Plan>>(plan);
+    items[index] = QVariant::fromValue(plan);
 }
 
 void Plan::setItemAt(size_t const& index, Interval interval) {
@@ -151,7 +151,7 @@ uint32_t Plan::getNumberRepetitions() const { return numberRepetitions; }
 QString Plan::getName() const { return name; }
 
 std::weak_ptr<Plan> Plan::getParentPlan() const { return parentItem; }
-void Plan::setParentPlan(std::shared_ptr<Plan> parent) { parentItem = std::move(parent); }
+void Plan::setParentPlan(std::shared_ptr<Plan> parent) { parentItem = parent; }
 
 uint32_t Plan::getRow() const {
     if (parentItem.expired()) {
