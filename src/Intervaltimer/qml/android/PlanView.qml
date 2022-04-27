@@ -8,9 +8,8 @@ import Intervaltimer.Android
 Pane {
     id: root
 
-    property QtObject planModel: null
-    property Component childComponent: null
-
+    required property string name
+    required property int repetitionCount
     implicitWidth: layout.implicitWidth + 10
     implicitHeight: layout.implicitHeight + 10
 
@@ -77,13 +76,12 @@ Pane {
                 RowLayout {
                     id: header
                     TextField {
-                        text: planModel ? planModel.name : ""
+                        text: root.name
                         color: Style.textColor
                         placeholderText: "Name"
                         placeholderTextColor: Style.placeHolderTextColor
                         onEditingFinished: () => {
                                                focus = false
-                                               planModel.name = text
                                            }
                         selectByMouse: true
                         onFocusChanged: {
@@ -103,11 +101,10 @@ Pane {
                         }
                         placeholderTextColor: Style.placeHolderTextColor
                         placeholderText: "Repetitions"
-                        text: planModel ? planModel.repetitions : ""
+                        text: root.repetitionCount
                         color: Style.textColor
                         onEditingFinished: () => {
                                                focus = false
-                                               planModel.repetitions = text
                                            }
                         selectByMouse: true
                         onFocusChanged: {
