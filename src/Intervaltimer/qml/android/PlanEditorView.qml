@@ -32,16 +32,78 @@ Pane {
         clip: true
         boundsBehavior: Flickable.StopAtBounds
 
-        Loader {
-            id: loader
-            sourceComponent: planComponent
-            onLoaded: item.planModel = planModel
-        }
+        TreeView {
+            anchors.fill: parent
+            model: root.planModel
 
-        Component {
-            id: planComponent
-            PlanView {
-                childComponent: planComponent
+            delegate: Item {
+                id: itemDelegate
+                implicitWidth: isInterval ? padding + labelInterval.x
+                                            + labelInterval.implicitWidth : padding
+                                            + labelPlan.x + labelPlan.implicitWidth
+                implicitHeight: isInterval ? labelInterval.implicitHeight : labelPlan.implicitHeight
+                                             * 1.5
+                required property bool isPlan
+                required property bool isInterval
+                required property var description
+                required property var duration
+                required property var subPlan
+                required property var index
+                required property var model
+                required property var name
+                required property var repetionCount
+
+                required property int depth
+                required property bool hasChildren
+                required property TreeView treeView
+                required property bool isTreeNode
+                required property bool expanded
+
+                readonly property real indent: 20
+                readonly property real padding: 5
+
+                TapHandler {
+                    onTapped: treeView.toggleExpanded(row)
+                }
+
+                Text {
+                    id: indicator
+                    visible: itemDelegate.isTreeNode && itemDelegate.hasChildren
+                    x: padding + (itemDelegate.depth * itemDelegate.indent)
+                    text: itemDelegate.expanded ? "U" : "L"
+                }
+
+                IntervalView {
+                    id: labelInterval
+
+                    x: padding + (itemDelegate.isTreeNode ? (itemDelegate.depth + 1)
+                                                            * itemDelegate.indent : 0)
+                    width: 400
+                    visible: enabled
+                    enabled: itemDelegate.isInterval && itemDelegate.isTreeNode
+                    defaultDuration: itemDelegate.duration ? itemDelegate.duration : 0
+                    defaultDescription: itemDelegate.description ? itemDelegate.description : ""
+                    onDescriptionChanged: description => {
+                                              model.description = description
+                                          }
+                    onDurationChanged: duration => model.duration = duration
+                    onDeleteInterval: {
+                        root.deleteItem(index)
+                    }
+                    textColor: "black"
+                    placeHolderTextColor: "darkgrey"
+                }
+
+                PlanView {
+                    id: labelPlan
+                    visible: enabled
+                    enabled: itemDelegate.isPlan && itemDelegate.isTreeNode
+                    x: padding + (itemDelegate.isTreeNode ? (itemDelegate.depth + 1)
+                                                            * itemDelegate.indent : 0)
+                    width: itemDelegate.width - itemDelegate.padding - x
+                    name: itemDelegate.name ? itemDelegate.name : ""
+                    repetitionCount: itemDelegate.repetionCount ? itemDelegate.repetionCount : 0
+                }
             }
         }
     }
