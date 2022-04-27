@@ -26,8 +26,8 @@ protected:
     }
 
 public:
-    std::shared_ptr<Plan> nestedPlan{new Plan{}};
-    std::shared_ptr<Plan> plan{new Plan{}};
+    std::shared_ptr<Plan> nestedPlan{Plan::create()};
+    std::shared_ptr<Plan> plan{Plan::create()};
     Interval outerFirst = Interval{std::chrono::seconds{1}, "first"};
     Interval outerSecond = Interval{std::chrono::seconds{2}, "second"};
     Interval innerFirst = Interval{std::chrono::seconds{3}, "third"};
@@ -38,11 +38,11 @@ TEST_F(PlanTesting, equals) {
     EXPECT_TRUE(*plan == *plan);
     EXPECT_FALSE(*plan == *nestedPlan);
 
-    auto secondPlan = *plan;
-    EXPECT_TRUE(secondPlan == *plan);
+    auto secondPlan = Plan::copy(plan);
+    EXPECT_TRUE(*secondPlan == *plan);
 
-    secondPlan.getPlanAt(2)->setItemAt(0, innerSecond);
-    EXPECT_FALSE(secondPlan == *plan);
+    secondPlan->getPlanAt(2)->setItemAt(0, innerSecond);
+    EXPECT_FALSE(*secondPlan == *plan);
 }
 
 TEST_F(PlanTesting, getRow) {
@@ -51,6 +51,7 @@ TEST_F(PlanTesting, getRow) {
 }
 
 TEST_F(PlanTesting, duration) { EXPECT_EQ(plan->getDuration(), std::chrono::seconds{10 * (1 + 2 + 12 * (3 + 4))}); }
+
 TEST_F(PlanTesting, appendInterval) {
     auto intervalItem = plan->getItemAt(0);
     EXPECT_TRUE(intervalItem.canConvert<Interval>());
@@ -77,14 +78,14 @@ TEST_F(PlanTesting, setInterval) {
 }
 
 TEST_F(PlanTesting, checkParent) {
-    auto nestedPlan = plan->getItemAt(2).value<std::shared_ptr<Plan>>();
-
+    //   auto nestedPlan = plan->getItemAt(2).value<std::shared_ptr<Plan>>();
+    EXPECT_FALSE(nestedPlan->getParentPlan().expired());
     EXPECT_EQ(nestedPlan->getParentPlan().lock(), plan);
 }
 
 TEST_F(PlanTesting, setPlan) {
-    auto plan = std::make_shared<Plan>();
-    auto planItem = std::make_shared<Plan>();
+    auto plan = Plan::create();
+    auto planItem = Plan::create();
     planItem->setNumberRepetitions(42);
     plan->appendPlan();
     plan->setItemAt(0, planItem);
@@ -101,16 +102,16 @@ TEST_F(PlanTesting, toJson_IntervalsOnly) {
 }
 
 TEST_F(PlanTesting, toJson_Name) {
-    auto plan = Plan{};
-    plan.setName("42");
-    auto json = PlanToJson::transform(plan);
+    auto plan = Plan::create();
+    plan->setName("42");
+    auto json = PlanToJson::transform(*plan);
     EXPECT_EQ(json.at(0).toString(), QString("42"));
 }
 
 TEST_F(PlanTesting, toJson_NumberRepetions) {
-    auto plan = Plan{};
-    plan.setNumberRepetitions(42);
-    auto json = PlanToJson::transform(plan);
+    auto plan = Plan::create();
+    plan->setNumberRepetitions(42);
+    auto json = PlanToJson::transform(*plan);
     EXPECT_EQ(json.at(1).toInt(), 42);
 }
 
@@ -128,12 +129,22 @@ TEST_F(PlanTesting, fromJson_nestedPlan) {
     EXPECT_EQ(*transformedPlan, *plan);
 }
 
-TEST_F(PlanTesting, numberRepetions) {
-    auto plan = Plan{};
-    EXPECT_EQ(plan.getNumberRepetitions(), 1);
+TEST_F(PlanTesting, fromJson_parent) {
+    auto json = PlanToJson::transform(*plan);
 
-    plan.setNumberRepetitions(42);
-    EXPECT_EQ(plan.getNumberRepetitions(), 42);
+    auto transformedPlan = PlanFromJson::transform(json);
+    auto transformedNestedPlan = transformedPlan->getPlanAt(2);
+    auto parent = transformedNestedPlan->getParentPlan();
+    EXPECT_FALSE(parent.expired());
+    EXPECT_EQ(*(parent.lock()), *plan);
+}
+
+TEST_F(PlanTesting, numberRepetions) {
+    auto plan = Plan::create();
+    EXPECT_EQ(plan->getNumberRepetitions(), 1);
+
+    plan->setNumberRepetitions(42);
+    EXPECT_EQ(plan->getNumberRepetitions(), 42);
 }
 
 TEST_F(PlanTesting, isIntervalAt) {
@@ -159,14 +170,14 @@ TEST_F(PlanTesting, getPlanAt) {
 }
 
 TEST_F(PlanTesting, operatorCopy) {
-    auto copiedPlan = *plan;
-    auto secondPlan = *plan;
-    copiedPlan = secondPlan;
-    EXPECT_EQ(copiedPlan.getName(), QString("Outer"));
-    EXPECT_EQ(copiedPlan.getNumberRepetitions(), 10);
-    EXPECT_EQ(copiedPlan.getIntervalAt(0), plan->getIntervalAt(0));
-    EXPECT_EQ(copiedPlan.getIntervalAt(1), plan->getIntervalAt(1));
-    EXPECT_EQ(*copiedPlan.getPlanAt(2), *(plan->getPlanAt(2)));
-    EXPECT_EQ(copiedPlan.getNumberItems(), 3);
-    EXPECT_EQ(copiedPlan.getPlanAt(2)->getNumberItems(), 2);
+    auto copiedPlan = Plan::copy(plan);
+
+    EXPECT_EQ(copiedPlan->getName(), QString("Outer"));
+    EXPECT_EQ(copiedPlan->getNumberRepetitions(), 10);
+    EXPECT_EQ(copiedPlan->getIntervalAt(0), plan->getIntervalAt(0));
+    EXPECT_EQ(copiedPlan->getIntervalAt(1), plan->getIntervalAt(1));
+    EXPECT_EQ(*(copiedPlan->getPlanAt(2)), *(plan->getPlanAt(2)));
+    EXPECT_NE(copiedPlan->getPlanAt(2)->getParentPlan().lock().get(), plan->getPlanAt(2)->getParentPlan().lock().get());
+    EXPECT_EQ(copiedPlan->getNumberItems(), 3);
+    EXPECT_EQ(copiedPlan->getPlanAt(2)->getNumberItems(), 2);
 }

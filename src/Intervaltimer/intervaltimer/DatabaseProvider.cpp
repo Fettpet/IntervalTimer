@@ -21,7 +21,7 @@ void DatabaseProvider::setDatabasePath(const QString& path) { databasePath = pat
 
 void DatabaseProvider::setDatabase(std::shared_ptr<QSqlDatabase> newDatabase) { database = std::move(newDatabase); }
 
-void DatabaseProvider::storePlan(QString const& name, const Plan& plan) {
+void DatabaseProvider::storePlan(QString const& name, const std::shared_ptr<Plan>& plan) {
     QSqlQuery query;
     if (planBuffer.contains(name)) {
         query = transformToUpdateQuery(name, plan);
@@ -30,14 +30,14 @@ void DatabaseProvider::storePlan(QString const& name, const Plan& plan) {
         query = transformToWriteQuery(name, plan);
     }
     query.exec();
-    planBuffer[name] = plan;
+    planBuffer.insert(name, Plan::copy(plan));
 }
 
 QList<QString> DatabaseProvider::nameOfAllPlans() const { return planBuffer.keys(); }
 
-Plan DatabaseProvider::loadPlan(QString const& name) {
+std::shared_ptr<Plan> DatabaseProvider::loadPlan(QString const& name) {
     if (planBuffer.contains(name)) {
-        return planBuffer[name];
+        return Plan::copy(planBuffer.value(name));
     }
 
     auto query = transformToReadQuery(name);
@@ -47,8 +47,7 @@ Plan DatabaseProvider::loadPlan(QString const& name) {
 
     QSqlRecord rec = query.record();
     auto text = rec.value(0).toString();
-    auto ptr = PlanFromJson::transform(text);
-    return *ptr;
+    return PlanFromJson::transform(text);
 }
 
 void DatabaseProvider::deletePlan(const QString& name) {
@@ -60,6 +59,7 @@ void DatabaseProvider::deletePlan(const QString& name) {
     query.exec();
     planBuffer.remove(name);
 }
+
 void DatabaseProvider::initialize() {
     auto const bufferDatabaseExists = databaseExists();
     *database = QSqlDatabase::addDatabase("QSQLITE");
@@ -77,8 +77,10 @@ void DatabaseProvider::initialize() {
     loadAllPlans();
 }
 
-QMap<QString, Plan>::const_iterator DatabaseProvider::beginPlans() const { return planBuffer.cbegin(); }
-QMap<QString, Plan>::const_iterator DatabaseProvider::endPlans() const { return planBuffer.cend(); }
+QMap<QString, std::shared_ptr<Plan>>::const_iterator DatabaseProvider::beginPlans() const {
+    return planBuffer.cbegin();
+}
+QMap<QString, std::shared_ptr<Plan>>::const_iterator DatabaseProvider::endPlans() const { return planBuffer.cend(); }
 
 QString DatabaseProvider::getDatabaseDefaultPath() {
     if (QSysInfo::productType() == "windows" || QSysInfo::productType() == "winrt") {
@@ -110,14 +112,14 @@ void DatabaseProvider::createDatabase() {
     query.exec();
 }
 
-QString DatabaseProvider::planToString(const Plan& plan) {
-    auto jsonObject = PlanToJson::transform(plan);
+QString DatabaseProvider::planToString(const std::shared_ptr<Plan>& plan) {
+    auto jsonObject = PlanToJson::transform(*plan);
     QJsonDocument document(jsonObject);
     auto string = document.toJson();
     return string;
 }
 
-QSqlQuery DatabaseProvider::transformToWriteQuery(const QString& name, const Plan& plan) {
+QSqlQuery DatabaseProvider::transformToWriteQuery(const QString& name, const std::shared_ptr<Plan>& plan) {
     QSqlQuery query(*database);
     auto planStr = planToString(plan);
     query.prepare(
@@ -128,7 +130,7 @@ QSqlQuery DatabaseProvider::transformToWriteQuery(const QString& name, const Pla
     return query;
 }
 
-QSqlQuery DatabaseProvider::transformToUpdateQuery(const QString& name, const Plan& plan) {
+QSqlQuery DatabaseProvider::transformToUpdateQuery(const QString& name, const std::shared_ptr<Plan>& plan) {
     QSqlQuery query(*database);
     auto planStr = planToString(plan);
     query.prepare(
@@ -154,7 +156,7 @@ void DatabaseProvider::loadAllPlans() {
             auto record = query.record();
             auto name = record.value("name").toString();
             auto plan = record.value("plan").toString();
-            planBuffer[name] = *PlanFromJson::transform(plan);
+            planBuffer[name] = PlanFromJson::transform(plan);
         } while (query.next());
     }
 }

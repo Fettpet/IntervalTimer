@@ -7,16 +7,19 @@
 #include <memory>
 
 class Plan : public std::enable_shared_from_this<Plan> {
-public:
     Plan() = default;
-    Plan(Plan const&);
+
+public:
     Plan(Plan&&) = default;
 
-    Plan& operator=(Plan const&);
+    Plan& operator=(std::shared_ptr<Plan> const&);
     Plan& operator=(Plan&&) = default;
 
     auto operator==(Plan const&) const -> bool;
     auto operator!=(Plan const&) const -> bool;
+
+    [[nodiscard]] static std::shared_ptr<Plan> create();
+    [[nodiscard]] static std::shared_ptr<Plan> copy(std::shared_ptr<Plan> const&);
 
     void setItemAt(size_t const& index, std::shared_ptr<Plan> const& plan);
 

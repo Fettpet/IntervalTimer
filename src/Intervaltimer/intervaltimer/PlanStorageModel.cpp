@@ -44,7 +44,7 @@ QHash<int, QByteArray> PlanStorageModel::roleNames() const {
 
 void PlanStorageModel::appendPlan(const QString& name) {
     beginResetModel();
-    databaseProvider->storePlan(name, *plan);
+    databaseProvider->storePlan(name, plan);
     endResetModel();
 }
 

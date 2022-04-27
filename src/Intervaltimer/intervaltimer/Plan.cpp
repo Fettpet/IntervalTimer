@@ -7,7 +7,7 @@ void Plan::setItemAt(size_t const& index, std::shared_ptr<Plan> const& plan) {
         throw std::range_error{"index out of range"};
     }
     plan->setParentPlan(this->shared_from_this());
-    items[index] = QVariant::fromValue<std::shared_ptr<Plan>>(plan);
+    items[index] = QVariant::fromValue(plan);
 }
 
 void Plan::setItemAt(size_t const& index, Interval interval) {
@@ -18,27 +18,12 @@ void Plan::setItemAt(size_t const& index, Interval interval) {
     items[index] = QVariant::fromValue(interval);
 }
 
-Plan::Plan(const Plan& lhs) { *this = lhs; }
-
-Plan& Plan::operator=(const Plan& lhs) {
-    name = lhs.name;
-    numberRepetitions = lhs.numberRepetitions;
-    parentItem = lhs.parentItem;
-    items.clear();
-    for (auto i = 0; i < lhs.items.size(); ++i) {
-        auto const& lhsItem = lhs.items[i];
-        if (lhs.isIntervalAt(i)) {
-            items.append(lhsItem);
-            continue;
-        }
-        if (lhs.isPlanAt(i)) {
-            auto copyPlan = *(lhs.getPlanAt(i));
-            auto variant = QVariant::fromValue<std::shared_ptr<Plan>>(std::make_shared<Plan>(copyPlan));
-            items.append(variant);
-            continue;
-        }
-        throw std::invalid_argument("Item is neighter a Plan nor an Interval");
-    }
+Plan& Plan::operator=(const std::shared_ptr<Plan>& lhs) {
+    auto copylhs = copy(lhs);
+    name = copylhs->name;
+    numberRepetitions = copylhs->numberRepetitions;
+    parentItem = copylhs->parentItem;
+    items = copylhs->items;
     return *this;
 }
 
@@ -69,13 +54,39 @@ auto Plan::operator==(Plan const& lhs) const -> bool {
 }
 auto Plan::operator!=(Plan const& lhs) const -> bool { return !(*this == lhs); }
 
+std::shared_ptr<Plan> Plan::create() { return std::make_shared<Plan>(Plan{}); }
+
+std::shared_ptr<Plan> Plan::copy(std::shared_ptr<Plan> const& lhs) {
+    auto result = create();
+    result->name = lhs->name;
+    result->numberRepetitions = lhs->numberRepetitions;
+
+    for (auto i = 0; i < lhs->items.size(); ++i) {
+        if (lhs->isIntervalAt(i)) {
+            Interval copy = lhs->items[i].value<Interval>();
+            copy.setParent(result);
+            result->items.append(QVariant::fromValue(copy));
+            continue;
+        }
+        if (lhs->isPlanAt(i)) {
+            auto copyPlan = copy(lhs->getPlanAt(i));
+            copyPlan->setParentPlan(result);
+            auto variant = QVariant::fromValue(copyPlan);
+            result->items.append(variant);
+            continue;
+        }
+        throw std::invalid_argument("Item is neighter a Plan nor an Interval");
+    }
+    return result;
+}
+
 void Plan::appendInterval() {
     auto interval = Interval{};
     interval.setParent(this->shared_from_this());
     items.push_back(QVariant::fromValue(interval));
 }
 void Plan::appendPlan() {
-    auto newPlan = std::make_shared<Plan>();
+    auto newPlan = create();
     newPlan->setParentPlan(this->shared_from_this());
     items.push_back(QVariant::fromValue<std::shared_ptr<Plan>>(newPlan));
 }
@@ -140,7 +151,7 @@ uint32_t Plan::getNumberRepetitions() const { return numberRepetitions; }
 QString Plan::getName() const { return name; }
 
 std::weak_ptr<Plan> Plan::getParentPlan() const { return parentItem; }
-void Plan::setParentPlan(std::shared_ptr<Plan> parent) { parentItem = std::move(parent); }
+void Plan::setParentPlan(std::shared_ptr<Plan> parent) { parentItem = parent; }
 
 uint32_t Plan::getRow() const {
     if (parentItem.expired()) {
