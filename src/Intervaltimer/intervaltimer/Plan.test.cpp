@@ -38,11 +38,11 @@ TEST_F(PlanTesting, equals) {
     EXPECT_TRUE(*plan == *plan);
     EXPECT_FALSE(*plan == *nestedPlan);
 
-    auto secondPlan = *plan;
-    EXPECT_TRUE(secondPlan == *plan);
+    auto secondPlan = Plan::copy(plan);
+    EXPECT_TRUE(*secondPlan == *plan);
 
-    secondPlan.getPlanAt(2)->setItemAt(0, innerSecond);
-    EXPECT_FALSE(secondPlan == *plan);
+    secondPlan->getPlanAt(2)->setItemAt(0, innerSecond);
+    EXPECT_FALSE(*secondPlan == *plan);
 }
 
 TEST_F(PlanTesting, getRow) {
@@ -51,6 +51,7 @@ TEST_F(PlanTesting, getRow) {
 }
 
 TEST_F(PlanTesting, duration) { EXPECT_EQ(plan->getDuration(), std::chrono::seconds{10 * (1 + 2 + 12 * (3 + 4))}); }
+
 TEST_F(PlanTesting, appendInterval) {
     auto intervalItem = plan->getItemAt(0);
     EXPECT_TRUE(intervalItem.canConvert<Interval>());
@@ -77,8 +78,8 @@ TEST_F(PlanTesting, setInterval) {
 }
 
 TEST_F(PlanTesting, checkParent) {
-    auto nestedPlan = plan->getItemAt(2).value<std::shared_ptr<Plan>>();
-
+    //   auto nestedPlan = plan->getItemAt(2).value<std::shared_ptr<Plan>>();
+    EXPECT_FALSE(nestedPlan->getParentPlan().expired());
     EXPECT_EQ(nestedPlan->getParentPlan().lock(), plan);
 }
 
@@ -101,16 +102,16 @@ TEST_F(PlanTesting, toJson_IntervalsOnly) {
 }
 
 TEST_F(PlanTesting, toJson_Name) {
-    auto plan = Plan{};
-    plan.setName("42");
-    auto json = PlanToJson::transform(plan);
+    auto plan = Plan::create();
+    plan->setName("42");
+    auto json = PlanToJson::transform(*plan);
     EXPECT_EQ(json.at(0).toString(), QString("42"));
 }
 
 TEST_F(PlanTesting, toJson_NumberRepetions) {
-    auto plan = Plan{};
-    plan.setNumberRepetitions(42);
-    auto json = PlanToJson::transform(plan);
+    auto plan = Plan::create();
+    plan->setNumberRepetitions(42);
+    auto json = PlanToJson::transform(*plan);
     EXPECT_EQ(json.at(1).toInt(), 42);
 }
 
@@ -129,11 +130,11 @@ TEST_F(PlanTesting, fromJson_nestedPlan) {
 }
 
 TEST_F(PlanTesting, numberRepetions) {
-    auto plan = Plan{};
-    EXPECT_EQ(plan.getNumberRepetitions(), 1);
+    auto plan = Plan::create();
+    EXPECT_EQ(plan->getNumberRepetitions(), 1);
 
-    plan.setNumberRepetitions(42);
-    EXPECT_EQ(plan.getNumberRepetitions(), 42);
+    plan->setNumberRepetitions(42);
+    EXPECT_EQ(plan->getNumberRepetitions(), 42);
 }
 
 TEST_F(PlanTesting, isIntervalAt) {
