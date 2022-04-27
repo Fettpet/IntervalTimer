@@ -32,9 +32,9 @@ protected:
     }
 
 public:
-    std::shared_ptr<Plan> nestedPlan{new Plan{}};
-    std::shared_ptr<Plan> plan{new Plan{}};
-    std::shared_ptr<Plan> planForModel{new Plan{}};
+    std::shared_ptr<Plan> nestedPlan{Plan::create()};
+    std::shared_ptr<Plan> plan{Plan::create()};
+    std::shared_ptr<Plan> planForModel{Plan::create()};
     PlanModel* model;
 };
 

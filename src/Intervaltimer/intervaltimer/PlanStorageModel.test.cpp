@@ -23,9 +23,9 @@ protected:
     }
 
     static std::shared_ptr<Plan> createPlan(QString const& name) {
-        std::shared_ptr<Plan> nestedPlan{new Plan{}};
-        std::shared_ptr<Plan> plan{new Plan{}};
-        std::shared_ptr<Plan> planForModel{new Plan{}};
+        auto nestedPlan = Plan::create();
+        auto plan = Plan::create();
+        auto planForModel = Plan::create();
 
         nestedPlan->setName("Inner");
         nestedPlan->setNumberRepetitions(12);

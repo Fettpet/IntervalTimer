@@ -61,9 +61,9 @@ protected:
     }
 
 public:
-    std::shared_ptr<Plan> nestedPlan{new Plan{}};
-    std::shared_ptr<Plan> plan{new Plan{}};
-    std::shared_ptr<Plan> planForModel{new Plan{}};
+    std::shared_ptr<Plan> nestedPlan{Plan::create()};
+    std::shared_ptr<Plan> plan{Plan::create()};
+    std::shared_ptr<Plan> planForModel{Plan::create()};
     std::shared_ptr<TestTimer> intervalTimer{new TestTimer{}}, intervalRefreshingTimer{new TestTimer{}};
     std::shared_ptr<TestTimer> planTimer{new TestTimer{}}, planRefreshingTimer{new TestTimer{}};
     PlanRunner* runner{PlanRunner::create(nullptr, nullptr)};

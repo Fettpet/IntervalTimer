@@ -7,7 +7,7 @@
 
 PlanModel::PlanModel(QObject* parent)
     : QAbstractItemModel(parent)
-    , rootPlan(new Plan{}) {}
+    , rootPlan(Plan::create()) {}
 
 int PlanModel::rowCount(const QModelIndex& parent) const {
     if (parent.column() > 0) {

@@ -23,7 +23,7 @@ struct DatabaseProviderTest : public ::testing::Test {
         auto outerSecond = Interval{std::chrono::seconds{2}, "second"};
         plan->setItemAt(0, outerFirst);
         plan->setItemAt(1, outerSecond);
-        std::shared_ptr<Plan> nestedPlan{new Plan{}};
+        std::shared_ptr<Plan> nestedPlan{Plan::create()};
         nestedPlan->setName("Inner");
         nestedPlan->setNumberRepetitions(12);
         nestedPlan->appendInterval();
@@ -33,7 +33,7 @@ struct DatabaseProviderTest : public ::testing::Test {
         plan->setItemAt(2, nestedPlan);
     }
 
-    std::shared_ptr<Plan> plan{new Plan{}};
+    std::shared_ptr<Plan> plan{Plan::create()};
 
     std::shared_ptr<QSqlDatabase> database;
     DatabaseProvider provider;
@@ -79,9 +79,9 @@ TEST_F(DatabaseProviderTest, insertAndLoad) {
 }
 
 TEST_F(DatabaseProviderTest, LoadCheckOuterPlan) {
-    std::shared_ptr<Plan> planPtr{new Plan{}};
     provider.storePlan("Test", *plan);
     (*planPtr) = provider.loadPlan("Test");
+    std::shared_ptr<Plan> planPtr{Plan::create()};
     auto nbItems = planPtr->getNumberItems();
     planPtr->appendInterval();
     planPtr->appendInterval();
@@ -97,8 +97,8 @@ TEST_F(DatabaseProviderTest, LoadCheckInnerPlan) {
     auto innerPlanPtr = *reinterpret_cast<std::shared_ptr<Plan>*>(plan->getItemAt(2).data());
     auto nbItemsInnerPlan = innerPlanPtr->getNumberItems();
     innerPlanPtr->appendInterval();
-    std::shared_ptr<Plan> planPtr{new Plan{}};
     (*planPtr) = provider.loadPlan("Test");
+    std::shared_ptr<Plan> planPtr{Plan::create()};
     auto loadedPlanPtr = *reinterpret_cast<std::shared_ptr<Plan>*>(planPtr->getItemAt(2).data());
 
     EXPECT_EQ(nbItemsInnerPlan, loadedPlanPtr->getNumberItems());

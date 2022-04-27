@@ -26,8 +26,8 @@ protected:
     }
 
 public:
-    std::shared_ptr<Plan> nestedPlan{new Plan{}};
-    std::shared_ptr<Plan> plan{new Plan{}};
+    std::shared_ptr<Plan> nestedPlan{Plan::create()};
+    std::shared_ptr<Plan> plan{Plan::create()};
     Interval outerFirst = Interval{std::chrono::seconds{1}, "first"};
     Interval outerSecond = Interval{std::chrono::seconds{2}, "second"};
     Interval innerFirst = Interval{std::chrono::seconds{3}, "third"};
