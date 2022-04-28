@@ -58,7 +58,7 @@ protected:
     [[nodiscard]] static bool containsPlan(QVariant const&);
     [[nodiscard]] static bool containsInterval(QVariant const&);
 
-    [[nodiscard]] std::shared_ptr<Plan> extractParentPlan(const QModelIndex& parent) const;
+    [[nodiscard]] std::shared_ptr<Plan> extractPlan(const QModelIndex& parent) const;
     [[nodiscard]] QVariant getDataForPlan(const QModelIndex& index, int role) const;
     [[nodiscard]] QVariant getDataForInterval(const QModelIndex& index, int role) const;
 

@@ -13,13 +13,13 @@ int PlanModel::rowCount(const QModelIndex& parent) const {
     if (parent.column() > 0) {
         return 0;
     }
-    auto parentItem = extractParentPlan(parent);
+    auto parentItem = extractPlan(parent);
     return parentItem->getNumberItems();
 }
 
 int PlanModel::columnCount(const QModelIndex& parent) const { return 2; }
 
-std::shared_ptr<Plan> PlanModel::extractParentPlan(const QModelIndex& parent) const {
+std::shared_ptr<Plan> PlanModel::extractPlan(const QModelIndex& parent) const {
     if (parent.isValid() && parent.internalPointer() != nullptr) {
         return static_cast<Plan*>(parent.internalPointer())->shared_from_this();
     }
@@ -30,7 +30,7 @@ QModelIndex PlanModel::index(int row, int column, const QModelIndex& parent) con
     if (!hasIndex(row, column, parent)) {
         return {};
     }
-    auto parentItem = extractParentPlan(parent);
+    auto parentItem = extractPlan(parent);
 
     QVariant childItem = parentItem->getItemAt(row);
     if (childItem.isNull()) {
@@ -220,7 +220,7 @@ bool PlanModel::getHasZeroDuration() const { return rootPlan->getDuration().coun
 void PlanModel::appendInterval(const QModelIndex& parent) {
     if (containsInterval(parent)) return;
 
-    auto plan = extractParentPlan(parent);
+    auto plan = extractPlan(parent);
     beginInsertRows(parent, plan->getNumberItems(), plan->getNumberItems());
     plan->appendInterval();
     endInsertRows();
@@ -229,7 +229,7 @@ void PlanModel::appendInterval(const QModelIndex& parent) {
 
 void PlanModel::appendPlan(const QModelIndex& parent) {
     if (containsInterval(parent)) return;
-    auto plan = extractParentPlan(parent);
+    auto plan = extractPlan(parent);
 
     beginInsertRows(parent, plan->getNumberItems(), plan->getNumberItems());
     plan->appendPlan();
@@ -249,7 +249,7 @@ void PlanModel::removeItem(const QModelIndex& parent) {
 }
 
 void PlanModel::removeInterval(const QModelIndex& index) {
-    auto plan = extractParentPlan(index);
+    auto plan = extractPlan(index);
     auto toDeleteRow = index.row();
     if (plan->getNumberItems() <= toDeleteRow) return;
     beginRemoveRows(parent(index), toDeleteRow, toDeleteRow);
@@ -259,7 +259,7 @@ void PlanModel::removeInterval(const QModelIndex& index) {
 }
 
 void PlanModel::removePlan(const QModelIndex& index) {
-    auto plan = extractParentPlan(index);
+    auto plan = extractPlan(index);
     auto toDeleteRow = index.row();
     auto parentPlan = plan->getParentPlan();
 
