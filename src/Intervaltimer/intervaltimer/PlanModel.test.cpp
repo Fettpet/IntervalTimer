@@ -40,7 +40,7 @@ public:
     PlanModel* model;
 };
 
-TEST_F(PlanModelTesting, PlansName) {
+TEST_F(PlanModelTesting, InnerName) {
     QModelIndex index = model->index(2, 0, rootIndex);
     auto name = model->data(index, PlanModel::nameRole);
     EXPECT_EQ(name.toString(), QString("Inner"));
