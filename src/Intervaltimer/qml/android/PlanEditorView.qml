@@ -42,7 +42,6 @@ Pane {
             required property var repetionCount
 
             required property int depth
-            required property bool hasChildren
             required property TreeView treeView
             required property bool isTreeNode
             required property bool expanded
