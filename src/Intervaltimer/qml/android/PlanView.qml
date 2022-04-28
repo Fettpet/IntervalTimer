@@ -15,23 +15,10 @@ Pane {
     implicitWidth: layout.implicitWidth + 10
     implicitHeight: layout.implicitHeight + 10
 
-    signal deletePlanModel
-    signal deleteItem(int index)
     signal appendInterval
     signal appendPlan
     signal deletePlan
     signal toggleExtended
-
-    Connections {
-        target: root
-
-        function onDeleteItem(index) {
-            if (root.planModel != null) {
-                root.planModel.removeItem(index)
-                root.planModel.reset()
-            }
-        }
-    }
 
     background: Rectangle {
         width: root.implicitWidth * 1.1
