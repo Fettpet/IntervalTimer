@@ -36,7 +36,6 @@ Pane {
             required property bool isInterval
             required property var description
             required property var duration
-            required property var subPlan
             required property var index
             required property var model
             required property var name

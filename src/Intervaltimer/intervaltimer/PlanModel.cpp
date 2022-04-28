@@ -73,26 +73,12 @@ QVariant PlanModel::getDataForPlan(const QModelIndex& index, int role) const {
         auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
         return QVariant::fromValue(itemPtr->getName());
     }
-    case subPlanRole: {
-        return getDataForSubPlan(index, role);
-    }
     case repetitionCountRole: {
         auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
         return QVariant::fromValue(itemPtr->getNumberRepetitions());
     }
     default: return QVariant{};
     }
-}
-
-QVariant PlanModel::getDataForSubPlan(const QModelIndex& index, int role) const {
-    Q_ASSERT(containsPlan(index));
-    Q_ASSERT(role == subPlanRole);
-    auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
-    auto* parent = const_cast<PlanModel*>(this);
-    auto* result = new PlanModel(parent);
-    connect(result, &PlanModel::changeHasZeroDuration, this, &PlanModel::changeHasZeroDuration);
-    result->setPlan(itemPtr);
-    return QVariant::fromValue(result);
 }
 
 QVariant PlanModel::getDataForInterval(const QModelIndex& index, int role) const {
@@ -148,10 +134,6 @@ bool PlanModel::setDataForPlan(const QModelIndex& index, const QVariant& value, 
         itemPtr->setNumberRepetitions(value.toUInt());
         emit dataChanged(index, index, QVector<int>() << role);
         return true;
-    case subPlanRole: {
-        qWarning() << "This should not happen";
-        return false;
-    }
     default: return false;
     }
 }
@@ -214,7 +196,6 @@ QHash<int, QByteArray> PlanModel::roleNames() const {
     QHash<int, QByteArray> names;
     names[durationRole] = "duration";
     names[descriptionRole] = "description";
-    names[subPlanRole] = "subPlan";
     names[nameRole] = "name";
     names[isIntervalRole] = "isInterval";
     names[isPlanRole] = "isPlan";

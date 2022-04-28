@@ -18,15 +18,7 @@ class PlanModel : public QAbstractItemModel {
 public:
     explicit PlanModel(QObject* parent = nullptr);
 
-    enum {
-        durationRole = Qt::UserRole,
-        descriptionRole,
-        subPlanRole,
-        nameRole,
-        repetitionCountRole,
-        isIntervalRole,
-        isPlanRole
-    };
+    enum { durationRole = Qt::UserRole, descriptionRole, nameRole, repetitionCountRole, isIntervalRole, isPlanRole };
 
     // Basic functionality:
     [[nodiscard]] int rowCount(const QModelIndex& parent = QModelIndex()) const override;
@@ -71,7 +63,6 @@ protected:
     [[nodiscard]] QVariant getDataForInterval(const QModelIndex& index, int role) const;
 
     [[nodiscard]] bool setDataForPlan(const QModelIndex& index, const QVariant& value, int role);
-    [[nodiscard]] QVariant getDataForSubPlan(const QModelIndex& index, int role) const;
     [[nodiscard]] bool setDataForInterval(const QModelIndex& index, const QVariant& value, int role);
 
     [[nodiscard]] bool isDataSetable(const QModelIndex& index, const QVariant& value, int role) const;
