@@ -78,10 +78,3 @@ TEST_F(PlanModelTesting, indexRootSubplan) {
     EXPECT_EQ(index.column(), PlanColumn);
     EXPECT_EQ(index.internalPointer(), static_cast<void*>(nestedPlan.get()));
 }
-
-TEST_F(PlanModelTesting, isRoot) { //
-    model->setPlan(planForModel);
-    EXPECT_TRUE(model->getIsRoot());
-    model->setPlan(nestedPlan);
-    EXPECT_FALSE(model->getIsRoot());
-}
