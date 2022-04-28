@@ -8,25 +8,17 @@ import Intervaltimer.Android
 Pane {
     id: root
 
-    property QtObject planModel: null
-    property Component childComponent: null
-
+    required property string name
+    required property int repetitionCount
+    required property bool expanded
+    required property bool isRoot
     implicitWidth: layout.implicitWidth + 10
     implicitHeight: layout.implicitHeight + 10
 
-    signal deletePlanModel
-    signal deleteItem(int index)
-
-    Connections {
-        target: root
-
-        function onDeleteItem(index) {
-            if (root.planModel != null) {
-                root.planModel.removeItem(index)
-                root.planModel.reset()
-            }
-        }
-    }
+    signal appendInterval
+    signal appendPlan
+    signal deletePlan
+    signal toggleExtended
 
     background: Rectangle {
         width: root.implicitWidth * 1.1
@@ -73,17 +65,15 @@ Pane {
 
             ColumnLayout {
                 id: columnLayout
-                property bool isExtended: true
                 RowLayout {
                     id: header
                     TextField {
-                        text: planModel ? planModel.name : ""
+                        text: root.name
                         color: Style.textColor
                         placeholderText: "Name"
                         placeholderTextColor: Style.placeHolderTextColor
                         onEditingFinished: () => {
                                                focus = false
-                                               planModel.name = text
                                            }
                         selectByMouse: true
                         onFocusChanged: {
@@ -103,11 +93,10 @@ Pane {
                         }
                         placeholderTextColor: Style.placeHolderTextColor
                         placeholderText: "Repetitions"
-                        text: planModel ? planModel.repetitions : ""
+                        text: root.repetitionCount
                         color: Style.textColor
                         onEditingFinished: () => {
                                                focus = false
-                                               planModel.repetitions = text
                                            }
                         selectByMouse: true
                         onFocusChanged: {
@@ -121,90 +110,28 @@ Pane {
                     ToolButton {
                         icon {
                             color: Style.textColor
-                            source: columnLayout.isExtended ? "qrc:/IntervalApplication/ressources/image/expanded.png" : "qrc:/IntervalApplication/ressources/image/closed.png"
+                            source: root.expanded ? "qrc:/IntervalApplication/ressources/image/expanded.png" : "qrc:/IntervalApplication/ressources/image/closed.png"
                         }
-                        onClicked: columnLayout.isExtended = !columnLayout.isExtended
+                        onClicked: root.toggleExtended()
                     }
                 }
 
                 RowLayout {
                     RoundButton {
                         text: "Add Interval"
-                        Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
-                        visible: columnLayout.isExtended
-                        onClicked: root.planModel.appendInterval()
+                        Layout.preferredHeight: root.expanded ? implicitHeight : 0
+                        onClicked: root.appendInterval()
                     }
                     RoundButton {
                         text: "Add Plan"
-                        Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
-                        visible: columnLayout.isExtended
-                        onClicked: root.planModel.appendPlan()
+                        Layout.preferredHeight: root.expanded ? implicitHeight : 0
+                        onClicked: root.appendPlan()
                     }
                     RoundButton {
                         text: "X"
-                        Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
-                        visible: columnLayout.isExtended
-                                 && !root.planModel.isRoot
-                        onClicked: root.deletePlanModel()
-                    }
-                }
-                Repeater {
-                    id: repeater
-
-                    Layout.preferredHeight: columnLayout.isExtended ? implicitHeight : 0
-                    visible: columnLayout.isExtended
-                    model: root.planModel
-                    clip: false
-                    delegate: RowLayout {
-                        id: planLayout
-                        required property bool isPlan
-                        required property bool isInterval
-                        required property var description
-                        required property var duration
-                        required property var subPlan
-                        required property var index
-                        required property var model
-                        visible: columnLayout.isExtended
-                        Loader {
-                            active: planLayout.isInterval
-                            visible: active
-                            sourceComponent: IntervalView {
-                                defaultDescription: planLayout.description
-                                defaultDuration: planLayout.duration
-                                width: 200
-                                onDescriptionChanged: description => {
-                                                          model.description = description
-                                                      }
-                                onDurationChanged: duration => model.duration = duration
-                                onDeleteInterval: {
-                                    root.deleteItem(index)
-                                }
-                            }
-                        }
-                        Loader {
-                            id: planLoader
-                            active: planLayout.isPlan
-                            visible: active
-                            sourceComponent: childComponent
-                            onLoaded: {
-                                item.planModel = planLayout.subPlan
-                            }
-                        }
-                        Connections {
-                            enabled: planLayout.isPlan
-                            target: planLoader.item
-                            function onDeletePlanModel() {
-                                root.deleteItem(index)
-                            }
-                        }
-                        Connections {
-                            enabled: planLayout.isPlan
-                            ignoreUnknownSignals: true
-                            target: planLayout.subPlan !== undefined ? planLayout.subPlan : null
-                            function onDataChanged() {
-                                root.planModel.reset()
-                            }
-                        }
+                        Layout.preferredHeight: root.expanded ? implicitHeight : 0
+                        visible: root.expanded && !root.isRoot
+                        onClicked: root.deletePlan()
                     }
                 }
             }

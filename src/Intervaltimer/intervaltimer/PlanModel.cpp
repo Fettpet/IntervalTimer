@@ -245,22 +245,57 @@ bool PlanModel::getHasZeroDuration() const { return rootPlan->getDuration().coun
 
 bool PlanModel::getIsRoot() const { return rootPlan->getParentPlan().expired(); }
 
-void PlanModel::appendInterval() {
-    beginInsertRows(QModelIndex(), rootPlan->getNumberItems(), rootPlan->getNumberItems());
-    rootPlan->appendInterval();
+void PlanModel::appendInterval(const QModelIndex& parent) {
+    if (containsInterval(parent)) return;
+
+    auto plan = extractParentPlan(parent);
+    beginInsertRows(parent, plan->getNumberItems(), plan->getNumberItems());
+    plan->appendInterval();
     endInsertRows();
     emit changeHasZeroDuration();
 }
 
-void PlanModel::appendPlan() {
-    beginInsertRows(QModelIndex(), rootPlan->getNumberItems(), rootPlan->getNumberItems());
-    rootPlan->appendPlan();
+void PlanModel::appendPlan(const QModelIndex& parent) {
+    if (containsInterval(parent)) return;
+    auto plan = extractParentPlan(parent);
+
+    beginInsertRows(parent, plan->getNumberItems(), plan->getNumberItems());
+    plan->appendPlan();
     endInsertRows();
 }
 
-void PlanModel::removeItem(const int& index) {
-    beginRemoveRows(QModelIndex(), index, index);
-    rootPlan->removeItem(index);
+void PlanModel::removeItem(const QModelIndex& parent) {
+    if (containsInterval(parent)) {
+        removeInterval(parent);
+        return;
+    };
+    if (containsPlan(parent)) {
+        removePlan(parent);
+        return;
+    }
+    throw std::invalid_argument("Neightor a plan nor an interval");
+}
+
+void PlanModel::removeInterval(const QModelIndex& index) {
+    auto plan = extractParentPlan(index);
+    auto toDeleteRow = index.row();
+    if (plan->getNumberItems() <= toDeleteRow) return;
+    beginRemoveRows(parent(index), toDeleteRow, toDeleteRow);
+    plan->removeItem(toDeleteRow);
+    endRemoveRows();
+    emit changeHasZeroDuration();
+}
+
+void PlanModel::removePlan(const QModelIndex& index) {
+    auto plan = extractParentPlan(index);
+    auto toDeleteRow = index.row();
+    auto parentPlan = plan->getParentPlan();
+
+    if (parentPlan.expired()) return;
+    if (parentPlan.lock()->getNumberItems() <= toDeleteRow) return;
+
+    beginRemoveRows(parent(index), toDeleteRow, toDeleteRow);
+    parentPlan.lock()->removeItem(toDeleteRow);
     endRemoveRows();
     emit changeHasZeroDuration();
 }

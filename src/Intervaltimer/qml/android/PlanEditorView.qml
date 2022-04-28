@@ -8,7 +8,7 @@ import Intervaltimer.Android
 Pane {
     id: root
 
-    property QtObject planModel: null
+    required property QtObject planModel
     property color backgroundColor: "#111111"
     property color gradientColor: "#333333"
     property color footerColor: "#333333"
@@ -21,27 +21,82 @@ Pane {
 
     signal startRunning
 
-    Flickable {
-        id: main
-        anchors.top: parent.top
-        anchors.bottom: footerView.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        contentHeight: loader.implicitHeight
-        contentWidth: loader.implicitWidth
-        clip: true
-        boundsBehavior: Flickable.StopAtBounds
+    TreeView {
+        anchors.fill: parent
+        model: root.planModel
 
-        Loader {
-            id: loader
-            sourceComponent: planComponent
-            onLoaded: item.planModel = planModel
-        }
+        delegate: Item {
+            id: itemDelegate
+            implicitWidth: isInterval ? padding + labelInterval.x
+                                        + labelInterval.implicitWidth : padding
+                                        + labelPlan.x + labelPlan.implicitWidth
+            implicitHeight: isInterval ? labelInterval.implicitHeight : labelPlan.implicitHeight
+                                         * 1.5
+            required property bool isPlan
+            required property bool isInterval
+            required property var description
+            required property var duration
+            required property var subPlan
+            required property var index
+            required property var model
+            required property var name
+            required property var repetionCount
 
-        Component {
-            id: planComponent
+            required property int depth
+            required property bool hasChildren
+            required property TreeView treeView
+            required property bool isTreeNode
+            required property bool expanded
+
+            readonly property real indent: 20
+            readonly property real padding: 5
+
+            IntervalView {
+                id: labelInterval
+
+                x: padding + (itemDelegate.isTreeNode ? (itemDelegate.depth + 1)
+                                                        * itemDelegate.indent : 0)
+                width: 400
+                visible: enabled
+                enabled: itemDelegate.isInterval && itemDelegate.isTreeNode
+                defaultDuration: itemDelegate.duration ? itemDelegate.duration : 0
+                defaultDescription: itemDelegate.description ? itemDelegate.description : ""
+                onDescriptionChanged: description => {
+                                          model.description = description
+                                      }
+                onDurationChanged: duration => model.duration = duration
+                onDeleteInterval: {
+                    root.planModel.removeItem(treeView.modelIndex(row, column))
+                }
+                textColor: "black"
+                placeHolderTextColor: "darkgrey"
+            }
+
             PlanView {
-                childComponent: planComponent
+                id: labelPlan
+                visible: enabled
+                enabled: itemDelegate.isPlan && itemDelegate.isTreeNode
+                expanded: itemDelegate.expanded
+                isRoot: itemDelegate.depth == 0
+                x: padding + (itemDelegate.isTreeNode ? (itemDelegate.depth + 1)
+                                                        * itemDelegate.indent : 0)
+                width: itemDelegate.width - itemDelegate.padding - x
+                name: itemDelegate.name ? itemDelegate.name : ""
+                repetitionCount: itemDelegate.repetionCount ? itemDelegate.repetionCount : 0
+
+                onToggleExtended: {
+                    treeView.toggleExpanded(row)
+                }
+
+                onDeletePlan: {
+                    root.planModel.removeItem(treeView.modelIndex(row, column))
+                }
+
+                onAppendInterval: root.planModel.appendInterval(
+                                      treeView.modelIndex(row, column))
+
+                onAppendPlan: root.planModel.appendPlan(treeView.modelIndex(
+                                                            row, column))
             }
         }
     }

@@ -21,7 +21,15 @@ class PlanModel : public QAbstractItemModel {
 public:
     explicit PlanModel(QObject* parent = nullptr);
 
-    enum { durationRole = Qt::UserRole, descriptionRole, subPlanRole, nameRole, repetitionCountRole, isIntervalRole, isPlanRole };
+    enum {
+        durationRole = Qt::UserRole,
+        descriptionRole,
+        subPlanRole,
+        nameRole,
+        repetitionCountRole,
+        isIntervalRole,
+        isPlanRole
+    };
 
     // Basic functionality:
     [[nodiscard]] int rowCount(const QModelIndex& parent = QModelIndex()) const override;
@@ -53,14 +61,17 @@ public:
 
     [[nodiscard]] bool getIsRoot() const;
 
-    Q_INVOKABLE void appendInterval();
-    Q_INVOKABLE void appendPlan();
-    Q_INVOKABLE void removeItem(int const&);
+    Q_INVOKABLE void appendInterval(const QModelIndex& parent = QModelIndex());
+    Q_INVOKABLE void appendPlan(const QModelIndex& parent = QModelIndex());
+    Q_INVOKABLE void removeItem(const QModelIndex& parent = QModelIndex());
 
 public slots:
     void reset();
 
 protected:
+    void removePlan(const QModelIndex& parent);
+    void removeInterval(const QModelIndex& parent);
+
     [[nodiscard]] static bool containsPlan(QModelIndex const&);
     [[nodiscard]] static bool containsInterval(QModelIndex const&);
     [[nodiscard]] static bool containsPlan(QVariant const&);
