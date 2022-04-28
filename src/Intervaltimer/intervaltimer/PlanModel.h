@@ -10,7 +10,6 @@ class PlanModel : public QAbstractItemModel {
     Q_OBJECT
     QML_NAMED_ELEMENT(PlanModel)
 
-    Q_PROPERTY(bool isRoot READ getIsRoot CONSTANT);
     Q_PROPERTY(bool hasZeroDuration READ getHasZeroDuration NOTIFY changeHasZeroDuration);
 
     static constexpr int planColumn = 0;
@@ -50,8 +49,6 @@ public:
     void setPlan(std::shared_ptr<Plan> const&);
 
     [[nodiscard]] bool getHasZeroDuration() const;
-
-    [[nodiscard]] bool getIsRoot() const;
 
     Q_INVOKABLE void appendInterval(const QModelIndex& parent = QModelIndex());
     Q_INVOKABLE void appendPlan(const QModelIndex& parent = QModelIndex());

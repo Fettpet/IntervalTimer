@@ -236,8 +236,6 @@ void PlanModel::setPlan(std::shared_ptr<Plan> const& newPlan) {
 
 bool PlanModel::getHasZeroDuration() const { return rootPlan->getDuration().count() == 0; }
 
-bool PlanModel::getIsRoot() const { return rootPlan->getParentPlan().expired(); }
-
 void PlanModel::appendInterval(const QModelIndex& parent) {
     if (containsInterval(parent)) return;
 
