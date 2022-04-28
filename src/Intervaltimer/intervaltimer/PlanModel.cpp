@@ -234,10 +234,6 @@ void PlanModel::setPlan(std::shared_ptr<Plan> const& newPlan) {
     endResetModel();
 }
 
-QString PlanModel::getName() const { return rootPlan->getName(); }
-
-void PlanModel::setName(const QString& name) { rootPlan->setName(name); }
-
 void PlanModel::setRepetitionCount(const int& counter) { rootPlan->setNumberRepetitions(counter); }
 int PlanModel::getRepetitionCount() const { return rootPlan->getNumberRepetitions(); }
 
@@ -303,7 +299,6 @@ void PlanModel::removePlan(const QModelIndex& index) {
 void PlanModel::reset() {
     beginResetModel();
     emit changedRepetitions();
-    emit changedName();
     emit changeHasZeroDuration();
     endResetModel();
 }

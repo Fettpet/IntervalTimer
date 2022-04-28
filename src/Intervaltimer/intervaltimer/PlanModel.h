@@ -10,7 +10,6 @@ class PlanModel : public QAbstractItemModel {
     Q_OBJECT
     QML_NAMED_ELEMENT(PlanModel)
 
-    Q_PROPERTY(QString name READ getName WRITE setName NOTIFY changedName);
     Q_PROPERTY(int repetitions READ getRepetitionCount WRITE setRepetitionCount NOTIFY changedRepetitions);
     Q_PROPERTY(bool isRoot READ getIsRoot CONSTANT);
     Q_PROPERTY(bool hasZeroDuration READ getHasZeroDuration NOTIFY changeHasZeroDuration);
@@ -51,9 +50,6 @@ public:
     [[nodiscard]] std::weak_ptr<Plan> getPlan() const;
     void setPlan(std::shared_ptr<Plan> const&);
 
-    [[nodiscard]] QString getName() const;
-    void setName(QString const&);
-
     void setRepetitionCount(int const&);
     [[nodiscard]] int getRepetitionCount() const;
 
@@ -88,7 +84,6 @@ protected:
     [[nodiscard]] bool isDataSetable(const QModelIndex& index, const QVariant& value, int role) const;
 
 signals:
-    void changedName();
     void changedRepetitions();
     void changeHasZeroDuration();
 
