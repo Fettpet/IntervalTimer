@@ -234,9 +234,6 @@ void PlanModel::setPlan(std::shared_ptr<Plan> const& newPlan) {
     endResetModel();
 }
 
-void PlanModel::setRepetitionCount(const int& counter) { rootPlan->setNumberRepetitions(counter); }
-int PlanModel::getRepetitionCount() const { return rootPlan->getNumberRepetitions(); }
-
 bool PlanModel::getHasZeroDuration() const { return rootPlan->getDuration().count() == 0; }
 
 bool PlanModel::getIsRoot() const { return rootPlan->getParentPlan().expired(); }
@@ -298,7 +295,6 @@ void PlanModel::removePlan(const QModelIndex& index) {
 
 void PlanModel::reset() {
     beginResetModel();
-    emit changedRepetitions();
     emit changeHasZeroDuration();
     endResetModel();
 }
