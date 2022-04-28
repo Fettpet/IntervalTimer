@@ -10,9 +10,6 @@ class PlanModel : public QAbstractItemModel {
     Q_OBJECT
     QML_NAMED_ELEMENT(PlanModel)
 
-    Q_PROPERTY(QString name READ getName WRITE setName NOTIFY changedName);
-    Q_PROPERTY(int repetitions READ getRepetitionCount WRITE setRepetitionCount NOTIFY changedRepetitions);
-    Q_PROPERTY(bool isRoot READ getIsRoot CONSTANT);
     Q_PROPERTY(bool hasZeroDuration READ getHasZeroDuration NOTIFY changeHasZeroDuration);
 
     static constexpr int planColumn = 0;
@@ -21,15 +18,7 @@ class PlanModel : public QAbstractItemModel {
 public:
     explicit PlanModel(QObject* parent = nullptr);
 
-    enum {
-        durationRole = Qt::UserRole,
-        descriptionRole,
-        subPlanRole,
-        nameRole,
-        repetitionCountRole,
-        isIntervalRole,
-        isPlanRole
-    };
+    enum { durationRole = Qt::UserRole, descriptionRole, nameRole, repetitionCountRole, isIntervalRole, isPlanRole };
 
     // Basic functionality:
     [[nodiscard]] int rowCount(const QModelIndex& parent = QModelIndex()) const override;
@@ -51,15 +40,7 @@ public:
     [[nodiscard]] std::weak_ptr<Plan> getPlan() const;
     void setPlan(std::shared_ptr<Plan> const&);
 
-    [[nodiscard]] QString getName() const;
-    void setName(QString const&);
-
-    void setRepetitionCount(int const&);
-    [[nodiscard]] int getRepetitionCount() const;
-
     [[nodiscard]] bool getHasZeroDuration() const;
-
-    [[nodiscard]] bool getIsRoot() const;
 
     Q_INVOKABLE void appendInterval(const QModelIndex& parent = QModelIndex());
     Q_INVOKABLE void appendPlan(const QModelIndex& parent = QModelIndex());
@@ -77,19 +58,16 @@ protected:
     [[nodiscard]] static bool containsPlan(QVariant const&);
     [[nodiscard]] static bool containsInterval(QVariant const&);
 
-    [[nodiscard]] std::shared_ptr<Plan> extractParentPlan(const QModelIndex& parent) const;
+    [[nodiscard]] std::shared_ptr<Plan> extractPlan(const QModelIndex& parent) const;
     [[nodiscard]] QVariant getDataForPlan(const QModelIndex& index, int role) const;
     [[nodiscard]] QVariant getDataForInterval(const QModelIndex& index, int role) const;
 
-    bool setDataForPlan(const QModelIndex& index, const QVariant& value, int role);
-    [[nodiscard]] QVariant getDataForSubPlan(const QModelIndex& index, int role) const;
-    bool setDataForInterval(const QModelIndex& index, const QVariant& value, int role);
+    [[nodiscard]] bool setDataForPlan(const QModelIndex& index, const QVariant& value, int role);
+    [[nodiscard]] bool setDataForInterval(const QModelIndex& index, const QVariant& value, int role);
 
     [[nodiscard]] bool isDataSetable(const QModelIndex& index, const QVariant& value, int role) const;
 
 signals:
-    void changedName();
-    void changedRepetitions();
     void changeHasZeroDuration();
 
 private:

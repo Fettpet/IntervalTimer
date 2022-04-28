@@ -36,14 +36,12 @@ Pane {
             required property bool isInterval
             required property var description
             required property var duration
-            required property var subPlan
             required property var index
             required property var model
             required property var name
             required property var repetionCount
 
             required property int depth
-            required property bool hasChildren
             required property TreeView treeView
             required property bool isTreeNode
             required property bool expanded

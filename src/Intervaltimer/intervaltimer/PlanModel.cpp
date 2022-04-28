@@ -13,13 +13,13 @@ int PlanModel::rowCount(const QModelIndex& parent) const {
     if (parent.column() > 0) {
         return 0;
     }
-    auto parentItem = extractParentPlan(parent);
+    auto parentItem = extractPlan(parent);
     return parentItem->getNumberItems();
 }
 
 int PlanModel::columnCount(const QModelIndex& parent) const { return 2; }
 
-std::shared_ptr<Plan> PlanModel::extractParentPlan(const QModelIndex& parent) const {
+std::shared_ptr<Plan> PlanModel::extractPlan(const QModelIndex& parent) const {
     if (parent.isValid() && parent.internalPointer() != nullptr) {
         return static_cast<Plan*>(parent.internalPointer())->shared_from_this();
     }
@@ -30,7 +30,7 @@ QModelIndex PlanModel::index(int row, int column, const QModelIndex& parent) con
     if (!hasIndex(row, column, parent)) {
         return {};
     }
-    auto parentItem = extractParentPlan(parent);
+    auto parentItem = extractPlan(parent);
 
     QVariant childItem = parentItem->getItemAt(row);
     if (childItem.isNull()) {
@@ -73,26 +73,12 @@ QVariant PlanModel::getDataForPlan(const QModelIndex& index, int role) const {
         auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
         return QVariant::fromValue(itemPtr->getName());
     }
-    case subPlanRole: {
-        return getDataForSubPlan(index, role);
-    }
     case repetitionCountRole: {
         auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
         return QVariant::fromValue(itemPtr->getNumberRepetitions());
     }
     default: return QVariant{};
     }
-}
-
-QVariant PlanModel::getDataForSubPlan(const QModelIndex& index, int role) const {
-    Q_ASSERT(containsPlan(index));
-    Q_ASSERT(role == subPlanRole);
-    auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
-    auto* parent = const_cast<PlanModel*>(this);
-    auto* result = new PlanModel(parent);
-    connect(result, &PlanModel::changeHasZeroDuration, this, &PlanModel::changeHasZeroDuration);
-    result->setPlan(itemPtr);
-    return QVariant::fromValue(result);
 }
 
 QVariant PlanModel::getDataForInterval(const QModelIndex& index, int role) const {
@@ -148,10 +134,6 @@ bool PlanModel::setDataForPlan(const QModelIndex& index, const QVariant& value, 
         itemPtr->setNumberRepetitions(value.toUInt());
         emit dataChanged(index, index, QVector<int>() << role);
         return true;
-    case subPlanRole: {
-        qWarning() << "This should not happen";
-        return false;
-    }
     default: return false;
     }
 }
@@ -214,7 +196,6 @@ QHash<int, QByteArray> PlanModel::roleNames() const {
     QHash<int, QByteArray> names;
     names[durationRole] = "duration";
     names[descriptionRole] = "description";
-    names[subPlanRole] = "subPlan";
     names[nameRole] = "name";
     names[isIntervalRole] = "isInterval";
     names[isPlanRole] = "isPlan";
@@ -234,21 +215,12 @@ void PlanModel::setPlan(std::shared_ptr<Plan> const& newPlan) {
     endResetModel();
 }
 
-QString PlanModel::getName() const { return rootPlan->getName(); }
-
-void PlanModel::setName(const QString& name) { rootPlan->setName(name); }
-
-void PlanModel::setRepetitionCount(const int& counter) { rootPlan->setNumberRepetitions(counter); }
-int PlanModel::getRepetitionCount() const { return rootPlan->getNumberRepetitions(); }
-
 bool PlanModel::getHasZeroDuration() const { return rootPlan->getDuration().count() == 0; }
-
-bool PlanModel::getIsRoot() const { return rootPlan->getParentPlan().expired(); }
 
 void PlanModel::appendInterval(const QModelIndex& parent) {
     if (containsInterval(parent)) return;
 
-    auto plan = extractParentPlan(parent);
+    auto plan = extractPlan(parent);
     beginInsertRows(parent, plan->getNumberItems(), plan->getNumberItems());
     plan->appendInterval();
     endInsertRows();
@@ -257,7 +229,7 @@ void PlanModel::appendInterval(const QModelIndex& parent) {
 
 void PlanModel::appendPlan(const QModelIndex& parent) {
     if (containsInterval(parent)) return;
-    auto plan = extractParentPlan(parent);
+    auto plan = extractPlan(parent);
 
     beginInsertRows(parent, plan->getNumberItems(), plan->getNumberItems());
     plan->appendPlan();
@@ -277,7 +249,7 @@ void PlanModel::removeItem(const QModelIndex& parent) {
 }
 
 void PlanModel::removeInterval(const QModelIndex& index) {
-    auto plan = extractParentPlan(index);
+    auto plan = extractPlan(index);
     auto toDeleteRow = index.row();
     if (plan->getNumberItems() <= toDeleteRow) return;
     beginRemoveRows(parent(index), toDeleteRow, toDeleteRow);
@@ -287,7 +259,7 @@ void PlanModel::removeInterval(const QModelIndex& index) {
 }
 
 void PlanModel::removePlan(const QModelIndex& index) {
-    auto plan = extractParentPlan(index);
+    auto plan = extractPlan(index);
     auto toDeleteRow = index.row();
     auto parentPlan = plan->getParentPlan();
 
@@ -302,8 +274,6 @@ void PlanModel::removePlan(const QModelIndex& index) {
 
 void PlanModel::reset() {
     beginResetModel();
-    emit changedRepetitions();
-    emit changedName();
     emit changeHasZeroDuration();
     endResetModel();
 }
