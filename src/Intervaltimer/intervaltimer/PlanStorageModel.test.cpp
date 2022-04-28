@@ -114,3 +114,10 @@ TEST_F(PlanStorageModelTesting, countDatabaseAfterRemovePlan) { //
     auto record = query.record();
     EXPECT_EQ(record.value(0), 2);
 }
+
+TEST_F(PlanStorageModelTesting, checkLoadedPlanRootName) { //
+    auto plan = Plan::create();
+    model->setPlan(plan);
+    model->loadPlan("Test1");
+    EXPECT_EQ(plan->getName(), QString("Test1"));
+}
