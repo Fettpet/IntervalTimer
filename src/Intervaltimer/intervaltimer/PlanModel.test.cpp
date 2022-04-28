@@ -70,7 +70,7 @@ TEST_F(PlanModelTesting, numberColumns) { //
     EXPECT_EQ(model->columnCount(), 2);
 }
 
-TEST_F(PlanModelTesting, rowCountRoot) { //
+TEST_F(PlanModelTesting, RowCountOuter) { //
     EXPECT_EQ(model->rowCount(rootIndex), plan->getNumberItems());
 }
 
