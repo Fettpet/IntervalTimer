@@ -66,7 +66,7 @@ Pane {
                                       }
                 onDurationChanged: duration => model.duration = duration
                 onDeleteInterval: {
-                    root.deleteItem(index)
+                    root.planModel.removeItem(treeView.modelIndex(row, column))
                 }
                 textColor: "black"
                 placeHolderTextColor: "darkgrey"

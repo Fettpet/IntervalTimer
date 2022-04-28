@@ -264,11 +264,29 @@ void PlanModel::appendPlan(const QModelIndex& parent) {
     endInsertRows();
 }
 
-void PlanModel::removeItem(const int& index) {
-    beginRemoveRows(QModelIndex(), index, index);
-    rootPlan->removeItem(index);
+void PlanModel::removeItem(const QModelIndex& parent) {
+    if (containsInterval(parent)) {
+        removeInterval(parent);
+        return;
+    };
+    if (containsPlan(parent)) {
+        removePlan(parent);
+        return;
+    }
+    throw std::invalid_argument("Neightor a plan nor an interval");
+}
+
+void PlanModel::removeInterval(const QModelIndex& index) {
+    auto plan = extractParentPlan(index);
+    auto toDeleteRow = index.row();
+    if (plan->getNumberItems() <= toDeleteRow) return;
+    beginRemoveRows(parent(index), toDeleteRow, toDeleteRow);
+    plan->removeItem(toDeleteRow);
     endRemoveRows();
     emit changeHasZeroDuration();
+}
+
+void PlanModel::removePlan(const QModelIndex& index) {
 }
 
 void PlanModel::reset() {
