@@ -19,6 +19,7 @@ Pane {
     signal deleteItem(int index)
     signal appendInterval
     signal appendPlan
+    signal deletePlan
     signal toggleExtended
 
     Connections {
@@ -143,7 +144,7 @@ Pane {
                         text: "X"
                         Layout.preferredHeight: root.expanded ? implicitHeight : 0
                         visible: root.expanded && !root.isRoot
-                        //                        onClicked: root.deletePlanModel()
+                        onClicked: root.deletePlan()
                     }
                 }
             }

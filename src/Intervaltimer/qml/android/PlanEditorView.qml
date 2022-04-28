@@ -88,6 +88,10 @@ Pane {
                     treeView.toggleExpanded(row)
                 }
 
+                onDeletePlan: {
+                    root.planModel.removeItem(treeView.modelIndex(row, column))
+                }
+
                 onAppendInterval: root.planModel.appendInterval(
                                       treeView.modelIndex(row, column))
 

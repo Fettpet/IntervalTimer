@@ -287,6 +287,17 @@ void PlanModel::removeInterval(const QModelIndex& index) {
 }
 
 void PlanModel::removePlan(const QModelIndex& index) {
+    auto plan = extractParentPlan(index);
+    auto toDeleteRow = index.row();
+    auto parentPlan = plan->getParentPlan();
+
+    if (parentPlan.expired()) return;
+    if (parentPlan.lock()->getNumberItems() <= toDeleteRow) return;
+
+    beginRemoveRows(parent(index), toDeleteRow, toDeleteRow);
+    parentPlan.lock()->removeItem(toDeleteRow);
+    endRemoveRows();
+    emit changeHasZeroDuration();
 }
 
 void PlanModel::reset() {
