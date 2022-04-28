@@ -28,24 +28,26 @@ protected:
         planForModel->setItemAt(0, plan);
 
         model = new PlanModel();
-        model->setPlan(plan);
+        model->setPlan(planForModel);
+        rootIndex = model->index(0, 0);
     }
 
 public:
     std::shared_ptr<Plan> nestedPlan{Plan::create()};
     std::shared_ptr<Plan> plan{Plan::create()};
     std::shared_ptr<Plan> planForModel{Plan::create()};
+    QModelIndex rootIndex;
     PlanModel* model;
 };
 
 TEST_F(PlanModelTesting, PlansName) {
-    QModelIndex index = model->index(2, 0);
+    QModelIndex index = model->index(2, 0, rootIndex);
     auto name = model->data(index, PlanModel::nameRole);
     EXPECT_EQ(name.toString(), QString("Inner"));
 }
 
 TEST_F(PlanModelTesting, PlanRepetitionCount) {
-    QModelIndex index = model->index(2, 0);
+    QModelIndex index = model->index(2, 0, rootIndex);
     auto name = model->data(index, PlanModel::repetitionCountRole);
     EXPECT_EQ(name.toUInt(), 12);
 }
@@ -55,16 +57,16 @@ TEST_F(PlanModelTesting, numberColumns) { //
 }
 
 TEST_F(PlanModelTesting, rowCountRoot) { //
-    EXPECT_EQ(model->rowCount(), plan->getNumberItems());
+    EXPECT_EQ(model->rowCount(rootIndex), plan->getNumberItems());
 }
 
 TEST_F(PlanModelTesting, rowCountInner) { //
-    QModelIndex index = model->index(2, 0);
+    QModelIndex index = model->index(2, 0, rootIndex);
     EXPECT_EQ(model->rowCount(index), nestedPlan->getNumberItems());
 }
 
 TEST_F(PlanModelTesting, indexRootInterval) {
-    QModelIndex index = model->index(0, 0);
+    QModelIndex index = model->index(0, 0, rootIndex);
     EXPECT_EQ(index.row(), 0);
     constexpr int IntervalColumn = 1;
     EXPECT_EQ(index.column(), IntervalColumn);
@@ -72,7 +74,7 @@ TEST_F(PlanModelTesting, indexRootInterval) {
 }
 
 TEST_F(PlanModelTesting, indexRootSubplan) {
-    QModelIndex index = model->index(2, 0);
+    QModelIndex index = model->index(2, 0, rootIndex);
     EXPECT_EQ(index.row(), 2);
     constexpr int PlanColumn = 0;
     EXPECT_EQ(index.column(), PlanColumn);
