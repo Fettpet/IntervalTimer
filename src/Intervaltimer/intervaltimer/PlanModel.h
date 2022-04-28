@@ -70,9 +70,9 @@ protected:
     [[nodiscard]] QVariant getDataForPlan(const QModelIndex& index, int role) const;
     [[nodiscard]] QVariant getDataForInterval(const QModelIndex& index, int role) const;
 
-    bool setDataForPlan(const QModelIndex& index, const QVariant& value, int role);
+    [[nodiscard]] bool setDataForPlan(const QModelIndex& index, const QVariant& value, int role);
     [[nodiscard]] QVariant getDataForSubPlan(const QModelIndex& index, int role) const;
-    bool setDataForInterval(const QModelIndex& index, const QVariant& value, int role);
+    [[nodiscard]] bool setDataForInterval(const QModelIndex& index, const QVariant& value, int role);
 
     [[nodiscard]] bool isDataSetable(const QModelIndex& index, const QVariant& value, int role) const;
 
