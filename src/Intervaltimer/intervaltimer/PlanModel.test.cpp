@@ -46,6 +46,20 @@ TEST_F(PlanModelTesting, PlansName) {
     EXPECT_EQ(name.toString(), QString("Inner"));
 }
 
+TEST_F(PlanModelTesting, ParentOfPlan) {
+    QModelIndex innerIndex = model->index(2, 0, rootIndex);
+    QModelIndex parentIndex = model->parent(innerIndex);
+    auto name = model->data(parentIndex, PlanModel::nameRole);
+    EXPECT_EQ(name.toString(), "Outer");
+}
+
+TEST_F(PlanModelTesting, ParentOfInterval) {
+    QModelIndex innerIndex = model->index(1, 0, rootIndex);
+    QModelIndex parentIndex = model->parent(innerIndex);
+    auto name = model->data(parentIndex, PlanModel::nameRole);
+    EXPECT_EQ(name.toString(), "Outer");
+}
+
 TEST_F(PlanModelTesting, PlanRepetitionCount) {
     QModelIndex index = model->index(2, 0, rootIndex);
     auto name = model->data(index, PlanModel::repetitionCountRole);
