@@ -39,6 +39,7 @@ int main(int argc, char* argv[]) {
     QQmlApplicationEngine engine;
 
     auto plan = Plan::create();
+    plan->appendPlan();
 
     auto rootPlanModel = PlanModel();
     rootPlanModel.setPlan(plan);
