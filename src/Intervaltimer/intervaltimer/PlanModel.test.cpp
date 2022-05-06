@@ -40,10 +40,20 @@ public:
     PlanModel* model;
 };
 
+TEST_F(PlanModelTesting, OuterName) {
+    auto name = model->data(rootIndex, PlanModel::nameRole);
+    EXPECT_EQ(name.toString(), QString("Outer"));
+}
+
 TEST_F(PlanModelTesting, InnerName) {
     QModelIndex index = model->index(2, 0, rootIndex);
     auto name = model->data(index, PlanModel::nameRole);
     EXPECT_EQ(name.toString(), QString("Inner"));
+}
+
+TEST_F(PlanModelTesting, ParentOfOuter) {
+    QModelIndex parentIndex = model->parent(rootIndex);
+    EXPECT_EQ(parentIndex, QModelIndex());
 }
 
 TEST_F(PlanModelTesting, ParentOfPlan) {
