@@ -165,16 +165,24 @@ uint32_t Plan::getNumberItems() const { return items.size(); }
 
 void Plan::setNumberRepetitions(uint32_t const& repetitions) { numberRepetitions = repetitions; }
 
-QDebug operator<<(QDebug debug, const Plan& plan) {
-    debug.nospace() << plan.getName() << " " << plan.getNumberRepetitions();
+QDebug prettyPrint(QDebug& debug, const Plan& plan, int depth) {
+    for (auto i = 0; i < depth * 4; ++i) {
+        debug << " ";
+    }
+    debug.nospace() << plan.getName() << " " << plan.getNumberRepetitions() << "\n";
     for (auto const& item : plan.getItems()) {
         if (item.canConvert<Interval>()) {
-            debug.nospace() << item.value<Interval>();
+            for (auto i = 0; i < (1 + depth) * 4; ++i) {
+                debug << " ";
+            }
+            debug.nospace() << item.value<Interval>() << "\n";
         }
         if (item.canConvert<std::shared_ptr<Plan>>()) {
-            debug.nospace() << *(item.value<std::shared_ptr<Plan>>());
+            prettyPrint(debug, *(item.value<std::shared_ptr<Plan>>()), depth + 1);
         }
     }
 
     return debug;
 }
+
+QDebug operator<<(QDebug debug, const Plan& plan) { return prettyPrint(debug, plan, 0); }
