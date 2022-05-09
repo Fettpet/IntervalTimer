@@ -53,12 +53,8 @@ Pane {
                 width: 400
                 visible: enabled
                 enabled: itemDelegate.isInterval && itemDelegate.isTreeNode
-                defaultDuration: itemDelegate.duration ? itemDelegate.duration : 0
-                defaultDescription: itemDelegate.description ? itemDelegate.description : ""
-                onDescriptionChanged: description => {
-                                          model.description = description
-                                      }
-                onDurationChanged: duration => model.duration = duration
+                model: itemDelegate.model
+
                 onDeleteInterval: {
                     root.planModel.removeItem(treeView.modelIndex(row, column))
                 }
