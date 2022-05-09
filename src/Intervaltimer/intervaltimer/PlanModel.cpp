@@ -199,7 +199,7 @@ QHash<int, QByteArray> PlanModel::roleNames() const {
     names[nameRole] = "name";
     names[isIntervalRole] = "isInterval";
     names[isPlanRole] = "isPlan";
-    names[repetitionCountRole] = "repetionCount";
+    names[repetitionCountRole] = "repetitionCount";
 
     return names;
 }
