@@ -6,14 +6,14 @@ import Intervaltimer.Android
 
 Pane {
     id: root
-    required property var defaultDuration
-    required property var defaultDescription
+    required property var model
+    readonly property string description: model.description ? model.description : ""
+    readonly property int duration: model.duration ? model.duration : 0
     property color textColor: Style.textColor
     property color placeHolderTextColor: Style.placeHolderTextColor
 
     signal deleteInterval
-    signal durationChanged(int duration)
-    signal descriptionChanged(string description)
+
     background: Rectangle {
         anchors.fill: root
         color: "transparent"
@@ -24,13 +24,13 @@ Pane {
         TextField {
             id: descriptionEdit
             selectByMouse: true
-            text: root.defaultDescription
+            text: root.description
             color: root.textColor
             placeholderText: "Description"
             placeholderTextColor: root.placeHolderTextColor
             onEditingFinished: () => {
                                    focus = false
-                                   descriptionChanged(text)
+                                   model.description = text
                                }
 
             implicitWidth: root.width * 0.4
@@ -39,27 +39,27 @@ Pane {
                     selectAll()
                     return
                 }
-                Qt.inputMethod.hide();
+                Qt.inputMethod.hide()
             }
         }
 
         DurationControl {
             id: durationController
-            duration: root.defaultDuration
+            duration: root.duration
             textColor: root.textColor
             implicitWidth: root.width * 0.4
             onDurationChanged: {
-                root.durationChanged(durationController.duration)
+                model.duration = duration
             }
             onFocusChanged: {
-                if(focus) {
-                    Qt.inputMethod.hide();
+                if (focus) {
+                    Qt.inputMethod.hide()
                 }
             }
         }
 
         RoundButton {
-            text: "X"
+            text: "Del"
             implicitWidth: root.width * 0.2
             onClicked: root.deleteInterval()
         }
