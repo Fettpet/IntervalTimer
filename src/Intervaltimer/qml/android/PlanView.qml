@@ -18,7 +18,7 @@ Pane {
     signal appendInterval
     signal appendPlan
     signal deletePlan
-    signal toggleExtended
+    signal toggleExpanded
 
     background: Rectangle {
         width: root.implicitWidth * 1.1
@@ -112,7 +112,7 @@ Pane {
                             color: Style.textColor
                             source: root.expanded ? "qrc:/IntervalApplication/ressources/image/expanded.png" : "qrc:/IntervalApplication/ressources/image/closed.png"
                         }
-                        onClicked: root.toggleExtended()
+                        onClicked: root.toggleExpanded()
                     }
                 }
 

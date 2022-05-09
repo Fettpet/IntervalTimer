@@ -82,7 +82,7 @@ Pane {
                 name: itemDelegate.name ? itemDelegate.name : ""
                 repetitionCount: itemDelegate.repetionCount ? itemDelegate.repetionCount : 0
 
-                onToggleExtended: {
+                onToggleExpanded: {
                     treeView.toggleExpanded(row)
                 }
 
