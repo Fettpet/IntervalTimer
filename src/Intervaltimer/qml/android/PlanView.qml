@@ -76,11 +76,13 @@ Pane {
                         placeholderText: "Name"
                         placeholderTextColor: Style.placeHolderTextColor
                         onAccepted: () => {
-                                               focus = false
-                                           }
+                                        model.name = text
+                                        focus = false
+                                    }
                         selectByMouse: true
                         onFocusChanged: {
                             if (focus) {
+
                                 selectAll()
                                 return
                             }
@@ -99,8 +101,9 @@ Pane {
                         text: root.repetitionCount
                         color: Style.textColor
                         onAccepted: () => {
-                                               focus = false
-                                           }
+                                        model.repetitionCount = text
+                                        focus = false
+                                    }
                         selectByMouse: true
                         onFocusChanged: {
                             if (focus) {
