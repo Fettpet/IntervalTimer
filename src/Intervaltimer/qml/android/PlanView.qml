@@ -75,7 +75,7 @@ Pane {
                         color: Style.textColor
                         placeholderText: "Name"
                         placeholderTextColor: Style.placeHolderTextColor
-                        onEditingFinished: () => {
+                        onAccepted: () => {
                                                focus = false
                                            }
                         selectByMouse: true
@@ -98,7 +98,7 @@ Pane {
                         placeholderText: "Repetitions"
                         text: root.repetitionCount
                         color: Style.textColor
-                        onEditingFinished: () => {
+                        onAccepted: () => {
                                                focus = false
                                            }
                         selectByMouse: true
