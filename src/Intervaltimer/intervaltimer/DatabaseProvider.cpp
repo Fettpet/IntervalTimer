@@ -136,8 +136,8 @@ QSqlQuery DatabaseProvider::transformToUpdateQuery(const QString& name, const st
     QSqlQuery query(*database);
     auto planStr = planToString(plan);
     query.prepare(
-        "UPDATE Plans"
-        "SET plan = :plan"
+        "UPDATE Plans "
+        "SET plan = :plan "
         "WHERE name = :name;");
     query.bindValue(":name", name);
     query.bindValue(":plan", planStr);
