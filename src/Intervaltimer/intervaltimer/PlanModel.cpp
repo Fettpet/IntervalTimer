@@ -158,7 +158,7 @@ bool PlanModel::setDataForInterval(const QModelIndex& index, const QVariant& val
         return false;
     }
     }
-    rootPlan->setItemAt(index.row(), interval);
+    itemPtr->setItemAt(index.row(), interval);
     emit dataChanged(index, index, QVector<int>() << role);
     if (role == durationRole) {
         emit changeHasZeroDuration();
