@@ -38,6 +38,7 @@ protected:
 
     static QString planToString(std::shared_ptr<Plan> const&);
     QSqlQuery transformToWriteQuery(QString const& name, std::shared_ptr<Plan> const& plan);
+    QSqlQuery transformToInsertQuery(QString const& name, std::shared_ptr<Plan> const& plan);
     QSqlQuery transformToUpdateQuery(QString const& name, std::shared_ptr<Plan> const& plan);
     QSqlQuery transformToReadQuery(QString const& name);
 

@@ -22,13 +22,7 @@ void DatabaseProvider::setDatabasePath(const QString& path) { databasePath = pat
 void DatabaseProvider::setDatabase(std::shared_ptr<QSqlDatabase> newDatabase) { database = std::move(newDatabase); }
 
 void DatabaseProvider::storePlan(QString const& name, const std::shared_ptr<Plan>& plan) {
-    QSqlQuery query;
-    if (planBuffer.contains(name)) {
-        query = transformToUpdateQuery(name, plan);
-    }
-    else {
-        query = transformToWriteQuery(name, plan);
-    }
+    auto query = transformToWriteQuery(name, plan);
     query.exec();
     planBuffer.insert(name, Plan::copy(plan));
 }
@@ -107,7 +101,6 @@ void DatabaseProvider::createDatabaseFolder() {
 bool DatabaseProvider::databaseExists() { return databasePath != ":memory:" && QFileInfo::exists(databasePath); }
 
 void DatabaseProvider::createDatabase() {
-
     QSqlQuery query("CREATE TABLE Plans (name TEXT PRIMARY KEY, plan TEXT)", *database);
     query.exec();
 }
@@ -120,6 +113,13 @@ QString DatabaseProvider::planToString(const std::shared_ptr<Plan>& plan) {
 }
 
 QSqlQuery DatabaseProvider::transformToWriteQuery(const QString& name, const std::shared_ptr<Plan>& plan) {
+    if (planBuffer.contains(name)) {
+        return transformToUpdateQuery(name, plan);
+    }
+    return transformToInsertQuery(name, plan);
+}
+
+QSqlQuery DatabaseProvider::transformToInsertQuery(const QString& name, const std::shared_ptr<Plan>& plan) {
     QSqlQuery query(*database);
     auto planStr = planToString(plan);
     query.prepare(
