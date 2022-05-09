@@ -8,10 +8,13 @@ import Intervaltimer.Android
 Pane {
     id: root
 
-    required property string name
-    required property int repetitionCount
-    required property bool expanded
+    required property var model
     required property bool isRoot
+
+    readonly property string name: model.name ? model.name : ""
+    readonly property int repetitionCount: model.repetitionCount ? model.repetitionCount : 1
+    readonly property bool expanded: true
+
     implicitWidth: layout.implicitWidth + 10
     implicitHeight: layout.implicitHeight + 10
 

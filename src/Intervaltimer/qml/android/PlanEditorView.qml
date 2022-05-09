@@ -34,12 +34,8 @@ Pane {
                                          * 1.5
             required property bool isPlan
             required property bool isInterval
-            required property var description
-            required property var duration
-            required property var index
             required property var model
-            required property var name
-            required property var repetionCount
+            required property var index
 
             required property int depth
             required property TreeView treeView
@@ -74,13 +70,11 @@ Pane {
                 id: labelPlan
                 visible: enabled
                 enabled: itemDelegate.isPlan && itemDelegate.isTreeNode
-                expanded: itemDelegate.expanded
                 isRoot: itemDelegate.depth == 0
                 x: padding + (itemDelegate.isTreeNode ? (itemDelegate.depth + 1)
                                                         * itemDelegate.indent : 0)
                 width: itemDelegate.width - itemDelegate.padding - x
-                name: itemDelegate.name ? itemDelegate.name : ""
-                repetitionCount: itemDelegate.repetionCount ? itemDelegate.repetionCount : 0
+                model: itemDelegate.model
 
                 onToggleExpanded: {
                     treeView.toggleExpanded(row)
