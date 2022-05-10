@@ -134,7 +134,7 @@ Pane {
                         onClicked: root.appendPlan()
                     }
                     RoundButton {
-                        text: "X"
+                        text: "Delete"
                         Layout.preferredHeight: root.expanded ? implicitHeight : 0
                         visible: root.expanded && !root.isRoot
                         onClicked: root.deletePlan()

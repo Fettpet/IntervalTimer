@@ -59,7 +59,7 @@ Pane {
         }
 
         RoundButton {
-            text: "Del"
+            text: "Delete"
             implicitWidth: root.width * 0.2
             onClicked: root.deleteInterval()
         }
