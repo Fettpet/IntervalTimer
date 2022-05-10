@@ -73,6 +73,7 @@ Pane {
                                                         * itemDelegate.indent : 0)
                 width: itemDelegate.width - itemDelegate.padding - x
                 model: itemDelegate.model
+                depth: itemDelegate.depth
 
                 onExpand: {
                     treeView.expand(row)

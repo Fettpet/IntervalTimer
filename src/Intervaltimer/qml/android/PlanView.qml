@@ -10,7 +10,7 @@ Pane {
 
     required property var model
     required property bool isRoot
-
+    required property int depth
     readonly property string name: model.name ? model.name : ""
     readonly property int repetitionCount: model.repetitionCount ? model.repetitionCount : 1
     readonly property bool expanded: model.expandedRole ? model.expandedRole : false
@@ -130,6 +130,8 @@ Pane {
                     }
                     RoundButton {
                         text: "Add Plan"
+                        visible: enabled
+                        enabled: root.depth < 3
                         Layout.preferredHeight: root.expanded ? implicitHeight : 0
                         onClicked: root.appendPlan()
                     }
