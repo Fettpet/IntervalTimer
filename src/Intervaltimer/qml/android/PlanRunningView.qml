@@ -66,7 +66,7 @@ Pane {
         anchors.topMargin: progress.height / 2 + 30
         RoundButton {
             radius: width / 2
-            text: "Back"
+            text: "Stop"
             onClicked: root.stopRunning()
         }
 
