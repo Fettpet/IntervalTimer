@@ -20,17 +20,11 @@ int PlanStorageModel::rowCount(const QModelIndex& parent) const {
 }
 
 QVariant PlanStorageModel::data(const QModelIndex& index, int role) const {
-    auto counter = 0;
-    auto iter = databaseProvider->beginPlans();
-    while (counter < index.row()) {
-        ++iter;
-        ++counter;
-    }
     if (role == nameRole) {
-        return iter.key();
+        return databaseProvider->getName(index.row());
     }
     if (role == planRole) {
-        return QVariant::fromValue(iter.value());
+        return QVariant::fromValue(databaseProvider->getPlan(index.row()));
     }
     return QVariant{};
 }
