@@ -200,6 +200,7 @@ QHash<int, QByteArray> PlanModel::roleNames() const {
     names[isIntervalRole] = "isInterval";
     names[isPlanRole] = "isPlan";
     names[repetitionCountRole] = "repetitionCount";
+    names[isExpandedRole] = "expandedRole";
 
     return names;
 }
