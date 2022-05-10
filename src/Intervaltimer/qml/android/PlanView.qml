@@ -89,25 +89,17 @@ Pane {
                             Qt.inputMethod.hide()
                         }
                     }
-                    TextField {
+
+                    SpinBox {
                         id: repetitionEdit
                         implicitWidth: 50
-
-                        validator: IntValidator {
-                            bottom: 1
-                        }
-                        placeholderTextColor: Style.placeHolderTextColor
-                        placeholderText: "Repetitions"
-                        text: root.repetitionCount
-                        color: Style.textColor
-                        onAccepted: () => {
-                                        model.repetitionCount = text
-                                        focus = false
-                                    }
-                        selectByMouse: true
+                        from: 1
+                        value: root.repetitionCount
+                        onValueModified: () => {
+                                             model.repetitionCount = value
+                                         }
                         onFocusChanged: {
                             if (focus) {
-                                selectAll()
                                 return
                             }
                             Qt.inputMethod.hide()
