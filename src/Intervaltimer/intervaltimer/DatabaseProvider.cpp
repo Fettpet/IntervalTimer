@@ -15,29 +15,24 @@
 
 DatabaseProvider::DatabaseProvider()
     : database(new QSqlDatabase{})
-    , databasePath(getDatabaseDefaultPath()) {}
+    , databasePath(getDatabaseDefaultPath())
+    , planBuffer(new PlanStorageBuffer{}) {}
 
 void DatabaseProvider::setDatabasePath(const QString& path) { databasePath = path; }
 
 void DatabaseProvider::setDatabase(std::shared_ptr<QSqlDatabase> newDatabase) { database = std::move(newDatabase); }
 
 void DatabaseProvider::storePlan(QString const& name, const std::shared_ptr<Plan>& plan) {
-    QSqlQuery query;
-    if (planBuffer.contains(name)) {
-        query = transformToUpdateQuery(name, plan);
-    }
-    else {
-        query = transformToWriteQuery(name, plan);
-    }
+    auto query = transformToWriteQuery(name, plan);
     query.exec();
-    planBuffer.insert(name, Plan::copy(plan));
+    planBuffer->insert(name, Plan::copy(plan));
 }
 
-QList<QString> DatabaseProvider::nameOfAllPlans() const { return planBuffer.keys(); }
+QList<QString> DatabaseProvider::nameOfAllPlans() const { return planBuffer->keys(); }
 
 std::shared_ptr<Plan> DatabaseProvider::loadPlan(QString const& name) {
-    if (planBuffer.contains(name)) {
-        return Plan::copy(planBuffer.value(name));
+    if (planBuffer->contains(name)) {
+        return Plan::copy(planBuffer->getValue(name));
     }
 
     auto query = transformToReadQuery(name);
@@ -57,7 +52,7 @@ void DatabaseProvider::deletePlan(const QString& name) {
         "WHERE name = :name;");
     query.bindValue(":name", name);
     query.exec();
-    planBuffer.remove(name);
+    planBuffer->remove(name);
 }
 
 void DatabaseProvider::initialize() {
@@ -77,10 +72,11 @@ void DatabaseProvider::initialize() {
     loadAllPlans();
 }
 
-QMap<QString, std::shared_ptr<Plan>>::const_iterator DatabaseProvider::beginPlans() const {
-    return planBuffer.cbegin();
-}
-QMap<QString, std::shared_ptr<Plan>>::const_iterator DatabaseProvider::endPlans() const { return planBuffer.cend(); }
+void DatabaseProvider::setPlanBuffer(PlanStorageBuffer* newBuffer) { planBuffer.reset(newBuffer); }
+
+QString DatabaseProvider::getName(size_t const& index) const { return planBuffer->getKey(index); }
+
+std::shared_ptr<Plan> DatabaseProvider::getPlan(const size_t& index) const { return planBuffer->getValue(index); }
 
 QString DatabaseProvider::getDatabaseDefaultPath() {
     if (QSysInfo::productType() == "windows" || QSysInfo::productType() == "winrt") {
@@ -107,7 +103,6 @@ void DatabaseProvider::createDatabaseFolder() {
 bool DatabaseProvider::databaseExists() { return databasePath != ":memory:" && QFileInfo::exists(databasePath); }
 
 void DatabaseProvider::createDatabase() {
-
     QSqlQuery query("CREATE TABLE Plans (name TEXT PRIMARY KEY, plan TEXT)", *database);
     query.exec();
 }
@@ -120,6 +115,13 @@ QString DatabaseProvider::planToString(const std::shared_ptr<Plan>& plan) {
 }
 
 QSqlQuery DatabaseProvider::transformToWriteQuery(const QString& name, const std::shared_ptr<Plan>& plan) {
+    if (planBuffer->contains(name)) {
+        return transformToUpdateQuery(name, plan);
+    }
+    return transformToInsertQuery(name, plan);
+}
+
+QSqlQuery DatabaseProvider::transformToInsertQuery(const QString& name, const std::shared_ptr<Plan>& plan) {
     QSqlQuery query(*database);
     auto planStr = planToString(plan);
     query.prepare(
@@ -134,8 +136,8 @@ QSqlQuery DatabaseProvider::transformToUpdateQuery(const QString& name, const st
     QSqlQuery query(*database);
     auto planStr = planToString(plan);
     query.prepare(
-        "UPDATE Plans"
-        "SET plan = :plan"
+        "UPDATE Plans "
+        "SET plan = :plan "
         "WHERE name = :name;");
     query.bindValue(":name", name);
     query.bindValue(":plan", planStr);
@@ -156,9 +158,9 @@ void DatabaseProvider::loadAllPlans() {
             auto record = query.record();
             auto name = record.value("name").toString();
             auto plan = record.value("plan").toString();
-            planBuffer[name] = PlanFromJson::transform(plan);
+            planBuffer->insert(name, PlanFromJson::transform(plan));
         } while (query.next());
     }
 }
 
-bool DatabaseProvider::containsPlan(const QString& name) const { return planBuffer.contains(name); }
+bool DatabaseProvider::containsPlan(const QString& name) const { return planBuffer->contains(name); }

@@ -72,6 +72,21 @@ TEST_F(DatabaseProviderTest, updatePlan) {
     EXPECT_EQ(updatedPlan->getName(), "Updated");
 }
 
+TEST_F(DatabaseProviderTest, updatePlanIntoDatabase) {
+    class PlanStorageBufferFake : public PlanStorageBuffer {
+        [[nodiscard]] virtual bool contains(QString const&) { return false; }
+    };
+
+    provider.storePlan("Test", plan);
+    auto newPlan = provider.loadPlan("Test");
+    EXPECT_EQ(newPlan->getName(), "Ou'ter");
+    newPlan->setName("Updated");
+    provider.storePlan("Test", newPlan);
+    provider.setPlanBuffer(new PlanStorageBufferFake{});
+    auto updatedPlan = provider.loadPlan("Test");
+    EXPECT_EQ(updatedPlan->getName(), "Updated");
+}
+
 TEST_F(DatabaseProviderTest, insertAndLoad) {
     provider.storePlan("Test", plan);
     auto newPlan = provider.loadPlan("Test");

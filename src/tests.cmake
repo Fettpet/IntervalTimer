@@ -12,6 +12,7 @@ if(${BUILD_INTERVAL_TESTS})
         Intervaltimer/intervaltimer/PlanIterator.test.cpp
         Intervaltimer/intervaltimer/PlanModel.test.cpp
         Intervaltimer/intervaltimer/PlanRunner.test.cpp
+        Intervaltimer/intervaltimer/PlanStorageBuffer.test.cpp
         Intervaltimer/intervaltimer/PlanStorageModel.test.cpp
         Intervaltimer/intervaltimer/Timer.test.cpp
         Intervaltimer/intervaltimer/main.test.cpp

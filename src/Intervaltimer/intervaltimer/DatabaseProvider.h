@@ -1,5 +1,6 @@
 #pragma once
 
+#include "PlanStorageBuffer.h"
 #include <Plan.h>
 #include <QDir>
 #include <QMap>
@@ -28,18 +29,21 @@ public:
 
     void initialize();
 
-    [[nodiscard]] QMap<QString, std::shared_ptr<Plan>>::const_iterator beginPlans() const;
-    [[nodiscard]] QMap<QString, std::shared_ptr<Plan>>::const_iterator endPlans() const;
+    void setPlanBuffer(PlanStorageBuffer* newBuffer);
+
+    [[nodiscard]] QString getName(size_t const& index) const;
+    [[nodiscard]] std::shared_ptr<Plan> getPlan(size_t const& index) const;
 
 protected:
-    static QString getDatabaseDefaultPath();
-    bool databaseExists();
+    [[nodiscard]] static QString getDatabaseDefaultPath();
+    [[nodiscard]] bool databaseExists();
     void createDatabase();
 
-    static QString planToString(std::shared_ptr<Plan> const&);
-    QSqlQuery transformToWriteQuery(QString const& name, std::shared_ptr<Plan> const& plan);
-    QSqlQuery transformToUpdateQuery(QString const& name, std::shared_ptr<Plan> const& plan);
-    QSqlQuery transformToReadQuery(QString const& name);
+    [[nodiscard]] static QString planToString(std::shared_ptr<Plan> const&);
+    [[nodiscard]] QSqlQuery transformToWriteQuery(QString const& name, std::shared_ptr<Plan> const& plan);
+    [[nodiscard]] QSqlQuery transformToInsertQuery(QString const& name, std::shared_ptr<Plan> const& plan);
+    [[nodiscard]] QSqlQuery transformToUpdateQuery(QString const& name, std::shared_ptr<Plan> const& plan);
+    [[nodiscard]] QSqlQuery transformToReadQuery(QString const& name);
 
     void loadAllPlans();
 
@@ -49,5 +53,5 @@ protected:
     void createDatabaseFolder();
 
 private:
-    QMap<QString, std::shared_ptr<Plan>> planBuffer;
+    std::unique_ptr<PlanStorageBuffer> planBuffer{};
 };
