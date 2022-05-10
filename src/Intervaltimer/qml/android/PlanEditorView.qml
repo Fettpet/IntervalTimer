@@ -40,7 +40,9 @@ Pane {
             required property int depth
             required property TreeView treeView
             required property bool isTreeNode
-            required property bool expanded
+            required property bool hasChildren
+
+            required property bool expandedRole
 
             readonly property real indent: 20
             readonly property real padding: 5
@@ -72,19 +74,34 @@ Pane {
                 width: itemDelegate.width - itemDelegate.padding - x
                 model: itemDelegate.model
 
-                onToggleExpanded: {
-                    treeView.toggleExpanded(row)
+                onExpand: {
+                    treeView.expand(row)
                 }
+
+                onCollapse: treeView.collapse(row)
 
                 onDeletePlan: {
                     root.planModel.removeItem(treeView.modelIndex(row, column))
                 }
 
-                onAppendInterval: root.planModel.appendInterval(
-                                      treeView.modelIndex(row, column))
+                onAppendInterval: {
+                    var hasChildsBefore = itemDelegate.hasChildren
+                    root.planModel.appendInterval(treeView.modelIndex(row,
+                                                                      column))
+                    if (!hasChildsBefore && itemDelegate.expandedRole) {
+                        treeView.collapse(row)
+                        treeView.expand(row)
+                    }
+                }
 
-                onAppendPlan: root.planModel.appendPlan(treeView.modelIndex(
-                                                            row, column))
+                onAppendPlan: {
+                    var hasChildsBefore = itemDelegate.hasChildren
+                    root.planModel.appendPlan(treeView.modelIndex(row, column))
+                    if (!hasChildsBefore && itemDelegate.expandedRole) {
+                        treeView.collapse(row)
+                        treeView.expand(row)
+                    }
+                }
             }
         }
     }

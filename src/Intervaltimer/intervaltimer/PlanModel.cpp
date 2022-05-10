@@ -77,6 +77,10 @@ QVariant PlanModel::getDataForPlan(const QModelIndex& index, int role) const {
         auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
         return QVariant::fromValue(itemPtr->getNumberRepetitions());
     }
+    case isExpandedRole: {
+        auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
+        return QVariant::fromValue(isExpanded(itemPtr));
+    }
     default: return QVariant{};
     }
 }
@@ -106,6 +110,12 @@ bool PlanModel::isDataSetable(const QModelIndex& index, const QVariant& value, i
     return true;
 }
 
+bool PlanModel::isExpanded(std::shared_ptr<Plan> const& plan) const {
+    return isExpandedStorage.count(plan) > 0 && isExpandedStorage.at(plan);
+}
+
+void PlanModel::setExpanded(const std::shared_ptr<Plan>& plan, bool value) { isExpandedStorage[plan] = value; }
+
 bool PlanModel::setData(const QModelIndex& index, const QVariant& value, int role) {
     if (!isDataSetable(index, value, role)) {
         return false;
@@ -134,6 +144,11 @@ bool PlanModel::setDataForPlan(const QModelIndex& index, const QVariant& value, 
         itemPtr->setNumberRepetitions(value.toUInt());
         emit dataChanged(index, index, QVector<int>() << role);
         return true;
+    case isExpandedRole: {
+        setExpanded(itemPtr, value.toBool());
+        emit dataChanged(index, index, QVector<int>() << role);
+        return true;
+    }
     default: return false;
     }
 }
@@ -200,6 +215,7 @@ QHash<int, QByteArray> PlanModel::roleNames() const {
     names[isIntervalRole] = "isInterval";
     names[isPlanRole] = "isPlan";
     names[repetitionCountRole] = "repetitionCount";
+    names[isExpandedRole] = "expandedRole";
 
     return names;
 }

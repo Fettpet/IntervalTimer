@@ -13,7 +13,7 @@ Pane {
 
     readonly property string name: model.name ? model.name : ""
     readonly property int repetitionCount: model.repetitionCount ? model.repetitionCount : 1
-    readonly property bool expanded: true
+    readonly property bool expanded: model.expandedRole ? model.expandedRole : false
 
     implicitWidth: layout.implicitWidth + 10
     implicitHeight: layout.implicitHeight + 10
@@ -21,7 +21,8 @@ Pane {
     signal appendInterval
     signal appendPlan
     signal deletePlan
-    signal toggleExpanded
+    signal expand
+    signal collapse
 
     background: Rectangle {
         width: root.implicitWidth * 1.1
@@ -110,7 +111,14 @@ Pane {
                             color: Style.textColor
                             source: root.expanded ? "qrc:/IntervalApplication/ressources/image/expanded.png" : "qrc:/IntervalApplication/ressources/image/closed.png"
                         }
-                        onClicked: root.toggleExpanded()
+                        onClicked: {
+                            model.expandedRole = !model.expandedRole
+                            if (model.expandedRole) {
+                                root.expand()
+                            } else {
+                                root.collapse()
+                            }
+                        }
                     }
                 }
 

@@ -18,7 +18,15 @@ class PlanModel : public QAbstractItemModel {
 public:
     explicit PlanModel(QObject* parent = nullptr);
 
-    enum { durationRole = Qt::UserRole, descriptionRole, nameRole, repetitionCountRole, isIntervalRole, isPlanRole };
+    enum {
+        durationRole = Qt::UserRole,
+        descriptionRole,
+        nameRole,
+        repetitionCountRole,
+        isIntervalRole,
+        isPlanRole,
+        isExpandedRole
+    };
 
     // Basic functionality:
     [[nodiscard]] int rowCount(const QModelIndex& parent = QModelIndex()) const override;
@@ -67,9 +75,13 @@ protected:
 
     [[nodiscard]] bool isDataSetable(const QModelIndex& index, const QVariant& value, int role) const;
 
+    [[nodiscard]] bool isExpanded(std::shared_ptr<Plan> const&) const;
+    void setExpanded(std::shared_ptr<Plan> const&, bool);
+
 signals:
     void changeHasZeroDuration();
 
 private:
+    std::map<std::shared_ptr<Plan>, bool> isExpandedStorage;
     std::shared_ptr<Plan> rootPlan;
 };
