@@ -75,9 +75,13 @@ protected:
 
     [[nodiscard]] bool isDataSetable(const QModelIndex& index, const QVariant& value, int role) const;
 
+    [[nodiscard]] bool isExpanded(std::shared_ptr<Plan> const&) const;
+    void setExpanded(std::shared_ptr<Plan> const&, bool);
+
 signals:
     void changeHasZeroDuration();
 
 private:
+    std::map<std::shared_ptr<Plan>, bool> isExpandedStorage;
     std::shared_ptr<Plan> rootPlan;
 };

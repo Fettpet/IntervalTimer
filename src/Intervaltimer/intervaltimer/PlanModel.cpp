@@ -106,6 +106,12 @@ bool PlanModel::isDataSetable(const QModelIndex& index, const QVariant& value, i
     return true;
 }
 
+bool PlanModel::isExpanded(std::shared_ptr<Plan> const& plan) const {
+    return isExpandedStorage.count(plan) > 0 && isExpandedStorage.at(plan);
+}
+
+void PlanModel::setExpanded(const std::shared_ptr<Plan>& plan, bool value) { isExpandedStorage[plan] = value; }
+
 bool PlanModel::setData(const QModelIndex& index, const QVariant& value, int role) {
     if (!isDataSetable(index, value, role)) {
         return false;
