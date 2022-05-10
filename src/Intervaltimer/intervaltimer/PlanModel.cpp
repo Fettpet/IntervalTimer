@@ -77,6 +77,10 @@ QVariant PlanModel::getDataForPlan(const QModelIndex& index, int role) const {
         auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
         return QVariant::fromValue(itemPtr->getNumberRepetitions());
     }
+    case isExpandedRole: {
+        auto itemPtr = static_cast<Plan*>(index.internalPointer())->shared_from_this();
+        return QVariant::fromValue(isExpanded(itemPtr));
+    }
     default: return QVariant{};
     }
 }
@@ -140,6 +144,11 @@ bool PlanModel::setDataForPlan(const QModelIndex& index, const QVariant& value, 
         itemPtr->setNumberRepetitions(value.toUInt());
         emit dataChanged(index, index, QVector<int>() << role);
         return true;
+    case isExpandedRole: {
+        setExpanded(itemPtr, value.toBool());
+        emit dataChanged(index, index, QVector<int>() << role);
+        return true;
+    }
     default: return false;
     }
 }
