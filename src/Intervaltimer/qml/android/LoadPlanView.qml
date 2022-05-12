@@ -11,8 +11,8 @@ Popup {
     required property color backgroundColor
 
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-    width: layout.width + 20
-    height: Math.min(300, layout.height + 20)
+    width: layout.implicitWidth + 20
+    height: Math.min(300, layout.implicitHeight + 20)
     background: Rectangle {
         color: root.backgroundColor
         width: root.width
