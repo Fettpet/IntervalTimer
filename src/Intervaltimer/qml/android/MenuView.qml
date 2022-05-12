@@ -22,13 +22,13 @@ ToolButton {
         MenuItem {
             text: "Save"
             onTriggered: {
-                loaderStorePlan.open()
+                storePlan.open()
             }
         }
         MenuItem {
             text: "Load"
             onTriggered: {
-                loaderLoadPlan.open()
+                loadPlan.open()
             }
         }
         MenuSeparator {}
@@ -56,13 +56,13 @@ ToolButton {
     }
 
     StorePlanView {
-        id: loaderStorePlan
+        id: storePlan
         backgroundColor: Style.popupColor
         anchors.centerIn: Overlay.overlay
     }
 
     LoadPlanView {
-        id: loaderLoadPlan
+        id: loadPlan
         backgroundColor: Style.popupColor
         anchors.centerIn: Overlay.overlay
     }
