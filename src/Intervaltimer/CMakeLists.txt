@@ -99,7 +99,10 @@ qt_add_qml_module(IntervaltimerAndroid
     PLUGIN_TARGET IntervaltimerAndroidPlugin
     OUTPUT_DIRECTORY Intervaltimer/Android
     QML_FILES
+        qml/android/AboutView.qml
+        qml/android/CopyrightView.qml
         qml/android/DurationControl.qml
+        qml/android/HelpView.qml
         qml/android/IntervalView.qml
         qml/android/LicenceView.qml
         qml/android/LoadPlanView.qml

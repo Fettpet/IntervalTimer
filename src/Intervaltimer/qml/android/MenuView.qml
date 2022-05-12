@@ -34,6 +34,9 @@ ToolButton {
         MenuSeparator {}
         MenuItem {
             text: "About"
+            onTriggered: {
+                about.open()
+            }
         }
         MenuItem {
             text: "Licences"
@@ -43,15 +46,35 @@ ToolButton {
         }
         MenuItem {
             text: "Help"
+            onTriggered: {
+                help.open()
+            }
         }
         MenuItem {
             text: "Copyright"
+            onTriggered: {
+                copyright.open()
+            }
         }
     }
 
     LicenceView {
         id: licence
-        // backgroundColor: Style.popupColor
+        anchors.centerIn: Overlay.overlay
+    }
+
+    AboutView {
+        id: about
+        anchors.centerIn: Overlay.overlay
+    }
+
+    CopyrightView {
+        id: copyright
+        anchors.centerIn: Overlay.overlay
+    }
+
+    HelpView {
+        id: help
         anchors.centerIn: Overlay.overlay
     }
 
