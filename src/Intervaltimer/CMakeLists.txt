@@ -102,6 +102,7 @@ qt_add_qml_module(IntervaltimerAndroid
         qml/android/DurationControl.qml
         qml/android/IntervalView.qml
         qml/android/LoadPlanView.qml
+        qml/android/MenuView.qml
         qml/android/PlanView.qml
         qml/android/PlanEditorView.qml
         qml/android/PlanRunningView.qml
