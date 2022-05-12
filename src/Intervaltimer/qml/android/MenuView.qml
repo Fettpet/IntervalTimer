@@ -37,6 +37,9 @@ ToolButton {
         }
         MenuItem {
             text: "Licences"
+            onTriggered: {
+                licence.open()
+            }
         }
         MenuItem {
             text: "Help"
@@ -44,6 +47,12 @@ ToolButton {
         MenuItem {
             text: "Copyright"
         }
+    }
+
+    LicenceView {
+        id: licence
+        // backgroundColor: Style.popupColor
+        anchors.centerIn: Overlay.overlay
     }
 
     StorePlanView {
