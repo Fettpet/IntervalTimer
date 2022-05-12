@@ -22,6 +22,7 @@ if(${BUILD_INTERVAL_APPLICATON})
         RESOURCES
             ../ressources/image/closed.png
             ../ressources/image/expanded.png
+            ../ressources/image/menu.png
     )
 
     target_compile_definitions(IntervaltimerApplication
