@@ -93,8 +93,9 @@ Pane {
 
                     SpinBox {
                         id: repetitionEdit
-                        implicitWidth: 50
+                        implicitWidth: 120
                         from: 1
+                        to: 10
                         value: root.repetitionCount
                         onValueModified: () => {
                                              model.repetitionCount = value
