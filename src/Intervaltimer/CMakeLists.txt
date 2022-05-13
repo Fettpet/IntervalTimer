@@ -18,6 +18,8 @@ qt_add_qml_module(IntervaltimerCpp
     VERSION 1.0
     PLUGIN_TARGET IntervaltimerCppPlugin
     SOURCES
+        intervaltimer/ConstantStorage.h
+        intervaltimer/ConstantStorage.cpp
         intervaltimer/DatabaseProvider.h
         intervaltimer/DatabaseProvider.cpp
         intervaltimer/Interval.cpp
@@ -46,6 +48,7 @@ qt_add_qml_module(IntervaltimerCpp
         intervaltimer/Timer.cpp
         intervaltimer/TimerBase.h
         intervaltimer/TimerBase.cpp
+
     OUTPUT_DIRECTORY IntervaltimerCpp
 )
 
