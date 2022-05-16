@@ -1,5 +1,4 @@
-#ifndef CONSTANTSTORAGE_H
-#define CONSTANTSTORAGE_H
+#pragma once
 
 #include <QObject>
 #include <QtQml/QQmlEngine>
@@ -24,5 +23,3 @@ public:
     [[nodiscard]] int getProjectVersionMinor() const;
     [[nodiscard]] int getProjectVersionMajor() const;
 };
-
-#endif // CONSTANTSTORAGE_H
