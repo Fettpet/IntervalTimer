@@ -1,4 +1,5 @@
 #include "ConstantStorage.h"
+#include <QtGlobal>
 
 ConstantStorage* ConstantStorage::instance = nullptr;
 
@@ -32,3 +33,5 @@ int ConstantStorage::getProjectVersionMajor() const {
     return 0;
 #endif
 }
+
+QString ConstantStorage::getQtVersion() const { return QString(qVersion()); }
