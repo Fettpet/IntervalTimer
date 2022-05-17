@@ -22,6 +22,9 @@ Window {
         height: root.height
         clip: true
         padding: 0
+        MenuView {
+            z: 10
+        }
 
         Loader {
             id: editorLoader

@@ -18,6 +18,8 @@ qt_add_qml_module(IntervaltimerCpp
     VERSION 1.0
     PLUGIN_TARGET IntervaltimerCppPlugin
     SOURCES
+        intervaltimer/ConstantStorage.h
+        intervaltimer/ConstantStorage.cpp
         intervaltimer/DatabaseProvider.h
         intervaltimer/DatabaseProvider.cpp
         intervaltimer/Interval.cpp
@@ -46,6 +48,7 @@ qt_add_qml_module(IntervaltimerCpp
         intervaltimer/Timer.cpp
         intervaltimer/TimerBase.h
         intervaltimer/TimerBase.cpp
+
     OUTPUT_DIRECTORY IntervaltimerCpp
 )
 
@@ -99,9 +102,14 @@ qt_add_qml_module(IntervaltimerAndroid
     PLUGIN_TARGET IntervaltimerAndroidPlugin
     OUTPUT_DIRECTORY Intervaltimer/Android
     QML_FILES
+        qml/android/AboutView.qml
+        qml/android/CopyrightView.qml
         qml/android/DurationControl.qml
+        qml/android/HelpView.qml
         qml/android/IntervalView.qml
+        qml/android/LicenceView.qml
         qml/android/LoadPlanView.qml
+        qml/android/MenuView.qml
         qml/android/PlanView.qml
         qml/android/PlanEditorView.qml
         qml/android/PlanRunningView.qml
