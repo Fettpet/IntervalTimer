@@ -15,6 +15,9 @@ Window {
     height: 480
     visible: true
 
+    Material.theme: Material.Dark
+    Material.accent: Material.Purple
+
     Pane {
         id: flickable
 

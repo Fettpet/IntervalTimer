@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.21)
 
-find_package(Qt6 COMPONENTS Quick Qml Sql Core Test REQUIRED)
+find_package(Qt6 COMPONENTS Quick Qml Sql Core QuickControls2 Test REQUIRED)
 
 OPTION(BUILD_INTERVAL_APPLICATON "Build the Application" ON)
 
@@ -29,6 +29,7 @@ if(${BUILD_INTERVAL_APPLICATON})
         PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
     target_link_libraries(IntervaltimerApplication
         PRIVATE Qt6::Quick
+        PRIVATE Qt6::QuickControls2
         PRIVATE Intervaltimer
         )
 endif()
