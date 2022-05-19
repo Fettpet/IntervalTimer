@@ -12,7 +12,6 @@ Rectangle {
     implicitWidth: 100
     implicitHeight: 200
     Rectangle {
-        //This rectangle is optional it is the lower bar on the middle of the View
         anchors.centerIn: parent
         anchors.verticalCenterOffset: (root.implicitHeight / 10)
         implicitWidth: parent.implicitWidth / 2
@@ -21,7 +20,6 @@ Rectangle {
     }
 
     Rectangle {
-        //This rectangle is optional it is the upper bar on the middle of the View
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -(root.implicitHeight / 10)
         implicitWidth: parent.implicitWidth / 2
@@ -50,7 +48,6 @@ Rectangle {
                 color: itm.PathView.isCurrentItem ? "red" : "black"
                 font.pointSize: 12
                 anchors.centerIn: parent
-                //opacity: active ? 1 : 0.3
             }
             MouseArea {
                 id: itemMouseArea
