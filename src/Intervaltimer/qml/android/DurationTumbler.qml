@@ -1,6 +1,7 @@
 import QtQuick
+import QtQuick.Controls
 
-Rectangle {
+Pane {
     id: root
 
     required property var model
