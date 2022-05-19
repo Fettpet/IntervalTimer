@@ -13,7 +13,6 @@ Pane {
     property color gradientColor: "#333333"
     property color footerColor: "#333333"
     property color popupColor: "#555555"
-    property color textColor: "#bbbbbb"
     background: Rectangle {
         anchors.fill: parent
         color: root.backgroundColor
@@ -60,8 +59,6 @@ Pane {
                 onDeleteInterval: {
                     root.planModel.removeItem(treeView.modelIndex(row, column))
                 }
-                textColor: "black"
-                placeHolderTextColor: "darkgrey"
             }
 
             PlanView {

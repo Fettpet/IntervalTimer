@@ -73,9 +73,7 @@ Pane {
                     id: header
                     TextField {
                         text: root.name
-                        color: Style.textColor
                         placeholderText: "Name"
-                        placeholderTextColor: Style.placeHolderTextColor
                         onAccepted: () => {
                                         model.name = text
                                         focus = false
@@ -109,7 +107,6 @@ Pane {
                     }
                     ToolButton {
                         icon {
-                            color: Style.textColor
                             source: root.expanded ? "qrc:/IntervalApplication/ressources/image/expanded.png" : "qrc:/IntervalApplication/ressources/image/closed.png"
                         }
                         onClicked: {
