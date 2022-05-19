@@ -47,7 +47,6 @@ Window {
             id: runnerLoader
             active: root.isRunning
             sourceComponent: PlanRunningView {
-                textColor: "#bbbbbb"
                 width: root.width
                 height: root.height
                 onStopRunning: {

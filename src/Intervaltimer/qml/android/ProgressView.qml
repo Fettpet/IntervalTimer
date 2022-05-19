@@ -9,7 +9,6 @@ Canvas {
 
     property color primaryColor: "orange"
     property color secondaryColor: "lightblue"
-    property color textColor: "black"
     width: 240
     height: 240
     property string text: "Text"
@@ -89,7 +88,6 @@ Canvas {
         anchors.centerIn: parent
 
         text: root.text
-        color: root.textColor
     }
 
     Label {
@@ -116,7 +114,6 @@ Canvas {
 
         anchors.bottom: textDescription.top
         anchors.horizontalCenter: textDescription.horizontalCenter
-        color: root.textColor
         anchors.margins: 20
         text: formatedText
     }
