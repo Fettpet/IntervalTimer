@@ -29,10 +29,15 @@ Rectangle {
         color: "black"
     }
 
-    Component {
-        id: tumblerDelegate
-
-        Item {
+    PathView {
+        id: pathView
+        anchors.fill: parent
+        model: root.model
+        pathItemCount: root.itemCount
+        preferredHighlightBegin: 0.5
+        preferredHighlightEnd: 0.5
+        highlightRangeMode: PathView.StrictlyEnforceRange
+        delegate: Item {
             id: itm
             anchors.left: parent.left
             anchors.right: parent.right
@@ -55,17 +60,6 @@ Rectangle {
                 }
             }
         }
-    }
-
-    PathView {
-        id: pathView
-        anchors.fill: parent
-        model: root.model
-        pathItemCount: root.itemCount
-        preferredHighlightBegin: 0.5
-        preferredHighlightEnd: 0.5
-        highlightRangeMode: PathView.StrictlyEnforceRange
-        delegate: tumblerDelegate
         flickDeceleration: root.flickDeceleration
         path: Path {
             startX: pathView.width / 2
