@@ -1,6 +1,7 @@
 // Source https://stackoverflow.com/a/22903361
 import QtQml
 import QtQuick
+import QtQuick.Controls
 
 Canvas {
     id: root
@@ -83,7 +84,7 @@ Canvas {
         ctx.restore()
     }
 
-    Text {
+    Label {
         id: textDescription
         anchors.centerIn: parent
 
@@ -91,7 +92,7 @@ Canvas {
         color: root.textColor
     }
 
-    Text {
+    Label {
         id: textRunningTime
 
         readonly property int value: (root.maximumValueInner - root.currentValueInner) / 1000

@@ -10,7 +10,7 @@ Pane {
     property color textColor: "red"
     signal stopRunning
 
-    Text {
+    Label {
         id: textRunningTime
 
         readonly property int value: (PlanRunner.planDurationCompleteTime
