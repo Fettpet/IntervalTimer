@@ -56,7 +56,7 @@ Pane {
                 visible: enabled
                 enabled: itemDelegate.isInterval && itemDelegate.isTreeNode
                 model: itemDelegate.model
-
+                Material.elevation: itemDelegate.depth
                 onDeleteInterval: {
                     root.planModel.removeItem(treeView.modelIndex(row, column))
                 }
@@ -74,7 +74,7 @@ Pane {
                 width: itemDelegate.width - itemDelegate.padding - x
                 model: itemDelegate.model
                 depth: itemDelegate.depth
-
+                Material.elevation: itemDelegate.depth
                 onExpand: {
                     treeView.expand(row)
                 }
