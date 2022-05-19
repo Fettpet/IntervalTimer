@@ -7,13 +7,8 @@ import Intervaltimer.Android
 
 Pane {
     id: root
-    property color backgroundColor: "#222222"
     property color textColor: "red"
     signal stopRunning
-    background: Rectangle {
-        anchors.fill: parent
-        color: root.backgroundColor
-    }
 
     Text {
         id: textRunningTime
@@ -49,7 +44,6 @@ Pane {
         id: progress
         textColor: root.textColor
         anchors.centerIn: parent
-        backgroundColor: root.backgroundColor
         minimumValueInner: 0
         maximumValueInner: PlanRunner.intervalDurationCompleteTime
         currentValueInner: PlanRunner.intervalDurationRunningTime
