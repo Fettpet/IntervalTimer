@@ -33,7 +33,7 @@ Pane {
                                    model.description = text
                                }
 
-            implicitWidth: root.width * 0.4
+            implicitWidth: root.width * 0.35
             onFocusChanged: {
                 if (focus) {
                     selectAll()
@@ -47,7 +47,7 @@ Pane {
             id: durationController
             duration: root.duration
             textColor: root.textColor
-            implicitWidth: root.width * 0.4
+            implicitWidth: root.width * 0.35
             onDurationChanged: {
                 model.duration = duration
             }
