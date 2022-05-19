@@ -9,23 +9,23 @@ Rectangle {
     property alias currentItem: pathView.currentItem
     property alias currentIndex: pathView.currentIndex
 
-    width: 100
-    height: 200
+    implicitWidth: 100
+    implicitHeight: 200
     Rectangle {
         //This rectangle is optional it is the lower bar on the middle of the View
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: (root.height / 10)
-        width: parent.width / 2
-        height: 2
+        anchors.verticalCenterOffset: (root.implicitHeight / 10)
+        implicitWidth: parent.implicitWidth / 2
+        implicitHeight: 2
         color: "black"
     }
 
     Rectangle {
         //This rectangle is optional it is the upper bar on the middle of the View
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: -(root.height / 10)
-        width: parent.width / 2
-        height: 2
+        anchors.verticalCenterOffset: -(root.implicitHeight / 10)
+        implicitWidth: parent.implicitWidth / 2
+        implicitHeight: 2
         color: "black"
     }
 
