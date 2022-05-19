@@ -15,7 +15,7 @@ Popup {
     width: 200
     height: 70
     background: Rectangle {
-        color: root.backgroundColor
+        color: Style.popupColor
         width: root.width
         height: root.height
         radius: 8

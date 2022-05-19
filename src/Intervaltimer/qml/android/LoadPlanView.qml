@@ -14,7 +14,7 @@ Popup {
     width: layout.implicitWidth + 20
     height: Math.min(300, layout.implicitHeight + 20)
     background: Rectangle {
-        color: root.backgroundColor
+        color: Style.popupColor
         width: root.width
         height: root.height
         radius: 8
