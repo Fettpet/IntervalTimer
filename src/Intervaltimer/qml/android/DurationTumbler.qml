@@ -44,9 +44,10 @@ Pane {
             scale: PathView.iconScale ? PathView.iconScale : 1
             opacity: PathView.iconOpacity ? PathView.iconOpacity : 0
 
-            Text {
+            Label {
+                id: label
                 text: modelData
-                color: itm.PathView.isCurrentItem ? "red" : "black"
+                color: itm.PathView.isCurrentItem ? "red" : label.palette.windowText
                 font.pointSize: 12
                 anchors.centerIn: parent
             }
