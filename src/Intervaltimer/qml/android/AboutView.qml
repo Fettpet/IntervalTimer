@@ -7,17 +7,17 @@ Popup {
     id: root
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
     ColumnLayout {
-        Text {
+        Label {
             text: "Über Intervaltimer"
         }
-        Text {
+        Label {
             text: "Version " + ConstantStorage.projectVersionMajor + "."
                   + ConstantStorage.projectVersionMinor + "." + ConstantStorage.projectVersionPatch
         }
-        Text {
+        Label {
             text: "Copyright 2022 HicknHack Software GmbH"
         }
-        Text {
+        Label {
             text: "All rights reserved"
         }
     }
