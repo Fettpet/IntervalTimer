@@ -14,11 +14,6 @@ Pane {
 
     signal deleteInterval
 
-    background: Rectangle {
-        anchors.fill: root
-        color: "transparent"
-    }
-
     contentItem: RowLayout {
 
         TextField {
