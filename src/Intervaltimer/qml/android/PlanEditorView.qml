@@ -104,47 +104,11 @@ Pane {
         }
     }
 
-    Rectangle {
-        id: footerView
+    RoundButton {
+        enabled: planModel ? !planModel.hasZeroDuration : false
+        anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        height: footer.implicitHeight
-        anchors.right: parent.right
-
-        color: root.footerColor
-        RowLayout {
-            id: footer
-            anchors.horizontalCenter: parent.horizontalCenter
-            RoundButton {
-                text: "Save"
-                onClicked: {
-                    loaderStorePlan.open()
-                    loaderLoadPlan.close()
-                }
-            }
-            RoundButton {
-                text: "Load"
-                onClicked: {
-                    loaderLoadPlan.open()
-                    loaderStorePlan.close()
-                }
-            }
-            RoundButton {
-                enabled: planModel ? !planModel.hasZeroDuration : false
-                text: "Run"
-                onClicked: startRunning()
-            }
-        }
-    }
-
-    StorePlanView {
-        id: loaderStorePlan
-        backgroundColor: root.popupColor
-        anchors.centerIn: parent
-    }
-
-    LoadPlanView {
-        id: loaderLoadPlan
-        anchors.centerIn: parent
+        text: "Run"
+        onClicked: startRunning()
     }
 }
