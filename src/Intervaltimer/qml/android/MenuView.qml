@@ -6,14 +6,8 @@ import Intervaltimer.Android
 
 ToolButton {
     id: myButton
-    background: Rectangle {
-        color: "white"
-        anchors.fill: parent
-    }
 
     icon {
-
-        color: "red"
         source: "qrc:/IntervalApplication/ressources/image/menu.png"
     }
     onClicked: myMenu.open()
@@ -86,7 +80,6 @@ ToolButton {
 
     LoadPlanView {
         id: loadPlan
-        backgroundColor: Style.popupColor
         anchors.centerIn: Overlay.overlay
     }
 }

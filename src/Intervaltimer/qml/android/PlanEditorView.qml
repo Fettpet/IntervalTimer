@@ -145,7 +145,6 @@ Pane {
 
     LoadPlanView {
         id: loaderLoadPlan
-        backgroundColor: root.popupColor
         anchors.centerIn: parent
     }
 }
