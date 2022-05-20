@@ -13,17 +13,17 @@ Pane {
     implicitWidth: 100
     implicitHeight: 200
     Rectangle {
-        anchors.centerIn: parent
-        anchors.verticalCenterOffset: (root.implicitHeight / 10)
-        implicitWidth: parent.implicitWidth / 2
+        anchors.centerIn: pathView
+        anchors.verticalCenterOffset: (pathView.height / 10)
+        implicitWidth: parent.width / 2
         implicitHeight: 2
         color: "black"
     }
 
     Rectangle {
-        anchors.centerIn: parent
-        anchors.verticalCenterOffset: -(root.implicitHeight / 10)
-        implicitWidth: parent.implicitWidth / 2
+        anchors.centerIn: pathView
+        anchors.verticalCenterOffset: -(pathView.height / 10)
+        implicitWidth: parent.width / 2
         implicitHeight: 2
         color: "black"
     }
@@ -40,7 +40,7 @@ Pane {
             id: itm
             anchors.left: parent.left
             anchors.right: parent.right
-            height: parent.height / 5
+            implicitHeight: parent.height / root.itemCount
             scale: PathView.iconScale ? PathView.iconScale : 1
             opacity: PathView.iconOpacity ? PathView.iconOpacity : 0
 
@@ -62,7 +62,7 @@ Pane {
         flickDeceleration: root.flickDeceleration
         path: Path {
             startX: pathView.width / 2
-            startY: 0
+            startY: -(root.implicitHeight / 9)
             PathAttribute {
                 name: "iconScale"
                 value: 0.7
