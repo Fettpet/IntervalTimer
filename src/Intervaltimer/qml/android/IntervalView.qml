@@ -13,7 +13,11 @@ Pane {
     signal deleteInterval
 
     contentItem: RowLayout {
-
+        implicitHeight: Math.max(descriptionEdit.implicitHeight,
+                                 durationController.implicitHeight,
+                                 deleteButton.implicitHeight)
+        implicitWidth: 1.1 * (descriptionEdit.implicitWidth + durationController.implicitWidth
+                              + deleteButton.implicitWidth)
         TextField {
             id: descriptionEdit
             selectByMouse: true
@@ -24,7 +28,7 @@ Pane {
                                    model.description = text
                                }
 
-            implicitWidth: root.width * 0.35
+            width: root.width * 0.35
             onFocusChanged: {
                 if (focus) {
                     selectAll()
@@ -37,7 +41,7 @@ Pane {
         DurationControl {
             id: durationController
             duration: root.duration
-            implicitWidth: root.width * 0.35
+            width: root.width * 0.35
             onDurationChanged: {
                 model.duration = duration
             }
@@ -49,8 +53,9 @@ Pane {
         }
 
         RoundButton {
+            id: deleteButton
             text: "Delete"
-            implicitWidth: root.width * 0.2
+            width: root.width * 0.2
             onClicked: root.deleteInterval()
         }
     }
