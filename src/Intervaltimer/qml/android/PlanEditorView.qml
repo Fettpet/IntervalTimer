@@ -26,6 +26,15 @@ Pane {
         anchors.top: parent.top
         z: 10
     }
+    RoundButton {
+        enabled: planModel ? !planModel.hasZeroDuration : false
+        anchors.right: menu.right
+        anchors.top: menu.bottom
+        text: "Run"
+        z: 10
+        onClicked: root.startRunning()
+    }
+
     TreeView {
         anchors.fill: parent
         model: root.planModel
@@ -108,13 +117,5 @@ Pane {
                 }
             }
         }
-    }
-
-    RoundButton {
-        enabled: planModel ? !planModel.hasZeroDuration : false
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: parent.bottom
-        text: "Run"
-        onClicked: startRunning()
     }
 }
