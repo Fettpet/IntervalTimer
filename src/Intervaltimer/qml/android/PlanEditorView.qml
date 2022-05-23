@@ -20,6 +20,12 @@ Pane {
 
     signal startRunning
 
+    MenuView {
+        id: menu
+        anchors.right: parent.right
+        anchors.top: parent.top
+        z: 10
+    }
     TreeView {
         anchors.fill: parent
         model: root.planModel
