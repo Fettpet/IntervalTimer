@@ -24,31 +24,6 @@ Pane {
     signal expand
     signal collapse
 
-    //    background: Rectangle {
-    //        width: root.implicitWidth * 1.1
-    //        height: root.implicitHeight + 20
-    //        radius: 12
-    //        gradient: Gradient {
-    //            orientation: Gradient.Horizontal
-    //            GradientStop {
-    //                position: 0.0
-    //                color: Style.backgroundColor
-    //            }
-    //            GradientStop {
-    //                position: 0.3
-    //                color: Style.gradientColor
-    //            }
-
-    //            GradientStop {
-    //                position: 0.7
-    //                color: Style.gradientColor
-    //            }
-    //            GradientStop {
-    //                position: 1.0
-    //                color: Style.backgroundColor
-    //            }
-    //        }
-    //    }
     contentItem: Pane {
         id: layout
 
