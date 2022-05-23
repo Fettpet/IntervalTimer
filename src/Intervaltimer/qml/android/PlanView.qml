@@ -15,8 +15,8 @@ Pane {
     readonly property int repetitionCount: model.repetitionCount ? model.repetitionCount : 1
     readonly property bool expanded: model.expandedRole ? model.expandedRole : false
 
-    implicitWidth: layout.implicitWidth + 10
-    implicitHeight: layout.implicitHeight + 10
+    implicitWidth: columnLayout.implicitWidth + 10
+    implicitHeight: columnLayout.implicitHeight + 10
 
     signal appendInterval
     signal appendPlan
@@ -24,96 +24,76 @@ Pane {
     signal expand
     signal collapse
 
-    contentItem: Pane {
-        id: layout
+    anchors.top: parent.top
 
-        implicitWidth: planView.implicitWidth
-        implicitHeight: planView.implicitHeight
-        background: Rectangle {
-            color: "transparent"
-        }
-
-        Pane {
-            id: planView
-            anchors.top: parent.top
-
-            background: Rectangle {
-                color: "transparent"
+    contentItem: ColumnLayout {
+        id: columnLayout
+        RowLayout {
+            id: header
+            TextField {
+                text: root.name
+                placeholderText: "Name"
+                onAccepted: () => {
+                                model.name = text
+                                focus = false
+                            }
+                selectByMouse: true
+                onFocusChanged: {
+                    if (focus) {
+                        selectAll()
+                        return
+                    }
+                    Qt.inputMethod.hide()
+                }
             }
 
-            ColumnLayout {
-                id: columnLayout
-                RowLayout {
-                    id: header
-                    TextField {
-                        text: root.name
-                        placeholderText: "Name"
-                        onAccepted: () => {
-                                        model.name = text
-                                        focus = false
-                                    }
-                        selectByMouse: true
-                        onFocusChanged: {
-                            if (focus) {
-
-                                selectAll()
-                                return
-                            }
-                            Qt.inputMethod.hide()
-                        }
+            SpinBox {
+                id: repetitionEdit
+                implicitWidth: 120
+                from: 1
+                to: 10
+                value: root.repetitionCount
+                onValueModified: () => {
+                                     model.repetitionCount = value
+                                 }
+                onFocusChanged: {
+                    if (focus) {
+                        return
                     }
-
-                    SpinBox {
-                        id: repetitionEdit
-                        implicitWidth: 120
-                        from: 1
-                        to: 10
-                        value: root.repetitionCount
-                        onValueModified: () => {
-                                             model.repetitionCount = value
-                                         }
-                        onFocusChanged: {
-                            if (focus) {
-                                return
-                            }
-                            Qt.inputMethod.hide()
-                        }
-                    }
-                    ToolButton {
-                        icon {
-                            source: root.expanded ? "qrc:/IntervalApplication/ressources/image/expanded.png" : "qrc:/IntervalApplication/ressources/image/closed.png"
-                        }
-                        onClicked: {
-                            model.expandedRole = !model.expandedRole
-                            if (model.expandedRole) {
-                                root.expand()
-                            } else {
-                                root.collapse()
-                            }
-                        }
+                    Qt.inputMethod.hide()
+                }
+            }
+            ToolButton {
+                icon {
+                    source: root.expanded ? "qrc:/IntervalApplication/ressources/image/expanded.png" : "qrc:/IntervalApplication/ressources/image/closed.png"
+                }
+                onClicked: {
+                    model.expandedRole = !model.expandedRole
+                    if (model.expandedRole) {
+                        root.expand()
+                    } else {
+                        root.collapse()
                     }
                 }
+            }
+        }
 
-                RowLayout {
-                    RoundButton {
-                        text: "Add Interval"
-                        Layout.preferredHeight: root.expanded ? implicitHeight : 0
-                        onClicked: root.appendInterval()
-                    }
-                    RoundButton {
-                        text: "Add Plan"
-                        visible: enabled
-                        enabled: root.depth < 3
-                        Layout.preferredHeight: root.expanded ? implicitHeight : 0
-                        onClicked: root.appendPlan()
-                    }
-                    RoundButton {
-                        text: "Delete"
-                        Layout.preferredHeight: root.expanded ? implicitHeight : 0
-                        visible: root.expanded && !root.isRoot
-                        onClicked: root.deletePlan()
-                    }
-                }
+        RowLayout {
+            visible: root.expanded
+            RoundButton {
+                text: "Add Interval"
+                onClicked: root.appendInterval()
+            }
+            RoundButton {
+                text: "Add Plan"
+                visible: enabled
+                enabled: root.depth < 3
+                onClicked: root.appendPlan()
+            }
+            RoundButton {
+                text: "Delete"
+                visible: !root.isRoot
+                onClicked: root.deletePlan()
             }
         }
     }
