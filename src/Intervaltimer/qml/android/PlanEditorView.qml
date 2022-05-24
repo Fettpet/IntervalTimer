@@ -33,11 +33,24 @@ Pane {
 
         delegate: Item {
             id: itemDelegate
-            implicitWidth: isInterval ? padding + labelInterval.x
-                                        + labelInterval.implicitWidth : padding
-                                        + labelPlan.x + labelPlan.implicitWidth
-            implicitHeight: isInterval ? labelInterval.implicitHeight : labelPlan.implicitHeight
-                                         * 1.5
+            implicitWidth: {
+                if (!isTreeNode) {
+                    return 1
+                }
+                if (isInterval) {
+                    return padding + labelInterval.x + labelInterval.implicitWidth
+                }
+                return padding + labelPlan.x + labelPlan.implicitWidth
+            }
+            implicitHeight: {
+                if (!isTreeNode) {
+                    return 1
+                }
+                if (isInterval) {
+                    return labelInterval.implicitHeight
+                }
+                return labelPlan.implicitHeight
+            }
             required property bool isPlan
             required property bool isInterval
             required property var model
@@ -50,13 +63,13 @@ Pane {
 
             required property bool expandedRole
 
-            readonly property real indent: 20
+            readonly property real indent: 30
             readonly property real padding: 5
 
             IntervalView {
                 id: labelInterval
 
-                x: padding + (itemDelegate.isTreeNode ? (itemDelegate.depth + 1)
+                x: padding + (itemDelegate.isTreeNode ? itemDelegate.depth
                                                         * itemDelegate.indent : 0)
                 width: 400
                 visible: enabled
@@ -73,7 +86,7 @@ Pane {
                 visible: enabled
                 enabled: itemDelegate.isPlan && itemDelegate.isTreeNode
                 isRoot: itemDelegate.depth == 0
-                x: padding + (itemDelegate.isTreeNode ? (itemDelegate.depth + 1)
+                x: padding + (itemDelegate.isTreeNode ? itemDelegate.depth
                                                         * itemDelegate.indent : 0)
                 width: itemDelegate.width - itemDelegate.padding - x
                 model: itemDelegate.model
