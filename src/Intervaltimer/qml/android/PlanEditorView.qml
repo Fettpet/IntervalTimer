@@ -9,14 +9,6 @@ Pane {
     id: root
 
     required property QtObject planModel
-    property color backgroundColor: "#111111"
-    property color gradientColor: "#333333"
-    property color footerColor: "#333333"
-    property color popupColor: "#555555"
-    background: Rectangle {
-        anchors.fill: parent
-        color: root.backgroundColor
-    }
 
     signal startRunning
 
