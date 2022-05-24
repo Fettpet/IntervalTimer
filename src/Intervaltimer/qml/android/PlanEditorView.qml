@@ -28,6 +28,7 @@ Pane {
     }
 
     TreeView {
+        id: view
         anchors.fill: parent
         model: root.planModel
 
@@ -51,6 +52,9 @@ Pane {
                 }
                 return labelPlan.implicitHeight
             }
+
+            onImplicitHeightChanged: view.forceLayout()
+
             required property bool isPlan
             required property bool isInterval
             required property var model
