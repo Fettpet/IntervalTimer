@@ -15,6 +15,9 @@ Window {
     height: 480
     visible: true
 
+    Material.theme: Material.Dark
+    Material.accent: Material.Purple
+
     Pane {
         id: flickable
 
@@ -22,9 +25,6 @@ Window {
         height: root.height
         clip: true
         padding: 0
-        MenuView {
-            z: 10
-        }
 
         Loader {
             id: editorLoader
@@ -44,8 +44,6 @@ Window {
             id: runnerLoader
             active: root.isRunning
             sourceComponent: PlanRunningView {
-                backgroundColor: "#111111"
-                textColor: "#bbbbbb"
                 width: root.width
                 height: root.height
                 onStopRunning: {

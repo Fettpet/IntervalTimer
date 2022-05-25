@@ -9,31 +9,26 @@ Pane {
     required property var model
     readonly property string description: model.description ? model.description : ""
     readonly property int duration: model.duration ? model.duration : 0
-    property color textColor: Style.textColor
-    property color placeHolderTextColor: Style.placeHolderTextColor
 
     signal deleteInterval
 
-    background: Rectangle {
-        anchors.fill: root
-        color: "transparent"
-    }
-
     contentItem: RowLayout {
-
+        implicitHeight: Math.max(descriptionEdit.implicitHeight,
+                                 durationController.implicitHeight,
+                                 deleteButton.implicitHeight)
+        implicitWidth: 1.1 * (descriptionEdit.implicitWidth + durationController.implicitWidth
+                              + deleteButton.implicitWidth)
         TextField {
             id: descriptionEdit
             selectByMouse: true
             text: root.description
-            color: root.textColor
             placeholderText: "Description"
-            placeholderTextColor: root.placeHolderTextColor
             onEditingFinished: () => {
                                    focus = false
                                    model.description = text
                                }
 
-            implicitWidth: root.width * 0.4
+            width: root.width * 0.35
             onFocusChanged: {
                 if (focus) {
                     selectAll()
@@ -46,8 +41,7 @@ Pane {
         DurationControl {
             id: durationController
             duration: root.duration
-            textColor: root.textColor
-            implicitWidth: root.width * 0.4
+            width: root.width * 0.35
             onDurationChanged: {
                 model.duration = duration
             }
@@ -59,8 +53,9 @@ Pane {
         }
 
         RoundButton {
+            id: deleteButton
             text: "Delete"
-            implicitWidth: root.width * 0.2
+            width: root.width * 0.2
             onClicked: root.deleteInterval()
         }
     }

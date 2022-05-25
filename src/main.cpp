@@ -6,6 +6,7 @@
 #include <QLocale>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QQuickStyle>
 #include <QTranslator>
 
 QUrl getMainQML() {
@@ -24,6 +25,9 @@ return QUrl(u"qrc:/IntervalApplication/mainAndroid.qml"_qs);
 }
 
 int main(int argc, char* argv[]) {
+    QGuiApplication::setApplicationName("Intervaltimer");
+    QGuiApplication::setOrganizationName("HicknHack Software GmbH");
+
     QGuiApplication app(argc, argv);
 
     QTranslator translator;
@@ -37,6 +41,7 @@ int main(int argc, char* argv[]) {
     }
 
     QQmlApplicationEngine engine;
+    QQuickStyle::setStyle("Material");
 
     auto plan = Plan::create();
     plan->appendPlan();

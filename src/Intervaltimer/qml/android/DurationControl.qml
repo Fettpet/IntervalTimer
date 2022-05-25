@@ -5,7 +5,6 @@ import QtQuick.Layouts
 Control {
     id: root
     required property int duration
-    property color textColor: "#aaaaaa"
     readonly property int seconds: duration % 60
     readonly property int minutes: (duration / 60) % 60
     readonly property int hours: (duration / 3600)
@@ -13,18 +12,23 @@ Control {
     function zeroPad(num, places) {
         return String(num).padStart(places, '0')
     }
-    contentItem: RowLayout {
-        Text {
-            id: displayTime
+    contentItem: TextField {
+        id: displayTime
+        background: Rectangle {
+            color: "transparent"
+        }
 
-            text: hours + ":" + zeroPad(minutes, 2) + ":" + zeroPad(seconds, 2)
-            color: root.textColor
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    designer.open()
-                    focus = true
-                }
+        readOnly: true
+        readonly property string displayText: hours + ":" + zeroPad(
+                                                  minutes,
+                                                  2) + ":" + zeroPad(seconds, 2)
+        text: duration != 0 ? displayText : ""
+        placeholderText: duration == 0 ? displayText : ""
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                designer.open()
+                focus = true
             }
         }
         Popup {

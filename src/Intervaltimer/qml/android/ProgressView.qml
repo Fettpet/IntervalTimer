@@ -1,6 +1,7 @@
 // Source https://stackoverflow.com/a/22903361
 import QtQml
 import QtQuick
+import QtQuick.Controls
 
 Canvas {
     id: root
@@ -8,8 +9,6 @@ Canvas {
 
     property color primaryColor: "orange"
     property color secondaryColor: "lightblue"
-    property color textColor: "black"
-    property color backgroundColor: "teal"
     width: 240
     height: 240
     property string text: "Text"
@@ -44,7 +43,6 @@ Canvas {
         ctx.save()
 
         ctx.clearRect(0, 0, root.width, root.height)
-        ctx.fillStyle = root.backgroundColor
         ctx.rect(0, 0, root.width, root.height)
         // First, thinner arc
         // From angle to 2*PI
@@ -85,15 +83,14 @@ Canvas {
         ctx.restore()
     }
 
-    Text {
+    Label {
         id: textDescription
         anchors.centerIn: parent
 
         text: root.text
-        color: root.textColor
     }
 
-    Text {
+    Label {
         id: textRunningTime
 
         readonly property int value: (root.maximumValueInner - root.currentValueInner) / 1000
@@ -117,7 +114,6 @@ Canvas {
 
         anchors.bottom: textDescription.top
         anchors.horizontalCenter: textDescription.horizontalCenter
-        color: root.textColor
         anchors.margins: 20
         text: formatedText
     }

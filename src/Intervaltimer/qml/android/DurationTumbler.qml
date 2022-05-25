@@ -1,6 +1,7 @@
 import QtQuick
+import QtQuick.Controls
 
-Rectangle {
+Pane {
     id: root
 
     required property var model
@@ -9,52 +10,22 @@ Rectangle {
     property alias currentItem: pathView.currentItem
     property alias currentIndex: pathView.currentIndex
 
-    width: 100
-    height: 200
+    implicitWidth: 100
+    implicitHeight: 200
     Rectangle {
-        //This rectangle is optional it is the lower bar on the middle of the View
-        anchors.centerIn: parent
-        anchors.verticalCenterOffset: (root.height / 10)
-        width: parent.width / 2
-        height: 2
+        anchors.centerIn: pathView
+        anchors.verticalCenterOffset: (pathView.height / 10)
+        implicitWidth: parent.width / 2
+        implicitHeight: 2
         color: "black"
     }
 
     Rectangle {
-        //This rectangle is optional it is the upper bar on the middle of the View
-        anchors.centerIn: parent
-        anchors.verticalCenterOffset: -(root.height / 10)
-        width: parent.width / 2
-        height: 2
+        anchors.centerIn: pathView
+        anchors.verticalCenterOffset: -(pathView.height / 10)
+        implicitWidth: parent.width / 2
+        implicitHeight: 2
         color: "black"
-    }
-
-    Component {
-        id: tumblerDelegate
-
-        Item {
-            id: itm
-            anchors.left: parent.left
-            anchors.right: parent.right
-            height: parent.height / 5
-            scale: PathView.iconScale ? PathView.iconScale : 1
-            opacity: PathView.iconOpacity ? PathView.iconOpacity : 0
-
-            Text {
-                text: modelData
-                color: itm.PathView.isCurrentItem ? "red" : "black"
-                font.pointSize: 12
-                anchors.centerIn: parent
-                //opacity: active ? 1 : 0.3
-            }
-            MouseArea {
-                id: itemMouseArea
-                anchors.fill: parent
-                onClicked: {
-                    pathView.currentIndex = index
-                }
-            }
-        }
     }
 
     PathView {
@@ -65,11 +36,33 @@ Rectangle {
         preferredHighlightBegin: 0.5
         preferredHighlightEnd: 0.5
         highlightRangeMode: PathView.StrictlyEnforceRange
-        delegate: tumblerDelegate
+        delegate: Item {
+            id: itm
+            anchors.left: parent.left
+            anchors.right: parent.right
+            implicitHeight: parent.height / root.itemCount
+            scale: PathView.iconScale ? PathView.iconScale : 1
+            opacity: PathView.iconOpacity ? PathView.iconOpacity : 0
+
+            Label {
+                id: label
+                text: modelData
+                color: itm.PathView.isCurrentItem ? "red" : label.palette.windowText
+                font.pointSize: 12
+                anchors.centerIn: parent
+            }
+            MouseArea {
+                id: itemMouseArea
+                anchors.fill: parent
+                onClicked: {
+                    pathView.currentIndex = index
+                }
+            }
+        }
         flickDeceleration: root.flickDeceleration
         path: Path {
             startX: pathView.width / 2
-            startY: 0
+            startY: -(root.implicitHeight / 9)
             PathAttribute {
                 name: "iconScale"
                 value: 0.7

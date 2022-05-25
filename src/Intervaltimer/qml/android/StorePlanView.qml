@@ -14,12 +14,7 @@ Popup {
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
     width: 200
     height: 70
-    background: Rectangle {
-        color: root.backgroundColor
-        width: root.width
-        height: root.height
-        radius: 8
-    }
+
     onOpened: nameEdit.focus = true
 
     ColumnLayout {
